@@ -1,0 +1,60 @@
+\documentclass[a4paper,12pt]{elsarticle}
+\textheight 28cm
+\topmargin -1.25in
+\textwidth 17cm 
+\oddsidemargin -0.6in
+\parindent=0.0in
+
+
+\parindent=0.0in
+%\parskip=12pt
+
+\usepackage {graphicx, amsmath, rotating,times, multirow, fancybox, color}
+
+% tabular customisation
+\setlength{\tabcolsep}{1pt}
+\renewcommand{\arraystretch}{0.9}
+
+% my customization
+\usepackage{times}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{tabularx}
+\renewcommand{\tabularxcolumn}[1]{>{}m{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{Z}{>{\centering\arraybackslash}X}
+\usepackage{multirow}
+%\usepackage[tight,FIGTOPCAP]{subfigure}
+\usepackage[tight]{subfigure}
+\setlength{\subfigcapskip}{-3pt}
+\setlength{\subfigbottomskip}{2pt}
+\setlength{\subfigtopskip}{2pt}
+\usepackage{rotating}
+
+% some shorthands
+\newcommand{\de}{\ensuremath{^\circ}}
+\newcommand{\ie}{\ensuremath{i.e.}}
+\newcommand{\eg}{\ensuremath{eg.}}
+\newcommand{\dof}{d.o.f.}
+\newcommand{\dofs}{d.o.f.s}
+\newcommand{\dprod} {\,{\scriptscriptstyle \stackrel{\bullet}{{}}}\,}
+\renewcommand{\vec}[1] {\ensuremath{\mathbf #1}}
+\newcommand{\gvec}[1] {\ensuremath{\mbox{\boldmath$\bf#1$}}}
+\newcommand{\eqn}[1]{\mbox{$#1$}}
+\newcommand{\nicefrac}[2]{\ensuremath ^{#1}\!\!/\!_{#2}}
+
+% make $\times$, $+$, $-$ and $=$ use less space
+\newcommand{\tims}{\negthinspace \times \negthinspace}
+\newcommand{\eq}{\negthinspace = \negthinspace}
+\newcommand{\plus}{\negthinspace + \negthinspace}
+\newcommand{\minus}{\negthinspace - \negthinspace}
+
+% directories containing the plots
+\newcommand{\RUN}{/home/hilary/OpenFOAM/hilary-2.3.0/run}
+\newcommand{\BRWmeshes}{\RUN/meshes/plane/BuddRusselWalsh}
+
+\begin{document}
+\thispagestyle{empty}
+

@@ -1,0 +1,53 @@
+1. The description of MA on the sphere needs more detail. IN particular
+we need to flesh out the details of the exponential map and the
+calculation of the volumes on the sphere surface. Presumably Phil's
+new work will be useful here.
+
+Also the geometric
+method is really novel and needs more explanation. I think this
+is a powerful new idea. Well done
+
+The description of MA in Euclidean space can be largely referred to
+my earlier papers.
+
+2. I like the fixed point iteration. May need to think a bit more carefully
+about how it is converging .. but your convergence  figures look good.
+
+3. The calculation of the ring type solution in the plane and the resulting
+mesh skewness issues in particular was pretty well covered in my recent
+paper with Emily .. so not really sure you need to say much there.
+
+4. I agree with Mike that the geometric method seems to out perform the
+discrete method on the sphere so it is probably worth focusing
+down on this one.
+
+5. The paper gives a negative impression about the use of the method to
+generate meshes based on various measures of mesh quality.
+
+I have various points to make here
+
+(i) talk about the positives. In particular the speed of the algorithm
+and its ease of implementation. Give clear comparisons with Lloyd's
+algorithm in these cases
+
+(ii) mesh quality measures can be misleading. If you want to approximate
+a highly anisotropic function then an isotropic mesh is the way to
+go. See the book by Huang and Russell about this. Monge Ampere generated meshes
+can be close to optimal for approximating such functions. This is the subject
+of ongoing research .. but the paper with Emily addresses this to a certain
+extent.
+
+I agree that for other problems lack of orthogonality becomes an issue
+and we need to be aware of this. However, the real issue is that ]
+what matters is not the mesh itself, but the solution that we compute
+on that mesh. It is the accuracy of this which is the true measure
+of the mesh quality. That is clearly something that we will be looking
+into carefully in our grant of course.
+
+
+
+
+(iii) Your figure 24 is simply amazing!!! Put in more detail about this
+and talk about the speed of finding the mesh and its quality in this
+case.
+
