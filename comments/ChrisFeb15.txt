@@ -3,8 +3,7 @@ we need to flesh out the details of the exponential map and the
 calculation of the volumes on the sphere surface. Presumably Phil's
 new work will be useful here.
 
-Also the geometric
-method is really novel and needs more explanation. I think this
+Also the geometric method is really novel and needs more explanation. I think this
 is a powerful new idea. Well done
 
 The description of MA in Euclidean space can be largely referred to
