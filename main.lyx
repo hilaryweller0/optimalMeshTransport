@@ -138,7 +138,7 @@ key "LTZ01"
 
 \end_inset
 
-, does not lead to sudden changes in resolution and can be retro-fitting
+, does not lead to sudden changes in resolution and can be retro-fitted
  into existing models.
  The solution of the Monge-Amp
 \begin_inset ERT
@@ -184,8 +184,8 @@ re equation has not before been solved numerically on the surface of a sphere,
 \begin_layout Standard
 
 \lang english
-At a first glance, r-adaptivity does not look ideal for adaptive meshing
- of the global atmosphere; 
+At first glance, r-adaptivity does not look ideal for adaptive meshing of
+ the global atmosphere; 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "DD92"
@@ -195,7 +195,7 @@ key "DD92"
  pointed out that the resulting meshes can be quite distorted which leads
  to truncation errors and it is not possible to control the resolution in
  individual directions, just the total cell size (area or volume).
- With r-adaptivity it is not possible, for example, to increase the total
+ With r-adaptivity, it is not possible, for example, to increase the total
  number of points around the equator, just re-distribute them 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -248,10 +248,10 @@ key "SKD+12"
 \end_inset
 
 ).
- Lloyd's algorithm does alter the mesh connectivity meaning that, if it
- is used in conjunction with dynamic mesh adaptivity, mapping between old
- and new solutions would be needed and there is an additional layer of complexit
-y involved with changing the data structures and moving information between
+ Lloyd's algorithm alters the mesh connectivity meaning that, if it is used
+ in conjunction with dynamic mesh adaptivity, mapping between old and new
+ solutions would be needed and there is an additional layer of complexity
+ involved with changing the data structures and moving information between
  parallel processors.
  Also, Lloyd's algorithm is extremely expensive 
 \begin_inset CommandInset citation
@@ -261,7 +261,7 @@ key "JGR+13"
 \end_inset
 
 .
- We therefore propose r-adaptivity as using cheaper mesh generation and
+ We therefore propose r-adaptivity which uses cheaper mesh generation and
  fixed data structures associated with the mesh.
  
 \end_layout
@@ -345,7 +345,7 @@ key "RJG+11"
 
  with the same monitor function.
  In order to demonstrate the performance of the mesh generation using real
- data as a monitor function, a mesh is generated using a monitor function
+ data as a monitor function, meshes are generated using a monitor function
  derived from reanalysis precipitation in section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -572,19 +572,8 @@ key "DG06,DG06b"
 
 \end_inset
 
- ...
-\end_layout
-
-\begin_layout Itemize
-
-\lang english
-\begin_inset CommandInset citation
-LatexCommand citet
-key "DG06,DG06b"
-
-\end_inset
-
- ...
+ also use mixed finite-elements on triangulations of the unit plane.
+ All of these techniques have been used on either 2D or 3D Euclidean geometry.
 \end_layout
 
 \begin_layout Standard
@@ -648,7 +637,7 @@ status open
 re equation which is solved by time-stepping, including an implicit relaxation
  term to smooth the transient solution and to speed up convergence.
  This effectively creates fixed-point iterations but is is not clear if
- these fixed-point iterations are the most convergent.
+ these fixed-point iterations are optimally convergent.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -681,22 +670,20 @@ key "FO11"
  describe this as a semi-implicit method and use it to find the starting
  point for a Newton method.
  A Newton method is a common approach for sovling the algebraic equations
- ...
-\end_layout
-
-\begin_layout Itemize
-Newton methods
-\end_layout
-
-\begin_layout Itemize
-Also discuss 
+ 
 \begin_inset CommandInset citation
-LatexCommand citet
-key "CS11,CSC14,DG06,DG06b"
+LatexCommand citep
+key "DG06,FO11,CSC14"
 
 \end_inset
 
-
+.
+ However the cost and complexity of the Newton method may not be necessary
+ for mesh generation.
+ In this paper we focus on fixed-point iterations, although the new linearisatio
+n proposed may also be beneficial for calculating the first guess for a
+ Newton method.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -713,11 +700,8 @@ status open
 
 \end_inset
 
-re equation has not before been solved numerically on the sphere but we
- do not envisage problems in extending the numerical techniques for the
- solving partial differential equation to the surface of the sphere.
- It is rather the description of the optimally transported mesh problem
- using the Monge-Amp
+re equation has not before been solved numerically on the sphere.
+ The description of the optimally transported mesh problem using the Monge-Amp
 \begin_inset ERT
 status open
 
@@ -730,8 +714,20 @@ status open
 
 \end_inset
 
-re equation that relies on properties of Euclidean geometry.
- These problems and proposed solutions will be described in section 
+re equation relies on properties of Euclidean geometry 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "BHR09"
+
+\end_inset
+
+.
+ Therefore the primary challenge is to write down the optimal transport
+ problem for mesh generation on teh surface of the sphere.
+\end_layout
+
+\begin_layout Standard
+These problems and proposed solutions will be described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:method"
@@ -759,6 +755,21 @@ name "sec:method"
 
 \lang english
 Equations of Mesh Transport in Euclidean Space
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+This subject is covered in detail in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BHR09"
+
+\end_inset
+
+.
+ A summary is given here, using the same notation as is used in following
+ sections of this paper.
 \end_layout
 
 \begin_layout Standard
@@ -1340,7 +1351,8 @@ key "BCW13,BBPC14"
 \end_inset
 
  smoothed the solution away from equidistribution at each iteration.
- 
+ However there may be further scope for improvement by combining the best
+ aspects of the two approaches.
 \end_layout
 
 \begin_layout Subsection
@@ -1646,7 +1658,7 @@ reference "fig:cell"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -1780,7 +1792,8 @@ where
 \end_inset
 
  is uniform so that it is first-order accurate on non-uniform meshes.
- This approach starts by calculating a cell-centred gradient:
+ This approach starts by reconstructing a cell-centred gradient from surrounding
+ normal gradients using a least squares fit:
 \begin_inset Formula 
 \begin{equation}
 \nabla_{i}\phi=\left(\sum_{f\in i}\hat{\mathbf{S}}_{f}\mathbf{S}_{f}^{T}\right)^{-1}\sum_{f\in i}\nabla_{nf}\phi\ \mathbf{S}_{f}.\label{eq:gradc}
@@ -1878,7 +1891,7 @@ In order to calculate the mesh map and consequently to calculate
 \end_inset
 
  at the mesh vertices.
- Ideally, this operation should retain the convexity of the cells and it
+ Ideally, this operation should not produce and non-convex cells and it
  turns out to be particularly sensitive to the numerical approximation and
  its stencil.
  If the stencil is too large, grid-scale oscillations in 
@@ -2234,62 +2247,6 @@ name "fig:goldilocksStencil"
 
 \end_layout
 
-\begin_layout Standard
-
-\lang english
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Plain Layout
-
-\lang english
-In our numerical experiments, we have found that the least-squres approach
- to calculating the vector gradient gives smooth meshes when used in combination
- with the finite difference calculation of the Hessian and that the TRiSK
- vector reconstruction must be used in combination with the volume calculation
- of the Hessian in order to give smooth meshes.
- 
-\end_layout
-
-\begin_layout Plain Layout
-
-\lang english
-There are two possible disadvantages of the volume approach.
- Firstly, the TRiSK reconstruction is less that first-order accurate and
- secondly, the discretisations of the Hessian and the Laplacian are no longer
- consistent.
- 
-\end_layout
-
-\begin_layout Subsubsection
-Boundary Conditions
-\end_layout
-
-\begin_layout Plain Layout
-The inner and outer spheres have zero gradient boundary conditions (
-\begin_inset Formula $\nabla_{n}\phi=0$
-\end_inset
-
-).
- However this does not imply that 
-\begin_inset Formula $\nabla\phi$
-\end_inset
-
- at cell centres is always on the tangent to the sphere.
- In fact 
-\begin_inset Formula $\nabla\phi$
-\end_inset
-
- can be directed into the sphere, allowing mesh points to be transported
- long distances around the sphere.
- 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Linear equation solver and outer iteratations
 \end_layout
@@ -2407,6 +2364,13 @@ reference "eq:PMA_SIsph"
 d mesh cell centres.
 \end_layout
 
+\begin_layout Standard
+
+\size larger
+\color red
+What about for precipitation ...
+\end_layout
+
 \begin_layout Subsection
 Enforcing Stability 
 \end_layout
@@ -2505,8 +2469,15 @@ re equation on the sphere for any monitor function.
 \end_layout
 
 \begin_layout Standard
+
+\size larger
+\color red
+What about for precipitation ...
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Comment
-status collapsed
+status open
 
 \begin_layout Plain Layout
 smooth the monitor function at each iteration to improve convergence and
@@ -2572,7 +2543,7 @@ name "sec:diags"
 \begin_layout Standard
 Convergence is measured in two ways.
  Firstly by plotting the initial residual of the matrix solution at every
- iteration as a function of iteration.
+ iteration as a function of iteration number.
  For a solution of the matrix equation 
 \begin_inset Formula $A\mathbf{x}=\mathbf{b}$
 \end_inset
@@ -2599,17 +2570,13 @@ where the sum is over all cells of the mesh (ie over all elements of the
 \end_inset
 
  is the initial value in the iterative solution.
- The convergence of the final solution is assessed by plotting the cell
- area for each cell as a function of distance to the axis of symmetry in
- comparison to 
-\begin_inset Formula $ $
+ The convergence of the final solution is assessed by plotting the change
+ in cell area at the final iteration for each cell as a function of distance
+ to the axis of symmetry in comparison to 
+\begin_inset Formula $\frac{c}{m({\bf x}^{n})}$
 \end_inset
 
-
-\begin_inset Formula $\frac{c}{m^{\prime\prime}({\bf x}^{n})}$
-\end_inset
-
- at the final iteration.
+.
  This tells us where the solution is not converging to the required mesh
  density and also, for solutions using 
 \begin_inset Formula $\bigg|I+H\left(\phi^{n}\right)\bigg|$
@@ -2657,17 +2624,17 @@ A few diagnostics of mesh quality will be used.
  The non-orthogonality for each cell face is measured as
 \begin_inset Formula 
 \[
-\cos^{-1}\frac{\mathbf{S}_{\xi}\cdot\mathbf{d}_{\xi}}{|\mathbf{S}_{\xi}||\mathbf{d}_{\xi}|}
+\cos^{-1}\frac{\mathbf{S}_{x}\cdot\mathbf{d}_{x}}{|\mathbf{S}_{x}||\mathbf{d}_{x}|}
 \]
 
 \end_inset
 
 where 
-\begin_inset Formula $\mathbf{S}_{\xi}$
+\begin_inset Formula $\mathbf{S}_{x}$
 \end_inset
 
  and 
-\begin_inset Formula $\mathbf{d}_{\xi}$
+\begin_inset Formula $\mathbf{d}_{x}$
 \end_inset
 
  are the cell face area vector and vector between cell centres respectively
@@ -2681,11 +2648,11 @@ reference "fig:cell"
 ).
  The skewness of each cell face is measured as the distance between the
  face centre and the crossing point between the vector 
-\begin_inset Formula $\mathbf{d}_{\xi}$
+\begin_inset Formula $\mathbf{d}_{x}$
 \end_inset
 
  with the face, normalised by 
-\begin_inset Formula $|\mathbf{d}_{\xi}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
 .
@@ -3088,7 +3055,8 @@ key "BRW15"
 
 \lang british
 .
- 
+ However, the meshes calculated using the geometric Hessian conform more
+ closely to the monitor function.
 \end_layout
 
 \begin_layout Subsection
@@ -3489,7 +3457,7 @@ tion of the cell area in these regions, where the derivatives of
  However, for the purpose of mesh generation, these discrepancies do not
  look problematic.
  If the optimally transported mesh is smoother than that specified by the
- monitor function then it is likely to be beneficial.
+ monitor function then it could be beneficial.
  The meshes generated using the geometric Hessian fit the monitor function
  very closely, implying that the convergence is closer using the geometric
  Hessian, despite the lack of convergence of the initial residual.
@@ -3715,9 +3683,8 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="4">
+<lyxtabular version="3" rows="9" columns="3">
 <features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -3749,15 +3716,6 @@ Optimally transported
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
 </row>
 <row>
 <cell alignment="center" valignment="top" usebox="none">
@@ -3775,7 +3733,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/0/V2.eps
-	width 44text%
+	width 45text%
 
 \end_inset
 
@@ -3790,7 +3748,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/0/V2.eps
-	width 44text%
+	width 45text%
 
 \end_inset
 
@@ -3799,17 +3757,36 @@ X2
 
 \end_inset
 </cell>
+</row>
+<row>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V2_volRatio_v.eps
-	lyxscale 40
-	width 5text%
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V2_volRatio.eps
+	width 90text%
 
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -3832,7 +3809,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/0/V4.eps
-	width 44text%
+	width 45text%
 
 \end_inset
 
@@ -3847,7 +3824,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/0/V4.eps
-	width 44text%
+	width 45text%
 
 \end_inset
 
@@ -3856,17 +3833,36 @@ X4
 
 \end_inset
 </cell>
+</row>
+<row>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V4_volRatio_v.eps
-	lyxscale 40
-	width 5text%
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V4_volRatio.eps
+	width 90text%
 
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -3889,7 +3885,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/0/V8.eps
-	width 44text%
+	width 45text%
 
 \end_inset
 
@@ -3904,7 +3900,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/0/V8.eps
-	width 44text%
+	width 45text%
 
 \end_inset
 
@@ -3913,17 +3909,36 @@ X8
 
 \end_inset
 </cell>
+</row>
+<row>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V8_volRatio_v.eps
-	lyxscale 40
-	width 5text%
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V8_volRatio.eps
+	width 90text%
 
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -3946,7 +3961,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/0/V16.eps
-	width 44text%
+	width 45text%
 
 \end_inset
 
@@ -3961,7 +3976,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/0/V16.eps
-	width 44text%
+	width 45text%
 
 \end_inset
 
@@ -3970,17 +3985,36 @@ X16
 
 \end_inset
 </cell>
+</row>
+<row>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V16_volRatio_v.eps
-	lyxscale 40
-	width 5text%
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V16_volRatio.eps
+	width 90text%
 
 \end_inset
 
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \end_layout
 
@@ -4542,7 +4576,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4557,7 +4591,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4583,7 +4617,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4598,7 +4632,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4624,7 +4658,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4639,7 +4673,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4665,7 +4699,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4680,7 +4714,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4834,7 +4868,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4849,7 +4883,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4875,7 +4909,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4890,7 +4924,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4916,7 +4950,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4931,7 +4965,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4957,7 +4991,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -4972,7 +5006,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5033,7 +5067,7 @@ reference "fig:distDxX2X4"
  This shows that the Lloyd meshes are close to isotropic whereas the optimally
  transported meshes have high anisotropy where the second derivative of
  the monitor function is high.
- This could of course be reduced by smoothing the monitor function.
+ This could be reduced by smoothing the monitor function.
 \end_layout
 
 \begin_layout Standard
@@ -5146,7 +5180,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5161,7 +5195,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5187,7 +5221,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5202,7 +5236,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5228,7 +5262,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5243,7 +5277,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5269,7 +5303,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5284,7 +5318,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5410,7 +5444,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5425,7 +5459,7 @@ X2
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5451,7 +5485,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5466,7 +5500,7 @@ X4
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5492,7 +5526,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5507,7 +5541,7 @@ X8
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5533,7 +5567,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5548,7 +5582,7 @@ X16
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5600,7 +5634,7 @@ reference "fig:meshOrthogX2X4"
 
 \end_inset
 
- to 
+ and 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:meshSkewX2X4"
@@ -5773,7 +5807,7 @@ status open
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1SmallStencil/5/16/0/meshZoom.eps
 	lyxscale 50
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5789,7 +5823,7 @@ status open
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1SmallStencil/5/16/0/meshZoomZoom.eps
 	lyxscale 50
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5834,7 +5868,7 @@ status open
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/0/meshZoom.eps
 	lyxscale 50
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5850,7 +5884,7 @@ status open
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/0/meshZoomZoom.eps
 	lyxscale 50
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5895,7 +5929,7 @@ status open
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/0/meshZoom.eps
 	lyxscale 50
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5911,7 +5945,7 @@ status open
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/0/meshZoomZoom.eps
 	lyxscale 50
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5956,7 +5990,7 @@ status open
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/0/meshZoom.eps
 	lyxscale 50
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -5972,7 +6006,7 @@ status open
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/0/meshZoomZoom.eps
 	lyxscale 50
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6246,7 +6280,7 @@ rotatebox[origin=l]{90}{Cell area}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6261,7 +6295,7 @@ rotatebox[origin=l]{90}{Cell area}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/distArea.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6303,7 +6337,7 @@ xi$}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6318,7 +6352,7 @@ xi$}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/distDx.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6356,7 +6390,7 @@ rotatebox[origin=l]{90}{Orthogonality}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6371,7 +6405,7 @@ rotatebox[origin=l]{90}{Orthogonality}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/distOrthogonality.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6409,7 +6443,7 @@ rotatebox[origin=l]{90}{Skewness}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6425,7 +6459,7 @@ rotatebox[origin=l]{90}{Skewness}
 j
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/distSkew.eps
-	width 49text%
+	width 45text%
 
 \end_inset
 
@@ -6662,8 +6696,9 @@ name "sec:concs"
 
 \lang english
 A technique for generating optimally transported meshes on the surface of
- the sphere as been developed and some meshes are generated which have advantage
-s and disadvantages relative to Voronoi meshes generated using Lloyd's algorithm.
+ the sphere has been developed and some meshes are generated which have
+ advantages and disadvantages relative to Voronoi meshes generated using
+ Lloyd's algorithm.
  The advantages are that optimally transported meshes can be generated in
  linear time and the connectivity never changes so these meshes can be used
  in r-adaptive simulations.
