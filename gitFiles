@@ -2,9 +2,8 @@
 git add *pdf
 
 # regular add
-git add *.tex *.lyx figures/*/*tex figures/*sh figures/*tex comments/*txt \
+git add *.tex *.lyx figures/*sh figures/*tex comments/*txt \
         gitFiles figures/figs/*fig
 
-
-
+# commit and push to github
 

@@ -204,11 +204,9 @@ key "FT93"
 \end_inset
 
 .
- However, if we can start the mesh generation process with enough points
- around the equator, perhaps initially with arbitrarily structured or anisotropi
-c resolution, then it may be possible to redistribute these points in order
- to generate optimal meshes for the global atmosphere.
- 
+ However, if the mesh redistribution starts from a mesh with enough points
+ around the equator, then these points can be redistributed according to
+ transient features of the flow.
 \end_layout
 
 \begin_layout Standard
@@ -791,6 +789,9 @@ key "BHR09"
 \end_inset
 
 .
+ A mesh is equidistributed with respect to a monitor function when the product
+ of the cell volumes and the monitor function is constant across all mesh
+ cells.
  The equation for creating an equi-distributed mesh will use 
 \lang british
 
@@ -827,9 +828,9 @@ key "BHR09"
 
 , the new mesh locations should satisfy
 \begin_inset Formula 
-\[
-|\nabla\mathbf{x}|\ m\left(\mathbf{x}\right)=c
-\]
+\begin{equation}
+|\nabla\mathbf{x}|\ m\left(\mathbf{x}\right)=c\label{eq:equiDist}
+\end{equation}
 
 \end_inset
 
@@ -893,6 +894,49 @@ The presence of the identity tensor in this Monge-Ampére equation will be
  
 \end_layout
 
+\begin_layout Standard
+
+\lang english
+The equidistribution principle leads directly to the optimal transport constrain
+t that the transport map has to push forward a uniform measure to a prescribed
+ non-uniform measure (ref).
+ The map is then found by minimising a cost function, Euclidean distance
+ squared or Riemannian distance squared according to the geometry.
+ This minimises the mesh distortion (ref).
+ In both cases a unique solution exists (McCann's paper and Villani's 2008
+ book need to be cited) and can be expressed in terms of a Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+'e
+\end_layout
+
+\end_inset
+
+re equation.
+ They both satisfy monotonicity requirements which prevent mesh tangling.
+ The optimal transport procedure also acts as a proof of existence of solutions
+ for the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+'e
+\end_layout
+
+\end_inset
+
+re equation.
+ 
+\end_layout
+
 \begin_layout Subsection
 Equations of Mesh Transport on the Sphere
 \end_layout
@@ -913,7 +957,7 @@ On the surface of the sphere, the gradient of the mesh potential,
  Instead, we can use the exponential map
 \begin_inset Formula 
 \[
-\mathbf{x}=\bm{\xi}+\exp_{\xi}\nabla\phi
+\mathbf{x}=\exp_{\xi}\nabla\phi
 \]
 
 \end_inset
@@ -935,20 +979,29 @@ to take us from position
 \end_inset
 
 .
- For equidistribution, the new mesh locations must now satisfy
-\begin_inset Formula 
-\[
-\exp_{\xi}\nabla\left(\bm{\xi}+\exp_{\xi}\nabla\phi\right)m\left(\mathbf{x}\right)=c
-\]
+ On the surface of the sphere, the Jacobian determinant term (
+\lang british
+
+\begin_inset Formula $|\nabla\mathbf{x}|$
+\end_inset
+
+ of eqn [
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:equiDist"
 
 \end_inset
 
-where 
-\begin_inset Formula $\exp_{\xi}\nabla\left(\bm{\xi}+\exp_{\xi}\nabla\phi\right)$
+]) cannot be represented using local gradients at 
+\begin_inset Formula $\bm{\xi}$
 \end_inset
 
- is the ratio of new to old cell volumes under the map.
- This ratio will be denoted 
+ because changes in volume need to take the curvature of the domain into
+ account.
+ Rather than calculating the appropriate metric terms, for our iterative
+ solution, we simply use the ratio of
+\lang english
+ new to old cell volumes under the map, denoted 
 \begin_inset Formula $r=V_{\xi}/V_{x}$
 \end_inset
 
@@ -1040,7 +1093,7 @@ reference "eq:MA"
 ) can then be written as fixed-point iterations:
 \begin_inset Formula 
 \begin{equation}
-1+\nabla^{2}\phi^{n+1}=1+\nabla^{2}\phi^{n}-\bigg|I+H\left(\phi^{n}\right)\bigg|+\frac{c}{m({\bf x}^{n})}\label{eq:MA_SI}
+1+\nabla^{2}\phi^{n+1}=1+\nabla^{2}\phi^{n}-\bigg|I+H\left(\phi^{n}\right)\bigg|+\frac{c^{n}}{m({\bf x}^{n})}\label{eq:MA_SI}
 \end{equation}
 
 \end_inset
@@ -1106,13 +1159,13 @@ reference "eq:MA_SI"
 \end_inset
 
 ) to have a solution, 
-\begin_inset Formula $c$
+\begin_inset Formula $c^{n}$
 \end_inset
 
  must take the value
 \begin_inset Formula 
 \[
-c=\frac{\sum|I+H\left(\phi^{n}\right)|V_{\xi}}{\sum\frac{V_{\xi}}{m\left(\mathbf{x}^{n}\right)}}
+c^{n}=\frac{\sum|I+H\left(\phi^{n}\right)|V_{\xi}}{\sum\frac{V_{\xi}}{m\left(\mathbf{x}^{n}\right)}}
 \]
 
 \end_inset
@@ -1148,7 +1201,7 @@ reference "eq:MA_SI"
 :
 \begin_inset Formula 
 \begin{equation}
-\left(1+\alpha\right)\nabla^{2}\phi^{n+1}=\left(1+\alpha\right)\nabla^{2}\phi^{n}-\bigg|I+H\left(\phi^{n}\right)\bigg|+\frac{c}{m({\bf x}^{n})}\label{eq:PMA_SI}
+\left(1+\alpha\right)\nabla^{2}\phi^{n+1}=\left(1+\alpha\right)\nabla^{2}\phi^{n}-\bigg|I+H\left(\phi^{n}\right)\bigg|+\frac{c^{n}}{m({\bf x}^{n})}\label{eq:PMA_SI}
 \end{equation}
 
 \end_inset
@@ -1219,7 +1272,7 @@ reference "sub:linearPlane"
  and the same fixed-point iteration sequence:
 \begin_inset Formula 
 \begin{equation}
-\left(1+\alpha\right)\nabla\phi^{n+1}=\left(1+\alpha\right)\nabla^{2}\phi^{n}-r\left(\phi^{n}\right)+\frac{c}{m({\bf x}^{n})}\label{eq:PMA_SIsph}
+\left(1+\alpha\right)\nabla\phi^{n+1}=\left(1+\alpha\right)\nabla^{2}\phi^{n}-r\left(\phi^{n}\right)+\frac{c^{n}}{m({\bf x}^{n})}\label{eq:PMA_SIsph}
 \end{equation}
 
 \end_inset
@@ -1804,7 +1857,11 @@ where
 \end_inset
 
  is the volume of the original cell.
- 
+ Volumes are calculated on the surface of the sphere by decomposing every
+ polyhedron (on the original and new meshes) into tetrahedra with curved
+ surfaces which are flat in spherical geometry.
+ The volumes of these tetrahedra are found using the formula for the area
+ of a spherical triangle.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2792,7 +2849,7 @@ reference "fig:planeMeshes"
 
 \end_inset
 
- with the ratio of original to new cell area in colour.
+.
  The convergence diagnostics are shown in figures 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2807,22 +2864,15 @@ reference "fig:planeMeshArea"
 
 \end_inset
 
- and the mesh quality diagnostics in figures 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:planeMeshDx"
-
-\end_inset
-
--
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:planeMeshSkew"
-
-\end_inset
-
 .
- 
+ Mesh quality for these meshes was analysed by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BRW15"
+
+\end_inset
+
+ and this is not repeated here.
 \end_layout
 
 \begin_layout Standard
@@ -2831,11 +2881,11 @@ reference "fig:planeMeshSkew"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
+<lyxtabular version="3" rows="3" columns="3">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -2854,7 +2904,7 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-Ring mesh
+Finite Difference Hessian
 \end_layout
 
 \end_inset
@@ -2863,60 +2913,7 @@ Ring mesh
 \begin_inset Text
 
 \begin_layout Plain Layout
-Bell mesh
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Finite Difference Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V0/0/Vring.eps
-	width 48text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V0/0/Vbell.eps
-	width 48text%
-
-\end_inset
-
-
+Geometric Hessian
 \end_layout
 
 \end_inset
@@ -2928,13 +2925,13 @@ rotatebox[origin=l]{90}{Finite Difference Hessian}
 
 \begin_layout Plain Layout
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
 
 \backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
+rotatebox[origin=l]{90}{Ring mesh}
 \end_layout
 
 \end_inset
@@ -2949,48 +2946,7 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V1/0/Vring.eps
-	width 48text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V1/0/Vbell.eps
-	width 48text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/legends/Vring_volRatio.eps
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V0/0/mesh.pdf
 	lyxscale 50
 	width 48text%
 
@@ -3006,7 +2962,62 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/legends/Vbell_volRatio.eps
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V1/0/mesh.pdf
+	lyxscale 50
+	width 48text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+rotatebox[origin=l]{90}{Bell mesh}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V0/0/mesh.pdf
+	lyxscale 50
+	width 48text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V1/0/mesh.pdf
 	lyxscale 50
 	width 48text%
 
@@ -3033,12 +3044,8 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \begin_layout Plain Layout
 
 \lang english
-A quarter of the ring and bell meshes and in colour, the ratio of he new
- to old cell area, 
-\begin_inset Formula $r$
-\end_inset
-
-.
+A quarter of the ring and bell meshes using the finite difference and volume
+ Hesssian.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -3081,11 +3088,6 @@ key "BRW15"
 
 \lang british
 .
- There is large distortion where the mesh changes resolution rapidly and
- in the bell mesh there are very high aspect ratio cells in the uniformly
- coarse regions which do not look ideal for atmospheric modelling.
- We will present further diagnostics of the mesh quality after examining
- the convergence.
  
 \end_layout
 
@@ -3119,7 +3121,7 @@ name "sub:convPlane"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -3271,7 +3273,7 @@ reference "fig:planeMeshConvergence"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -3495,628 +3497,6 @@ tion of the cell area in these regions, where the derivatives of
 \end_layout
 
 \begin_layout Subsection
-Mesh Quality in Euclidean Geometry
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:meshQualityPlane"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\lang english
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="2">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Ring mesh
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Bell mesh
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Finite Difference Hessian
-\end_layout
-
-\end_inset
-</cell>
-<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V0/distDx.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V0/distDx.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Geometric Hessian
-\end_layout
-
-\end_inset
-</cell>
-<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V1/distDx.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V1/distDx.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\lang english
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\lang english
-Cell centre to cell centre distance as a function of distance from the axis
- of symmetry in comparison to that implied by the monitor function for the
- planar meshes generated with the monitor function defined in eqn.
- (
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:planeMonitor"
-
-\end_inset
-
-).
- 
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:planeMeshDx"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-We now discuss the diagnostics of mesh quality.
- Fig.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:planeMeshDx"
-
-\end_inset
-
- shows scatter plot of cell-centre to cell-centre distance for every cell
- face as a function of distance to the axis of symmetry.
- Here the anisotropy, particularly in the coarse regions, is clear, with
- aspect ratios greater than 10.
- For the ring mesh, the minimum distances in the refined region are also
- highly anisotropic with the shortest distance much shorter than that specified
- by the monitor function.
- This could be problematic for time-step restrictions that depend on mesh
- spacing.
- 
-\end_layout
-
-\begin_layout Standard
-
-\lang english
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="2">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Ring mesh
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Bell mesh
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Finite Difference Hessian
-\end_layout
-
-\end_inset
-</cell>
-<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V0/distOrthogonality.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V0/distOrthogonality.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Geometric Hessian
-\end_layout
-
-\end_inset
-</cell>
-<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V1/distOrthogonality.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V1/distOrthogonality.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\lang english
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\lang english
-Cell face orthogonality as a function of distance from the axis of symmetry
- for the planar meshes generated with the monitor function defined in eqn.
- (
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:planeMonitor"
-
-\end_inset
-
-).
- 
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:planeMeshOrthog"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The face orthogonality and skewness for every face in the planar meshes
- as scatter plots against distance to the axis of symmetry are shown in
- figures 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:planeMeshOrthog"
-
-\end_inset
-
- and 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:planeMeshSkew"
-
-\end_inset
-
-.
- The ring and bell meshes have non-orthogonality up to around 80 degrees
- using both Hessian calculation techniques.
- These huge distortions are likely to lead to problems with calculating
- the equations of atmospheric motion.
- The skewness is also high where the mesh changes resolution rapidly.
- It is not clear if this level of skewness will be problematic.
- 
-\end_layout
-
-\begin_layout Standard
-
-\lang english
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="2">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Ring mesh
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Bell mesh
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Finite Difference Hessian
-\end_layout
-
-\end_inset
-</cell>
-<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V0/distSkew.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V0/distSkew.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Geometric Hessian
-\end_layout
-
-\end_inset
-</cell>
-<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V1/distSkew.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V1/distSkew.eps
-	lyxscale 50
-	width 50text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\lang english
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\lang english
-Cell face skewness as a function of distance from the axis of symmetry for
- the planar meshes generated with the monitor function defined in eqn.
- (
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:planeMonitor"
-
-\end_inset
-
-).
- 
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:planeMeshSkew"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
 Spherical Meshes
 \begin_inset CommandInset label
 LatexCommand label
@@ -4130,8 +3510,8 @@ name "sub:sphMeshes"
 \begin_layout Standard
 
 \lang english
-Meshes are generated in order to compare with the locally refined meshes
- generated using Lloyd's algorithm by 
+Meshes are generated using the geometric Hessian in order to compare with
+ the locally refined meshes generated using Lloyd's algorithm by 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "RJG+11"
@@ -4314,17 +3694,10 @@ key "HR95b"
 \end_inset
 
  version of the hexagonal icosahedron, optimised to reduce skewness.
- The X2 and X4 meshes are shown in figure 
+ The X2, X4, X8 and X16 meshes are shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:X24meshes"
-
-\end_inset
-
- and the X8 and X16 meshes in figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:X816meshes"
 
 \end_inset
 
@@ -4338,12 +3711,13 @@ reference "fig:X816meshes"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="3">
+<lyxtabular version="3" rows="5" columns="4">
 <features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -4357,6 +3731,35 @@ status collapsed
 
 \end_inset
 </cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Lloyd
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optimally transported
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
@@ -4370,132 +3773,9 @@ X2
 \begin_inset Text
 
 \begin_layout Plain Layout
-X4
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/0/V2.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/0/V4.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/2/0/V2.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/4/0/V4.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
+	width 44text%
 
 \end_inset
 
@@ -4510,7 +3790,7 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/0/V2.eps
-	width 49text%
+	width 44text%
 
 \end_inset
 
@@ -4524,8 +3804,9 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/0/V4.eps
-	width 49text%
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V2_volRatio_v.eps
+	lyxscale 40
+	width 5text%
 
 \end_inset
 
@@ -4540,6 +3821,21 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \begin_inset Text
 
 \begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/0/V4.eps
+	width 44text%
+
+\end_inset
+
 
 \end_layout
 
@@ -4550,8 +3846,8 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V2_volRatio.eps
-	width 49text%
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/0/V4.eps
+	width 44text%
 
 \end_inset
 
@@ -4565,8 +3861,123 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V4_volRatio.eps
-	width 49text%
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V4_volRatio_v.eps
+	lyxscale 40
+	width 5text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/0/V8.eps
+	width 44text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/0/V8.eps
+	width 44text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V8_volRatio_v.eps
+	lyxscale 40
+	width 5text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/0/V16.eps
+	width 44text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/0/V16.eps
+	width 44text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V16_volRatio_v.eps
+	lyxscale 40
+	width 5text%
 
 \end_inset
 
@@ -4591,8 +4002,8 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \begin_layout Plain Layout
 
 \lang english
-X2 and X4 meshes of the sphere of 2,562 cells and the cell volumes relative
- to the average cell volume in colour.
+X2, X4, X8 and X16 meshes of the sphere of 2,562 cells and the cell volumes
+ relative to the average cell volume in colour.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -4614,298 +4025,11 @@ name "fig:X24meshes"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-X8
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-X16
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/0/V8.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/0/V16.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/8/0/V8.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/16/0/V16.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/0/V8.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/0/V16.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V8_volRatio.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V16_volRatio.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\lang english
-\begin_inset Caption
-
-\begin_layout Plain Layout
-
-\lang english
-X8 and X16 meshes of the sphere of 2,562 cells and the cell volumes relative
- to the average cell volume in colour.
+The Lloyd's algorithm meshes in fig.
  
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:X816meshes"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The Lloyd's algorithm meshes in figs 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:X24meshes"
-
-\end_inset
-
- and 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:X816meshes"
 
 \end_inset
 
@@ -4942,26 +4066,17 @@ status collapsed
 
 \end_inset
 
-re meshes in figures 
+re meshes in fig.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:X24meshes"
 
 \end_inset
 
- to 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:X816meshes"
-
-\end_inset
-
  have regions of anisotropy in between the fine and coarse regions whereas
  the Lloyd algorithm meshes remain isotropic and the mesh topology changes
  between resolutions.
- Where the anisotropy leads to overly fine mesh spacing in one direction,
- time-step restrictions will be reduced and where the anisotropy leads to
- overly coarse mesh spacing, large truncation errors will be generated.
  The anisotropy will be investigated further in section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4970,35 +4085,6 @@ reference "sub:meshQualitySph"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-
-\lang english
-The X4, X8 and X16 meshes in figs 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:X24meshes"
-
-\end_inset
-
- and 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:X816meshes"
-
-\end_inset
-
- generated using the finite difference Hessian have coarse regions which
- are too coarse and some very large cells dotted around.
- This is despite these meshes being converged so that they are equi-distribued
- with respect to the monitor function.
- However it is the determinant of the Hessian that is equi-distribued with
- respect to the monitor function and the numerical approximation to the
- Hessian contains truncation errors so that the cell areas are not equidistribut
-ed.
- Therefore the resulting mesh does not have cell areas distributed as required.
- This problem is solved by using the geometric Hessian.
  Before looking in more detail at the mesh quality in section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -5045,13 +4131,12 @@ name "sub:convSph"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="3">
+<lyxtabular version="3" rows="4" columns="2">
 <features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -5059,7 +4144,7 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+642 cells
 \end_layout
 
 \end_inset
@@ -5068,104 +4153,19 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-Finite Difference Hessian
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Geometric Hessian
+2,562 cells
 \end_layout
 
 \end_inset
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{642 cells}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/4/MAresiduals.eps
-	lyxscale 50
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/4/MAresiduals.eps
-	lyxscale 50
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{2,562 cells}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/MAresiduals.eps
 	lyxscale 50
 	width 49text%
 
@@ -5198,19 +4198,7 @@ rotatebox[origin=l]{90}{2,562 cells}
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{10,242 cells}
-\end_layout
-
-\end_inset
-
-
+10,242 cells
 \end_layout
 
 \end_inset
@@ -5219,30 +4207,7 @@ rotatebox[origin=l]{90}{10,242 cells}
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/6/MAresiduals.eps
-	lyxscale 50
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/6/MAresiduals.eps
-	lyxscale 50
-	width 49text%
-
-\end_inset
-
-
+40,962 cells
 \end_layout
 
 \end_inset
@@ -5253,29 +4218,8 @@ rotatebox[origin=l]{90}{10,242 cells}
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{40,962 cells}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/7/MAresiduals.eps
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/6/MAresiduals.eps
 	lyxscale 50
 	width 49text%
 
@@ -5297,35 +4241,6 @@ rotatebox[origin=l]{90}{40,962 cells}
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -5373,25 +4288,23 @@ reference "sub:convSph"
 
 \end_inset
 
- for X2-X16 meshes of various resolutions and using both Hessian techniques.
- Convergence is rapid for the X2 and X4 meshes, particularly using the finite
- difference Hessian, but slows after around 100 iterations, once the non-lineari
-ties have grown and the Laplacian is no longer a good approximation for
- the Hessian and once the exact solutions becomes difficult to achieve at
- finite resolution.
+ for X2-X16 meshes of various resolutions.
+ Convergence is rapid for the X2 and X4 meshes but slows after around 100
+ iterations, once the non-linearities have grown and the Laplacian is no
+ longer a good approximation for the Hessian and once the exact solutions
+ becomes difficult to achieve at finite resolution.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="6" columns="3">
+<lyxtabular version="3" rows="4" columns="2">
 <features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
@@ -5399,7 +4312,7 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+642 cells
 \end_layout
 
 \end_inset
@@ -5408,159 +4321,19 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-Finite Difference Hessian
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Geometric Hessian
+2,562 cells
 \end_layout
 
 \end_inset
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{642 cells}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/4/boostLaplacian.eps
-	lyxscale 50
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/4/boostLaplacian.eps
-	lyxscale 50
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{2,562 cells}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/boostLaplacian.eps
-	lyxscale 50
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/boostLaplacian.eps
-	lyxscale 50
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{10,242 cells}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/6/boostLaplacian.eps
 	lyxscale 50
 	width 49text%
 
@@ -5593,19 +4366,7 @@ rotatebox[origin=l]{90}{10,242 cells}
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{40,962 cells}
-\end_layout
-
-\end_inset
-
-
+10,242 cells
 \end_layout
 
 \end_inset
@@ -5614,8 +4375,19 @@ rotatebox[origin=l]{90}{40,962 cells}
 \begin_inset Text
 
 \begin_layout Plain Layout
+40,962 cells
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/7/boostLaplacian.eps
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/boostLaplacian.eps
 	lyxscale 50
 	width 49text%
 
@@ -5637,35 +4409,6 @@ rotatebox[origin=l]{90}{40,962 cells}
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -5745,11 +4488,11 @@ reference "fig:boostLaplacian"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
+<lyxtabular version="3" rows="5" columns="3">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -5768,7 +4511,7 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-X2
+Lloyd
 \end_layout
 
 \end_inset
@@ -5777,7 +4520,7 @@ X2
 \begin_inset Text
 
 \begin_layout Plain Layout
-X4
+Optimally transported
 \end_layout
 
 \end_inset
@@ -5788,19 +4531,7 @@ X4
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
+X2
 \end_layout
 
 \end_inset
@@ -5825,98 +4556,33 @@ rotatebox[origin=l]{90}{Lloyd}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distArea.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/2/distArea.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/4/distArea.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distArea.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distArea.eps
 	width 49text%
 
 \end_inset
@@ -5942,99 +4608,12 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \end_inset
 </cell>
 </row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Cell area as a function of geodesic distance to the centre (in red) of the
- refined region in comparison to that implied by the monitor function for
- the X2 and X4 meshes of 2,562 cells 
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:areaDxX2X4"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 X8
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-X16
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -6059,98 +4638,33 @@ rotatebox[origin=l]{90}{Lloyd}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distArea.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/8/distArea.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/16/distArea.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distArea.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distArea.eps
 	width 49text%
 
 \end_inset
@@ -6187,12 +4701,12 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Cell area as a function of geodesic distance to the centre of the refined
- region in comparison to that implied by the monitor function (in red) for
- the X8 and X16 meshes of 2,562 cells 
+Cell area as a function of geodesic distance to the centre (in red) of the
+ refined region in comparison to that implied by the monitor function for
+ the X2, X4, X8 and X16 meshes of 2,562 cells 
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:areaDxX8X16"
+name "fig:areaDxX2X4"
 
 \end_inset
 
@@ -6210,7 +4724,7 @@ name "fig:areaDxX8X16"
 \end_layout
 
 \begin_layout Standard
-The convergence of the cell area with the monitor function is shown in figs.
+The convergence of the cell area with the monitor function is shown in fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -6218,23 +4732,10 @@ reference "fig:areaDxX2X4"
 
 \end_inset
 
- and 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:areaDxX8X16"
-
-\end_inset
-
  as scatter plots of cell area change as a function of distance to the centre
  of the refined region.
  As occurred in Euclidean geometry, the geometric Hessian gives accurate
- equidistribution whereas the finite difference Hessian gives poor equidistribut
-ion due to truncation errors in calculating the Hessian, particularly at
- the furthest distance from the refined region where the resolution is much
- too coarse.
- The finite difference Hessian also gives occasional outliers at all resolutions.
- These could severely influence accuracy (if they are too coarse) or time-step
- restrictions (if they are too fine).
+ equidistribution.
  
 \end_layout
 
@@ -6253,11 +4754,11 @@ name "sub:meshQualitySph"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
+<lyxtabular version="3" rows="5" columns="3">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -6276,7 +4777,20 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-X2
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Lloyd
 \end_layout
 
 \end_inset
@@ -6285,7 +4799,20 @@ X2
 \begin_inset Text
 
 \begin_layout Plain Layout
-X4
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Optimally transported
 \end_layout
 
 \end_inset
@@ -6296,19 +4823,7 @@ X4
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
+X2
 \end_layout
 
 \end_inset
@@ -6333,98 +4848,33 @@ rotatebox[origin=l]{90}{Lloyd}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distDx.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/2/distDx.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/4/distDx.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distDx.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distDx.eps
 	width 49text%
 
 \end_inset
@@ -6450,99 +4900,12 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \end_inset
 </cell>
 </row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Cell-centre to cell-centre geodesic distance as a function of geodesic distance
- to the centre of the refined region in comparison to that implied by the
- monitor function for the X2 and X4 meshes of 2,562 cells 
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:distDxX2X4"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 X8
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-X16
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -6567,98 +4930,33 @@ rotatebox[origin=l]{90}{Lloyd}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distDx.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/8/distDx.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/16/distDx.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distDx.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distDx.eps
 	width 49text%
 
 \end_inset
@@ -6697,10 +4995,10 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \begin_layout Plain Layout
 Cell-centre to cell-centre geodesic distance as a function of geodesic distance
  to the centre of the refined region in comparison to that implied by the
- monitor function for the X8 and X16 meshes of 2,562 cells 
+ monitor function for the X2, X4, X8 and X16 meshes of 2,562 cells 
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:distDxX8X16"
+name "fig:distDxX2X4"
 
 \end_inset
 
@@ -6723,18 +5021,11 @@ Scatter plots of the cell-centre to cell-centre distance,
 \end_inset
 
 , as a function of distance to the centre of the refined region are shown
- in figs.
+ in fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:distDxX2X4"
-
-\end_inset
-
- and 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:distDxX8X16"
 
 \end_inset
 
@@ -6756,8 +5047,8 @@ Unlike the meshes on the plane, the meshes on the sphere are isotropic in
 \end_inset
 
  on the edge of the coarse region.
- This could be a problem for atmospheric simulations since global errors
- are often proportional to the largest 
+ This is not ideal for atmospheric simulations since global errors are often
+ proportional to the largest 
 \begin_inset Formula $\Delta x$
 \end_inset
 
@@ -6775,11 +5066,11 @@ key "RJG+11"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
+<lyxtabular version="3" rows="5" columns="3">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -6798,7 +5089,20 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-X2
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Lloyd
 \end_layout
 
 \end_inset
@@ -6807,7 +5111,20 @@ X2
 \begin_inset Text
 
 \begin_layout Plain Layout
-X4
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Optimally transported
 \end_layout
 
 \end_inset
@@ -6818,19 +5135,7 @@ X4
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
+X2
 \end_layout
 
 \end_inset
@@ -6855,98 +5160,33 @@ rotatebox[origin=l]{90}{Lloyd}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distOrthogonality.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/2/distOrthogonality.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/4/distOrthogonality.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distOrthogonality.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distOrthogonality.eps
 	width 49text%
 
 \end_inset
@@ -6972,98 +5212,12 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \end_inset
 </cell>
 </row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Orthogonality of the meshes on the sphere as a function of geodesic distance
- to the centre of the refined region for the X2 and X4 meshes of 2,562 cells
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:meshOrthogX2X4"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 X8
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-X16
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \end_inset
@@ -7104,72 +5258,7 @@ rotatebox[origin=l]{90}{Lloyd}
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/8/distOrthogonality.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/16/distOrthogonality.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
+X16
 \end_layout
 
 \end_inset
@@ -7217,10 +5306,10 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 
 \begin_layout Plain Layout
 Orthogonality of the meshes on the sphere as a function of geodesic distance
- to the centre of the refined region for the X2 and X4 meshes of 2,562 cells
+ to the centre of the refined region for the X2-X16 meshes of 2,562 cells
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:meshOrthogX8X16"
+name "fig:meshOrthogX2X4"
 
 \end_inset
 
@@ -7241,11 +5330,11 @@ name "fig:meshOrthogX8X16"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
+<lyxtabular version="3" rows="5" columns="3">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -7264,7 +5353,20 @@ status collapsed
 \begin_inset Text
 
 \begin_layout Plain Layout
-X2
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Lloyd
 \end_layout
 
 \end_inset
@@ -7273,7 +5375,20 @@ X2
 \begin_inset Text
 
 \begin_layout Plain Layout
-X4
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Optimally transported
 \end_layout
 
 \end_inset
@@ -7284,19 +5399,7 @@ X4
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
+X2
 \end_layout
 
 \end_inset
@@ -7321,98 +5424,33 @@ rotatebox[origin=l]{90}{Lloyd}
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/2/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/4/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distSkew.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distSkew.eps
 	width 49text%
 
 \end_inset
@@ -7428,6 +5466,88 @@ rotatebox[origin=l]{90}{Geometric Hessian}
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distSkew.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distSkew.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distSkew.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distSkew.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distSkew.eps
 	width 49text%
 
 \end_inset
@@ -7471,239 +5591,6 @@ name "fig:meshSkewX2X4"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<column alignment="center" valignment="top" width="0">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-X8
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-X16
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Lloyd}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{FD Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/8/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV0MedStencil/5/16/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-rotatebox[origin=l]{90}{Geometric Hessian}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distSkew.eps
-	width 49text%
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-Mesh skewness as a function of geodesic distance to the centre of the refined
- region for the X8 and X16 meshes of 2,562 cells
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:meshSkewX8X16"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 The orthogonality and skewness of the faces of the optimally transported
  X2-X16 meshes on the sphere are shown in figs.
  
@@ -7716,7 +5603,7 @@ reference "fig:meshOrthogX2X4"
  to 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:meshSkewX8X16"
+reference "fig:meshSkewX2X4"
 
 \end_inset
 
@@ -7766,7 +5653,7 @@ reference "sub:meshQualitySph"
  is changing rapidly (fig 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:meshOrthogX8X16"
+reference "fig:meshOrthogX2X4"
 
 \end_inset
 
@@ -7843,7 +5730,7 @@ reference "fig:X16zoom"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -8135,7 +6022,7 @@ name "fig:X16zoom"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
