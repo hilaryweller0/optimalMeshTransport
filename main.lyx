@@ -4,18 +4,36 @@
 \begin_header
 \textclass elsarticle
 \begin_preamble
-\usepackage{color}
+%\usepackage{color}
 \newcommand{\nicefrac}[2]{\ensuremath ^{#1}\!\!/\!_{#2}}
 \newcommand{\half}{\nicefrac{1}{2}}
-\usepackage { fancybox}
+%\usepackage { fancybox}
 
 \journal{Journal of Computational Physics}
 
-\usepackage{babel}
+%\usepackage{babel}
 
 % Floats at end
 %\usepackage[nolists]{endfloat}
 %\renewcommand{\efloatseparator}{\mbox{}}
+
+% Phil's packagages
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{pgfplots}
+%\usepackage{authblk}
+\usetikzlibrary{plotmarks}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
 \end_preamble
 \options review,square,comma,sort&compress,12pt
 \use_default_options true
@@ -41,13 +59,25 @@
 \index_command default
 \paperfontsize default
 \spacing single
-\use_hyperref false
+\use_hyperref true
+\pdf_title "\@title"
+\pdf_author "\@author"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "citecolor=black,linkcolor=black"
 \papersize default
 \use_geometry true
-\use_amsmath 1
+\use_amsmath 2
 \use_esint 1
-\use_mhchem 1
-\use_mathdots 1
+\use_mhchem 0
+\use_mathdots 0
 \cite_engine natbib_numerical
 \use_bibtopic false
 \use_indices false
@@ -70,11 +100,12 @@
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
-\tracking_changes false
+\tracking_changes true
 \output_changes false
 \html_math_output 0
 \html_css_as_file 0
 \html_be_strict false
+\author -691170851 "Hilary Weller,,," 
 \end_header
 
 \begin_body
@@ -92,6 +123,8 @@ include{frontMatter}
 
 \end_inset
 
+
+\change_inserted -691170851 1430157544
 
 \end_layout
 
@@ -166,7 +199,7 @@ key "BHR09"
 .
  However the Monge-Amp
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -193,8 +226,12 @@ key "DD92"
 \end_inset
 
  pointed out that the resulting meshes can be quite distorted which leads
- to truncation errors and it is not possible to control the resolution in
- individual directions, just the total cell size (area or volume).
+ to truncation errors and it is not
+\change_inserted -691170851 1430948385
+ always
+\change_unchanged
+ possible to control the resolution in individual directions, just the total
+ cell size (area or volume).
  With r-adaptivity, it is not possible, for example, to increase the total
  number of points around the equator, just re-distribute them 
 \begin_inset CommandInset citation
@@ -253,17 +290,60 @@ key "SKD+12"
  solutions would be needed and there is an additional layer of complexity
  involved with changing the data structures and moving information between
  parallel processors.
- Also, Lloyd's algorithm is extremely expensive 
+ Also, Lloyd's algorithm is extremely expensive
+\change_inserted -691170851 1430988208
+, with the cost per iteration being proportional to the number of points
+\change_unchanged
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "JGR+13"
 
 \end_inset
 
+
+\change_inserted -691170851 1430988269
+ and, in one dimension, the number of iterations being proportional to the
+ number of points 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "DFG99"
+
+\end_inset
+
 .
+ Therefore, overall, the cost is proportional to the number of points squared
+\change_unchanged
+.
+
+\change_inserted -691170851 1430989306
+ Conversely, generating optimally transported meshes can have convergence
+ independet of the mesh size 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "BBPC14"
+
+\end_inset
+
+.
+ Therefore the cost will be proportional to one iteration which should be
+ linearly related to the problem size 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "BBPC14"
+
+\end_inset
+
+.
+
+\change_unchanged
  We therefore propose r-adaptivity which uses cheaper mesh generation and
  fixed data structures associated with the mesh.
+
+\change_deleted -691170851 1430989311
  
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -490,10 +570,18 @@ spatial discretisation methods both for the Hessian,
 \begin_inset Formula $\phi$
 \end_inset
 
- or 
+ or
+\change_inserted -691170851 1429520551
+ of
+\change_unchanged
+ 
 \begin_inset Formula $\nabla\phi$
 \end_inset
 
+
+\change_inserted -691170851 1429520555
+,
+\change_unchanged
  so numerical approximations are necessary).
  The spatial discretisation leads to a set of non-linear algebraic equations.
  Secondly, the algebraic equations require a numerical algorithm to find
@@ -516,8 +604,12 @@ key "BHR09"
 
 \end_inset
 
- used simple finite differences on a structured, Cartesian grid to discretise
- the Hessian, a technique that was extended to three dimensions by 
+ used 
+\change_deleted -691170851 1429520584
+simple
+\change_unchanged
+ finite differences on a structured, Cartesian grid to discretise the Hessian,
+ a technique that was extended to three dimensions by 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "BBPC14"
@@ -542,7 +634,25 @@ key "FO11"
 \end_inset
 
 .
- The wide stencil was needed to ensure monotonicity of the iterative solution.
+ The wide stencil was needed to ensure monotonicity of the iterative solution
+\change_inserted -691170851 1430903822
+ to the convex, numerical solution
+\change_unchanged
+.
+
+\change_inserted -691170851 1430904022
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FOS1x"
+
+\end_inset
+
+ study the slightly different, 2-Hessian equation and describe how they
+ rotate the coordinate system so that the Hessian is diagonal and hence
+ the solution is convex and the discretisation is monotone.
+
+\change_unchanged
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -584,6 +694,22 @@ There has been less discussion of the discretisation methods needed to calculate
 \begin_inset Formula $f$
 \end_inset
 
+
+\change_inserted -691170851 1430904062
+, which is not trivial since 
+\begin_inset Formula $f$
+\end_inset
+
+ can be a function of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ or, in our case, of 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+
+\change_unchanged
 .
 \end_layout
 
@@ -669,8 +795,15 @@ key "FO11"
 
  describe this as a semi-implicit method and use it to find the starting
  point for a Newton method.
- A Newton method is a common approach for sovling the algebraic equations
- 
+ A Newton method is a common approach for so
+\change_deleted -691170851 1430979956
+v
+\change_unchanged
+l
+\change_inserted -691170851 1430979959
+v
+\change_unchanged
+ing the algebraic equations 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "DG06,FO11,CSC14"
@@ -723,7 +856,15 @@ key "BHR09"
 
 .
  Therefore the primary challenge is to write down the optimal transport
- problem for mesh generation on teh surface of the sphere.
+ problem for mesh generation on t
+\change_deleted -691170851 1429520700
+e
+\change_unchanged
+h
+\change_inserted -691170851 1429520703
+e
+\change_unchanged
+ surface of the sphere.
 \end_layout
 
 \begin_layout Standard
@@ -753,13 +894,89 @@ name "sec:method"
 
 \begin_layout Subsection
 
+\change_deleted -691170851 1430844527
+
 \lang english
-Equations of Mesh Transport in Euclidean Space
+Equations of Mesh
+\change_inserted -691170851 1430844528
+Optimally
+\change_unchanged
+ Transport
+\change_inserted -691170851 1430844532
+ed Meshes
+\change_unchanged
+ in Euclidean Space
+\change_inserted -691170851 1430845063
+
 \end_layout
 
 \begin_layout Standard
 
+\change_inserted -691170851 1430845259
+
 \lang english
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BW06"
+
+\end_inset
+
+ introduced optimal transport for mesh generation, sovling a Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845095
+
+
+\backslash
+'e
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+re equation in order to find a map from the original mesh (or computational
+ space, 
+\begin_inset Formula $\Omega_{c}$
+\end_inset
+
+) to the new mesh (or physical space, 
+\begin_inset Formula $\Omega_{p}$
+\end_inset
+
+).
+ This technique was further developed by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BHR09"
+
+\end_inset
+
+ and extended to 3 spatial dimensions by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+.
+ The map from 
+\begin_inset Formula $\Omega_{c}$
+\end_inset
+
+ to 
+\begin_inset Formula $\Omega_{p}$
+\end_inset
+
+ is the gradient of a potential, 
+\begin_inset Formula $\phi$
+\end_inset
+
+, 
+\change_deleted -691170851 1430845295
 This subject is covered in detail in 
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -774,13 +991,17 @@ key "BHR09"
 
 \begin_layout Standard
 
+\change_deleted -691170851 1430845295
+
 \lang english
 Optimally transported meshes in Euclidean space use a mesh potential, 
 \begin_inset Formula $\phi$
 \end_inset
 
 , to map from the original mesh (or computational space) to the new mesh
- (or physical space) so that the new mesh locations are given by: 
+ (or physical space)
+\change_unchanged
+ so that the new mesh locations are given by: 
 \begin_inset Formula 
 \begin{equation}
 {\bf x}=\bm{\xi}+\nabla\phi\label{eq:meshMap}
@@ -907,6 +1128,110 @@ The presence of the identity tensor in this Monge-Ampére equation will be
 
 \begin_layout Standard
 
+\change_inserted -691170851 1430845463
+The equidistribution principle alone does not lead to a well-defined problem
+ for mesh generation.
+ Indeed this problem is ill-posed in more than 1 dimension and so requires
+ the imposition of an extra constraint on the mesh we wish to find.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+ postulate that a mesh which is as close as possible to the original computation
+al mesh will be appropriate and effective.
+ This is an 
+\emph on
+optimal transport
+\emph default
+ constraint - we seek to minimise the distance between the original and
+ resulting meshes in a certain measure which we shall discuss subsequently.
+ We write this minimization problem
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1430927754
+\begin_inset Formula 
+\begin{equation}
+\min_{\mathbf{x}\in\Omega_{p}}d(\bm{\xi},\mathbf{x})^{2}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the distance metric between the two meshes.
+ In Cartesian space 
+\begin_inset Formula $[0,1]^{n}$
+\end_inset
+
+ this metric can simply be the sum of the Euclidean distance between all
+ of the corresponding points defining the meshes.
+ Brenier's theorem 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Brenier1991"
+
+\end_inset
+
+ then tells us that the unique, optimally transported map from 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ to 
+\begin_inset Formula $\bm{\xi}$
+\end_inset
+
+ is the gradient of a convex scalar potential, 
+\begin_inset Formula $\phi$
+\end_inset
+
+.
+ Therefore, the unique solution of [
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA"
+
+\end_inset
+
+] gives us an optimally tranported mesh which is equidistributed with respect
+ to the monitor function, 
+\begin_inset Formula $m$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1430927896
+Mesh tangling is caused by a local loss of invertibility of the Jacobian
+ of the map from the original to the tranported mesh.
+ If 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is convex, then the Hessian of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is positive definite and hence the Jacobian is invertible and the mesh
+ will not tangle.
+ 
+\change_deleted -691170851 1430845898
+
+\end_layout
+
+\begin_layout Standard
+
+\change_deleted -691170851 1430155012
+
 \lang english
 The equidistribution principle leads directly to the optimal transport constrain
 t that the transport map has to push forward a uniform measure to a prescribed
@@ -946,6 +1271,8 @@ status open
 
 re equation.
  
+\change_unchanged
+
 \end_layout
 
 \begin_layout Subsection
@@ -1028,7 +1355,13 @@ reference "eq:equiDist"
 \begin_inset Formula $V_{x}$
 \end_inset
 
- are the volumes of the transformed cells will vertices at positions 
+ are the volumes of the trans
+\change_inserted -691170851 1430200313
+port
+\change_deleted -691170851 1430200310
+form
+\change_unchanged
+ed cells will vertices at positions 
 \begin_inset Formula $\bm{x}$
 \end_inset
 
@@ -1040,12 +1373,779 @@ reference "eq:equiDist"
 , must satisfy:
 \begin_inset Formula 
 \begin{equation}
-r\left(\phi\right)m\left(\bm{x}\right)=c\label{eq:MAsph}
+r\left(\phi\right)m\left(\bm{x}\right)=c.\label{eq:MAsph}
 \end{equation}
 
 \end_inset
 
+
+\change_inserted -691170851 1430926858
+
+\begin_inset Formula 
+\[
+T_{\#}\left(r{\cal L}\right)^{-1}={\cal L}
+\]
+
+\end_inset
+
+The 2nd form is the version that Mike prefers.
+ 
+\change_deleted -691170851 1430845940
 and this geometric equation must be solved on the surface of a sphere.
+\change_inserted -691170851 1430845952
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1430846048
+
+\lang english
+We need to ascertain if solutions of [
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MAsph"
+
+\end_inset
+
+] exist, are unique and if they minimise the distance between the original
+ and resulting meshes.
+ 
+\lang british
+On the sphere 
+\begin_inset Formula $\mathbf{S}^{2}$
+\end_inset
+
+, the appropriate distance metric is the Riemannian distance on the surface
+ of the sphere between all of the corresponding points defining the meshes.
+ We cannot use Brenier's theorem on the sphere.
+ Instead, we appeal to the generalised version of Brenier's theorem given
+ by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "McCann2001"
+
+\end_inset
+
+, a detailed discussion of which is given in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "villani2003"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1430845625
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+begin{defn}
+\end_layout
+
+\end_inset
+
+[
+\begin_inset Formula $c$
+\end_inset
+
+-convex function] The 
+\begin_inset Formula $c$
+\end_inset
+
+-transform 
+\begin_inset Formula $\varphi^{c}$
+\end_inset
+
+ of a function 
+\begin_inset Formula $\varphi:\mathbf{S}^{2}\to\mathbf{R}$
+\end_inset
+
+ is defined as 
+\begin_inset Formula 
+\[
+\varphi^{c}(y)=\sup_{\bm{\xi}\in\mathbf{S}^{2}}\{-c(\bm{\xi},\mathbf{x})-\varphi(\bm{\xi})\}.
+\]
+
+\end_inset
+
+The function 
+\begin_inset Formula $\varphi$
+\end_inset
+
+ is said to be 
+\emph on
+
+\begin_inset Formula $c$
+\end_inset
+
+-convex
+\emph default
+, or cost-convex, if 
+\begin_inset Formula $(\varphi^{c})^{c}=\varphi.$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+end{defn}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1431272315
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+begin{theorem}
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "mccannthm"
+
+\end_inset
+
+ [
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "McC01"
+
+\end_inset
+
+] Let 
+\begin_inset Formula $M$
+\end_inset
+
+ be a connected, complete smooth Riemannian manifold, equipped with its
+ standard volume measure 
+\begin_inset Formula $dx$
+\end_inset
+
+.
+ Let 
+\begin_inset Formula $\mu,\nu$
+\end_inset
+
+ be two probability measures on 
+\begin_inset Formula $M$
+\end_inset
+
+ with compact support, and let the objective function 
+\begin_inset Formula $c(\bm{\xi},\mathbf{x})$
+\end_inset
+
+ be equal to 
+\begin_inset Formula $d(\bm{\xi},\mathbf{x})$
+\end_inset
+
+, where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the geodesic distance on 
+\begin_inset Formula $M$
+\end_inset
+
+.
+ Further, assume that 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is absolutely continuous with respect to the volume measure on 
+\begin_inset Formula $M$
+\end_inset
+
+.
+ Then, the Monge-Kantorovich mass transportation problem between 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+ admits a unique optimal transported map
+\lang english
+ 
+\begin_inset Formula $T$
+\end_inset
+
+ with 
+\begin_inset Formula 
+\begin{equation}
+T(\mu)=\nu\label{eq:t1}
+\end{equation}
+
+\end_inset
+
+such that 
+\begin_inset Formula 
+\begin{equation}
+\mathbf{x}=T(\bm{\xi})=\exp_{\bm{\xi}}[\nabla\phi(\bm{\xi})]\label{eq:t2}
+\end{equation}
+
+\end_inset
+
+
+\lang british
+for some 
+\begin_inset Formula $d^{2}/2$
+\end_inset
+
+-convex potential 
+\begin_inset Formula $\varphi$
+\end_inset
+
+.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+end{theorem}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1430845625
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+begin{corollary}
+\end_layout
+
+\end_inset
+
+ There exists a unique, optimally transported mesh on the sphere that satisfies
+ the equidistribution principle.
+ Moreover, that mesh is defined by a 
+\begin_inset Formula $c$
+\end_inset
+
+-convex scalar potential function.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+end{corollary}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1431273268
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+begin{proof}
+\end_layout
+
+\end_inset
+
+ Clearly 
+\begin_inset Formula $M=S^{2}$
+\end_inset
+
+ satisfies the conditions on 
+\begin_inset Formula $M$
+\end_inset
+
+ in 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+autoref
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+{
+\end_layout
+
+\end_inset
+
+mccannthm
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+}
+\end_layout
+
+\end_inset
+
+.
+ The first probability measure of interest, 
+\begin_inset Formula $\mu$
+\end_inset
+
+, we define to be the lack of equidistribution under the original computational
+ mesh, i.e.
+\lang english
+
+\begin_inset Formula 
+\begin{equation}
+\mu=\sum_{i=1}^{N}w_{i}\delta_{i}(\xi-\xi_{i})
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $N$
+\end_inset
+
+ is the total number of cells in the mesh, 
+\begin_inset Formula $\delta_{i}(\xi-\xi_{i})$
+\end_inset
+
+ is the Dirac delta function located at the centre of cell 
+\begin_inset Formula $i$
+\end_inset
+
+, 
+\begin_inset Formula $\xi_{i}$
+\end_inset
+
+.
+ 
+\begin_inset Formula $w_{i}$
+\end_inset
+
+ is a weighting function which measures the local lack of equidistribution,
+ i.e.
+ 
+\begin_inset Formula 
+\begin{equation}
+w_{i}=\int_{\xi_{i}\in\Omega_{C}}m(\mathbf{\xi})\mathrm{d}\mathbf{\xi}-\frac{1}{N}\int_{\Omega_{C}}m(\mathbf{\xi})\mathrm{d}\mathbf{\xi}
+\end{equation}
+
+\end_inset
+
+
+\lang british
+The target probability measure is one of equidistribution under the desired
+ mesh, i.e.
+\lang english
+
+\begin_inset Formula 
+\begin{equation}
+\nu=\sum_{i=1}^{N}\overline{w_{i}}\delta_{i}(x-x_{i})
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $x_{i}$
+\end_inset
+
+ is the centre of the new cell 
+\begin_inset Formula $i$
+\end_inset
+
+, and the weighting 
+\begin_inset Formula 
+\begin{equation}
+\overline{w_{i}}=\int_{x_{i}\in\Omega_{p}}|\nabla\mathbf{x}|m(\mathbf{x})\mathrm{d}\mathbf{x}
+\end{equation}
+
+\end_inset
+
+satisfies 
+\begin_inset Formula 
+\begin{equation}
+\overline{w_{i}}=\frac{1}{N}\int_{\Omega_{p}}m(\mathbf{x})\mathrm{d}\mathbf{x}\qquad\forall i\in\{1,\ldots,N\}.
+\end{equation}
+
+\end_inset
+
+
+\lang british
+As 
+\begin_inset Formula $M=S^{2}$
+\end_inset
+
+ these are trivially compactly supported.
+ The monitor function 
+\begin_inset Formula $m(\mathbf{x})$
+\end_inset
+
+ must be sufficiently smooth such that 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is absolutely continuous.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1430845625
+Hence by 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+autoref
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+{
+\end_layout
+
+\end_inset
+
+mccannthm
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+}
+\end_layout
+
+\end_inset
+
+ we have that there exists a unique solution, 
+\begin_inset Formula $T$
+\end_inset
+
+, to the mass transportation problem between 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ Under this solution, 
+\begin_inset Formula $\nu$
+\end_inset
+
+ 
+\lang english
+satisfies the equidistribution principle.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1431272657
+The map 
+\begin_inset Formula $T$
+\end_inset
+
+ 
+\shape italic
+pushes-forward
+\shape default
+ the measure 
+\begin_inset Formula $\mu$
+\end_inset
+
+ onto the desired solution 
+\begin_inset Formula $\nu$
+\end_inset
+
+ via the exponential map.
+ This exponential map is defined by the gradient of the 
+\begin_inset Formula $d^{2}/2$
+\end_inset
+
+-convex potential 
+\begin_inset Formula $\varphi$
+\end_inset
+
+.
+ Thus, if we can find such a potential 
+\begin_inset Formula $\varphi$
+\end_inset
+
+ on the sphere then we know it must define the unique, optimally transported
+ mesh that satisfies the equidistribution principle.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430845625
+
+
+\backslash
+end{proof}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1431272658
+
+\lang english
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1431272658
+
+
+\backslash
+begin{corollary}
+\end_layout
+
+\end_inset
+
+ The optimally transported mesh on the sphere satisfying the equidistribution
+ principle does not exhibit tangling.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1431272658
+
+
+\backslash
+end{corollary}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1431272658
+
+
+\backslash
+begin{proof}
+\end_layout
+
+\end_inset
+
+ The choice of cost function 
+\begin_inset Formula $c$
+\end_inset
+
+ to be the squared geodesic distance is crucial to the proof of uniqueness
+ in 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1431272658
+
+
+\backslash
+autoref
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1431272658
+
+{
+\end_layout
+
+\end_inset
+
+mccannthm
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1431272658
+
+}
+\end_layout
+
+\end_inset
+
+.
+ Indeed simply taking 
+\begin_inset Formula $c$
+\end_inset
+
+ to be the square of the Euclidean distance is not sufficient 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ahmad2004"
+
+\end_inset
+
+.
+ The squared geodesic distance is necessary to ensure that the classical
+ 
+\emph on
+twist
+\emph default
+ condition holds, i.e.
+ 
+\begin_inset Formula $T$
+\end_inset
+
+ given in 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:t1"
+
+\end_inset
+
+ is injective and hence is a map.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1431272658
+
+\lang english
+The injectivity of this map ensures that 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:t2"
+
+\end_inset
+
+ is locally invertible, i.e.
+ for each point in the new mesh 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ there is a unique point in the original mesh 
+\begin_inset Formula $\bm{\xi}$
+\end_inset
+
+ which maps to it - i.e.
+ mesh tangling is not present.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1431272658
+
+
+\backslash
+end{proof}
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+
 \end_layout
 
 \begin_layout Subsection
@@ -1068,7 +2168,11 @@ name "sub:linearPlane"
 \begin_layout Standard
 
 \lang english
-A convergent, fixed-point iteration sequence to solve eqn.
+A 
+\change_deleted -691170851 1430904115
+convergent,
+\change_unchanged
+ fixed-point iteration sequence to solve eqn.
  (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1136,6 +2240,42 @@ status collapsed
 
 re equation which simplifies the linearisation.
  
+\change_inserted -691170851 1430904335
+These fixed-point iterations are similar to the solution of the parabolic
+ Monge-Amp
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430904224
+
+
+\backslash
+'e
+\end_layout
+
+\end_inset
+
+re equation by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+ but could have advantages because the Laplacian term should initially accelerat
+e convergence whereas the Laplacian smoothing used by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+ was only used to smooth intermediate iterations.
+ 
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -1187,12 +2327,56 @@ where
 
  are the volumes of the original, computational mesh cells and the summations
  are over all cells of the computational mesh.
+\change_inserted -691170851 1430905333
+
 \end_layout
 
 \begin_layout Standard
 
+\change_inserted -691170851 1430905522
+
 \lang english
-In order to improve stability of the fixed-point iteration sequence, the
+Without a monotone spacial discretisation, numerical solutions of the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430905410
+
+
+\backslash
+'e
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+re equation can become non-convex leading to artificial oscillations in
+ the numerical solution and non-convergence 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "FOS1x"
+
+\end_inset
+
+.
+ The spatial discretisation described here is not monotone and the numerical
+ solution can become non-convex.
+ Therefore, i
+\change_deleted -691170851 1430905528
+
+\end_layout
+
+\begin_layout Standard
+
+\change_deleted -691170851 1430905523
+
+\lang english
+I
+\change_unchanged
+n order to improve stability of the fixed-point iteration sequence, the
  Laplacian terms of eqn.
  (
 \begin_inset CommandInset ref
@@ -1222,6 +2406,10 @@ ce of the fixed-point iterations used to find
 \begin_inset Formula $\phi$
 \end_inset
 
+
+\change_inserted -691170851 1430905555
+ and can help to keep the numerical solution smooth
+\change_unchanged
 .
  This is a form of under-relaxation and the value of 
 \begin_inset Formula $\alpha$
@@ -1235,6 +2423,39 @@ reference "sub:underRelax"
 \end_inset
 
 .
+
+\change_inserted -691170851 1430906996
+ A solution of the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted -691170851 1430906809
+
+
+\backslash
+'e
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+re equation only controls 
+\begin_inset Formula $|I+H\left(\phi\right)|$
+\end_inset
+
+, not the individual eigenvalues of 
+\begin_inset Formula $I+H\left(\phi\right)$
+\end_inset
+
+.
+ If one of the eigenvalues gets large and the other small, the Laplacian
+ preconditioning with fail, and hence the need for under-relaxation.
+ 
+\change_unchanged
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -1911,6 +3132,34 @@ In order to calculate the mesh map and consequently to calculate
  So the approximation and the stencil need to be just right - we need the
  Goldilocks gradient.
  
+\change_inserted -691170851 1430908617
+If 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is convex, then it should have bounded variation - it should not oscillate
+ too fast.
+ On a mesh, the variation of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ will depend on the numerical approximation of the gradient.
+ We would like to find a numerical gradient that implies that 
+\begin_inset Formula $\phi$
+\end_inset
+
+ has bounded variation.
+ If 
+\begin_inset Formula $\phi$
+\end_inset
+
+ has bounded variation, then the transported mesh will be convex.
+ Here, we propose three techniques for calculating the gradient at vertices,
+ none of which guarruntee bounded variation for convex functions.
+ Future work will include the search for a numerical approximation with
+ this property.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Paragraph
@@ -6801,7 +8050,7 @@ Finally we generate a mesh using a monitor function based on reanalysis
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "numerics"
+bibfiles "numerics,pbrowne"
 options "abbrvnat"
 
 \end_inset
