@@ -743,7 +743,7 @@ algorithm
  
 \begin_inset CommandInset citation
 LatexCommand citet
-key "BHR09"
+key "BW06,BHR09"
 
 \end_inset
 
@@ -762,8 +762,16 @@ status open
 
 re equation which is solved by time-stepping, including an implicit relaxation
  term to smooth the transient solution and to speed up convergence.
- This effectively creates fixed-point iterations but is is not clear if
- these fixed-point iterations are optimally convergent.
+ This effectively creates fixed-point iterations but 
+\change_inserted -691170851 1431593981
+it may be possible to create more convergent iterations, without smoothing
+ towards a uniform mesh.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+is is not clear if these fixed-point iterations are optimally convergent.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -906,40 +914,35 @@ Optimally
 ed Meshes
 \change_unchanged
  in Euclidean Space
-\change_inserted -691170851 1430845063
+\change_inserted -691170851 1431594038
 
 \end_layout
 
 \begin_layout Standard
 
-\change_inserted -691170851 1430845259
+\change_inserted -691170851 1431594556
 
 \lang english
+A mesh is equidistributed with respect to a monitor function when the product
+ of the cell volumes and the monitor function is constant across all mesh
+ cells.
+ 
+\lang british
+The equidistribution principle alone does not lead to a well-defined problem
+ for mesh generation.
+ Indeed this problem is ill-posed in more than 1 dimension and so requires
+ the imposition of an extra constraint.
+ 
+\lang english
+
 \begin_inset CommandInset citation
 LatexCommand citet
 key "BW06"
 
 \end_inset
 
- introduced optimal transport for mesh generation, sovling a Monge-Amp
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-\change_inserted -691170851 1430845095
-
-
-\backslash
-'e
-\change_unchanged
-
-\end_layout
-
-\end_inset
-
-re equation in order to find a map from the original mesh (or computational
- space, 
+ introduced optimal transport for mesh generation to find a map from the
+ original mesh (or computational space, 
 \begin_inset Formula $\Omega_{c}$
 \end_inset
 
@@ -963,20 +966,85 @@ key "BBPC14"
 \end_inset
 
 .
- The map from 
+ The 
+\shape italic
+optimal transport 
+\shape default
+constraint says that the new mesh should be as close as possible to the
+ original mesh 
+\lang british
+- we seek to minimise the distance between 
 \begin_inset Formula $\Omega_{c}$
 \end_inset
 
- to 
+ and 
 \begin_inset Formula $\Omega_{p}$
 \end_inset
 
- is the gradient of a potential, 
+ in a certain measure which we shall discuss.
+ We write this minimization problem:
+\change_deleted -691170851 1431594532
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted -691170851 1431594814
+\begin_inset Formula 
+\begin{equation}
+\min_{\mathbf{x}\in\Omega_{p}}d(\bm{\xi},\mathbf{x})^{2}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the distance metric between the two meshes and 
+\begin_inset Formula $\bm{\xi}\in\Omega_{c}$
+\end_inset
+
+ maps to 
+\begin_inset Formula $\mathbf{x}\in\Omega_{p}$
+\end_inset
+
+.
+ In Cartesian space 
+\begin_inset Formula $[0,1]^{n}$
+\end_inset
+
+ this metric can simply be the sum of the Euclidean distance between all
+ of the corresponding points defining the meshes.
+ Brenier's theorem 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Brenier1991"
+
+\end_inset
+
+ then tells us that the unique, optimally transported map from 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ to 
+\begin_inset Formula $\bm{\xi}$
+\end_inset
+
+ is the gradient of a convex scalar potential, 
 \begin_inset Formula $\phi$
 \end_inset
 
 , 
+\change_deleted -691170851 1431594622
+
+\end_layout
+
+\begin_layout Standard
+
 \change_deleted -691170851 1430845295
+
+\lang english
 This subject is covered in detail in 
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -1004,11 +1072,13 @@ Optimally transported meshes in Euclidean space use a mesh potential,
  so that the new mesh locations are given by: 
 \begin_inset Formula 
 \begin{equation}
-{\bf x}=\bm{\xi}+\nabla\phi\label{eq:meshMap}
+{\bf x}=\bm{\xi}+\nabla\phi.\label{eq:meshMap}
 \end{equation}
 
 \end_inset
 
+
+\change_deleted -691170851 1431594909
 where 
 \begin_inset Formula $\bm{\xi}$
 \end_inset
@@ -1024,7 +1094,9 @@ key "BHR09"
  A mesh is equidistributed with respect to a monitor function when the product
  of the cell volumes and the monitor function is constant across all mesh
  cells.
- The equation for creating an equi-distributed mesh will use 
+ 
+\change_unchanged
+The equation for creating an equi-distributed mesh will use 
 \lang british
 
 \begin_inset Formula $|\nabla\mathbf{x}|$
@@ -1124,75 +1196,14 @@ reference "eq:meshMap"
 The presence of the identity tensor in this Monge-Ampére equation will be
  exploited in the linearisation to create a novel numerical algorithm.
  
+\change_inserted -691170851 1431594215
+
 \end_layout
 
 \begin_layout Standard
 
-\change_inserted -691170851 1430845463
-The equidistribution principle alone does not lead to a well-defined problem
- for mesh generation.
- Indeed this problem is ill-posed in more than 1 dimension and so requires
- the imposition of an extra constraint on the mesh we wish to find.
- 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "BBPC14"
-
-\end_inset
-
- postulate that a mesh which is as close as possible to the original computation
-al mesh will be appropriate and effective.
- This is an 
-\emph on
-optimal transport
-\emph default
- constraint - we seek to minimise the distance between the original and
- resulting meshes in a certain measure which we shall discuss subsequently.
- We write this minimization problem
-\end_layout
-
-\begin_layout Standard
-
-\change_inserted -691170851 1430927754
-\begin_inset Formula 
-\begin{equation}
-\min_{\mathbf{x}\in\Omega_{p}}d(\bm{\xi},\mathbf{x})^{2}
-\end{equation}
-
-\end_inset
-
-where 
-\begin_inset Formula $d$
-\end_inset
-
- is the distance metric between the two meshes.
- In Cartesian space 
-\begin_inset Formula $[0,1]^{n}$
-\end_inset
-
- this metric can simply be the sum of the Euclidean distance between all
- of the corresponding points defining the meshes.
- Brenier's theorem 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "Brenier1991"
-
-\end_inset
-
- then tells us that the unique, optimally transported map from 
-\begin_inset Formula $\mathbf{x}$
-\end_inset
-
- to 
-\begin_inset Formula $\bm{\xi}$
-\end_inset
-
- is the gradient of a convex scalar potential, 
-\begin_inset Formula $\phi$
-\end_inset
-
-.
- Therefore, the unique solution of [
+\change_inserted -691170851 1431594216
+Therefore, the unique solution of [
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:MA"
@@ -1206,6 +1217,8 @@ reference "eq:MA"
 
 .
  
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
