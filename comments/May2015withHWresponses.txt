@@ -22,7 +22,7 @@ I have put something on bounded variation in 3.4.3. However I have not used the 
 
 Mike: If you solve det D^2\phi=\nu, you would like to estimate the magnitude of the individual second derivatives of \phi. This will then allow you to estimate the eigenvalues of the Hessian. If these are bounded away from zero and infinity you can control the aspect ratio of each cell on the grid.
 
-Hilary: Are there any changes that I need to make to the manuscript based on the above comment?
+Hilary: I have discussed this comment with Phil and looked at Chris's work on (his definition of) skewness. Based on these, I haven't made any changes to the manuscript based on Mike's comment. It would appear that no change is needed. 
 
 Mike: In section 3.2 you could rewrite the first unnumbered equation as T\xi=x as in Phil's note, and then write (5) as T_\# (r\cal L)^{-1}=\cal L  (*), where r is the function r(\phi) as you have defined it and \cal L is Lebesgue measure. This is written into Phil's note. Once you have said this section 3.4.2.2 can be stated to be a discretisation of (*). 
 
@@ -30,7 +30,7 @@ Hilary: I have re-organised so that Phil's material about optimal transport on t
 
 Mike: The extra bit required in Phil's note is the 'twist' condition which Phil will find in Villani's book. This ensures that the inverse of the optimal map is single valued, and is required to show that the optimal map is a map not a 'plan', which could be a joint probability measure. Once you have a map then the mesh cannot tangle. The conditions for this to be true are stated in Villani's theorems but I think absolute continuity of the measure is enough.
 
-Hilary: I think that Phil is working on this
+Hilary: Phil has put some text into 3.2 about this.
 
 Chris: Second derivative control ..
 
@@ -53,16 +53,15 @@ The work I am now doing is to show precisely how this then translates into error
 Of course you also get skewness close to the circular features in the paper. This can again be linked to the anisotropy for the ring type solutions which Emily and I considered in 
 our paper.
 
-Hilary: Interesting comments. I haven't yet made any changes to the manuscript based on these comments
+Hilary: I use the test cases from this paper in our paper and I already refer to this paper. I have now put in my paper that my definition of skewness is different from yours. (end of section 4)
 
 Chris: 1. Convexity.
 
 The primary cause of mesh tangling is a local loss of invertibility of the Jacobian matrix J. Now J is the Hessian H of phi, and hence if phi is convex, H is positive definite and thus, in the Euclidean case, we have that J is invertible (it has eigenvalues bounded away from zero).  [Note that proving the solutions of PMA remain convex for all time is quite hard] This convexity in the Euclidean case prevents mesh tangling.  Cost convexity (c-convexity) extends this concept from the Euclidean distance to the Riemannian distance on the sphere, but I think that the same basic idea goes through, so that c-convexity of phi translates over to J being definite and hence prevents mesh tangling.
 
-Hilary: I have put a summary of this at the end of 3.1 for the Euclidean case but not sure what exactly to write for the sphere
+Hilary: I have put a summary of this at the end of 3.1 for the Euclidean case. Phil has added material on tangling on the sphere to 3.2
 
-Chris: 2. Discretisation of the MA equation.
-
+Chris:
 The usual discretisation of the det(Hessian) operator using finite differences appears to have a chequer-board instability. One of the purposes of the smoothing we used in PMA was to damp this out.
 
 Hilary: I have had similar problems but have solved them by using more compact and more consistent discretisation of the Hessian. When using the finite difference Hessian, all of the steps in 3.4.2.1 are necessary. Omitting the final step leads to an unstable discretisation and a checker-boad in the Hessian
@@ -74,44 +73,67 @@ Hilary: I have modified this to:
 
 Chris: p3. Top .. can we quantify what we mean by cheap and expensive in this context. I think this is crucial to selling the paper.
 
-Hilary: I realise that this would be really nice. But would require alot more work. My implementations of MA and Lloyd are not well optimised. So all that I can consider is the behaviour of the algorithms in terms of their polynomial order. I think that Lloyd is  n^3. But I need to confirm this. I will put some more effort into seeing how my implementation of MA scales with n ...
-
-
-.......................................
+Hilary: I have put in the introduction that Lloyds algorithm is N^2 whereas OT is NlogN. I think that the constant of proportionality could also be very different as Lloyd is an explicit solution of equidistribution whereas solving the MA equation, you use some implicitness. But I really can't say more than this at the moment. Yes, it would be nice, but I just haven't done the work yet.
 
 Chris: p4. Mid.  PMA converges as exp(-lambda tau) in time tau to the desired solution. I'm not sure what you mean by optimal in this context. Note that one of the advantages of PMA is that we can stop the iteration when we think that the mesh is good enough to calculate on. This can give a huge speed up in computational time.
 
+Hilary: I have changed this to "This effectively creates fixed-point iterations but it may be possible to create more convergent iterations, without smoothing towards a uniform mesh."
+
 Chris: p5.  I think a short introduction is needed to say that r-adaptive methods work by identifying a map F from computational to physical space. This map acts on a known mesh tau_C in computational space and maps it into the mesh tau_P in physical space.  tau_C is of course arbitrary. IN the simplest case it is made up of simplices, but in the paper we tend to use hexagons or similar.
+
+Hilary: See new section 3.1
 
 Chris: p6.Top  Maybe replace uniform measure with Lebesgue measure, monoticity with convexity. Also check date of Villani's book. 
 
+Hilary: Other changes made. Villani wrote two books on OT. We only cite the first one (2003). It is easier to understand
+
 Chris: p7.  Mid.  Are each of your iterates phi^n convex?
+
+Hilary: How should I measure the convexity of phi numerically? The phi that I calculates looks pretty smooth. But then the technique for calculating grad(phi) on the vertices can introduce noise which leads to tangled meshes (see section 5.6). I think that we need a better definition of grad(phi) at vertices, that is consistent with the volume calculation of the Hessian. But I do not know precisely what is needed or how to do it.
 
 Chris: p8 Top.  What you say isn't really true about PMA.  What the effect of the smoothing does is it reduces the speed of convergence towards equidistribution, it doesn't push it away from equidistribution. So that if without smoothing the convergence goes like exp(-lambda tau)   then with smoothing it goes like exp(-mu tau) with mu < lambda. I can make this analysis precise if needed. Have you done a local analysis of your fixed point iteration? It may also be worth referring to the Newton methods that Finn et. al. use for this problem. Phil and I tried to summarise these various methods in our recent paper.
 
+Hilary: I have changed this to Budd et al... "smooth the solution towards a uniform mesh. However there may be further scope for improvement by combining the best aspects of the two approaches."
+
 Chris: point 4 ..  This is what Mike was concerned about.  As above the issue is that phi is convex which is more an issue of H(phi) than grad(phi).  Again my comment on the convexity of phi^n applies
+
+Hilary: Future work?
 
 Chris: Rest of section 3 is great : )
 
 Chris: Section 4. I would like to add a bit extra here on skewness and orthogonality and how we have both some control over this and also an understanding of the sort of meshes that MA type approaches will deliver.  A useful local skewness measure is the quantity Q I described in my last email.
 
+Hilary: My definition of skewness is completely different (I now note this clearly at the end of section 4). I am not convinced that using Q as a mesh diagnostic would be valuable. It tells us about a combination of isotropy and orthogonality. But I look at both of these independently. Also, I would only be able to calculate Q for the meshes in Euclidean geometry because I only actually calculate the Hessian for these meshes. On the sphere I use the change in cell volume directly. On the plane, you have already calculated Q for these meshes. No need for me to repeat.
+
 Chris: Section 5.  Mostly great. But 5.5 is central and needs work.  Can you be clear about what is being measured/described in Figure 11. What is the y-axis?
+
+I have put more info in the caption and I have labelled the y-axes
 
 Chris: More generally, I have partial results on the precise link between skewness and monitor function, but the link is quite subtle and we need to work on this as part of the overall project. (Things are clearer with tensor valued monitor functions). We can certainly get a general estimate for the skewness in terms of the second derivatives of phi which are in turn linked to the holder continuity of M. But lots to do here.
 
+Hilary: Looks like future work
+
 Chris: Also you use the word 'unacceptably' in the start of 5.6. This is a rather loaded word and the meshes might be acceptable for some things and not for others. We need to be more precise here.  Also .. do you have speed comparisons between the Lloyd meshes and the optimally transported meshes?
 
-Chris: As a further comment. In your figure 10 and also figure 12 you state that there is a big difference between Lloyd and OT. However, looking at them there seems to be (i) little difference in Fig 10 so that the (an)-isotropy of the meshes looks similar and (ii) in Fig 12 the OT mesh seems to be less skew.  
+Hilary: I have changed the word "unacceptably" to "very large". Although mesh tangling really is unacceptable!
 
+Chris: As a further comment. In your figure 10 and also figure 12 you state that there is a big difference between Lloyd and OT. However, looking at them there seems to be (i) little difference in Fig 10 so that the (an)-isotropy of the meshes looks similar and (ii) in Fig 12 the OT mesh seems to be less skew.
 
-from Mike:
+Hilary: I have put a blue ring round the bad bit in fig 10 and I have described this better in the text. 
 
-Just to add that Chris' first comment about loss of invertibility relates to the comment I made to Phil and Hilary yesterday about the 'twist' condition required for the optimal transport plan to be a map. This condition will guarantee no tangling.
+Yes, the OT meshes are less skew, using my definition of skewness which is completely different from yours, just uses the same word. 
 
+I have added a paragraph to the end of 5.5 about fig 12 (skewness)
 
-from Chris:
+Mike: Just to add that Chris' first comment about loss of invertibility relates to the comment I made to Phil and Hilary yesterday about the 'twist' condition required for the optimal transport plan to be a map. This condition will guarantee no tangling.
 
-A small clarification. When you calculate the really splendid precipitation mesh at the end, do you do a Voronoi calculation after the initial OT calculation, or are you presenting the OT calculation only?
+Hilary: I use Chris's description in 3.1 because it is more widely accessible. Phil describes the twist condition in 3.2
+
+Chris: A small clarification. When you calculate the really splendid precipitation mesh at the end, do you do a Voronoi calculation after the initial OT calculation, or are you presenting the OT calculation only?
 Also .. can you give timings?
 I think  these final figures are so good we want to say a bit more about them if possible.
+
+Hilary: No Voronoi calculation. I haven't put a clarification in the paper because I do not use Voronoi tesselations of any of the OT meshes in this paper. 
+Timings - very unsure about this. I would rather not. What would they compare with? My implementation is far from optimal. And the meshes in fig 16 are not converged. 
+I think that these meshes using precip as a monitor function throw up loads of problems. The closer I look, the worse it gets. They are certainly motiviation for lots more work to improve the methods. I cannot show any diagnostics that will show that these meshes are any good. However I have added some more material in section 5.5 about them ...
 
