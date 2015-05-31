@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[pdfborder= 0 0 0,citecolor=black,linkcolor=black,colorlinks=true,bookmarksopen=true]{hyperref}
+%\usepackage[notref,notcite]{showkeys}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{pgfplots}
+\usepackage{authblk}
+\usepackage[pagewise]{lineno}
+\usepackage[square]{natbib}
+\usetikzlibrary{plotmarks}
+\author[1,*]{Weller, Browne, Budd, Cullen}
+\title{Numerical solution of the optimal transport problem for mesh generation on the sphere}
+\makeatletter \AtBeginDocument{ \hypersetup{pdftitle= {\@title},pdfauthor= {\@author}}} \makeatother
+
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\begin{document}
+\linenumbers
+\maketitle
+
+The equidistribution principle does not lead to a well-defined problem for mesh generation on the sphere. Indeed this problem is ill-posed in more than 1 dimension and so requires the imposition of an extra constraint on the mesh we wish to find. For the resulting applications, such as interpolation or the numerical solution of a PDE, we postulate that a mesh which is as close as possible to the original computational mesh will be appropriate and effective. This is an \emph{optimal transport} constraint - we seek to minimise the distance between the original and resulting meshes in a certain measure which we shall discuss subsequently. We write this minimization problem
+
+\[\min_{\mathbf{x}\in \Omega_p} d(\mathbf{x},\mathbf{\xi})^2\]
+where $d$ is the distance metric between the two meshes. In Cartesian space $[0,1]^n$ this metric can simply be the sum of the Euclidean distance between all of the corresponding points defining the meshes. On the sphere $\mathbf{S}^2$, the appropriate metric is the Riemannian distance on the surface of the sphere between all of the corresponding points defining the meshes.
+
+In Euclidean space the existence and uniqueness of the equidistribution principle subject to the optimal transport constraint follows as a direct result from \citet{Brenier1991}. On the sphere we appeal to the generalised version of Brenier's theorem given by \citet{McCann2001}, a detailed discussion of which is given in \citet{villani2003}.
+
+\begin{defn}[$c$-convex function]
+The $c$-transform $\phi^c$ of a function $\phi: \mathbf{S}^2 \to \mathbf{R}$ is defined as 
+\[\phi^c (y) = \sup_{x\in\mathbf{S}^2} \{-c(x,y) - \phi(x)\}.\]
+The function $\phi$ is said to be \emph{$c$-convex}, or cost-convex, if 
+$(\phi^c)^c=\phi.$
+\end{defn}
+
+\begin{theorem}[\citet{McCann2001}]\label{mccannthm}
+Let $M$ be a connected, complete smooth Riemannian manifold, equipped with its standard volume measure $dx$. Let $\mu, \nu$ be two probability measures on $M$ with compact support, and let the objective function $c(x,y)$ be equal to $d(x,y)^2$, where $d$ is the geodesic distance on $M$. Further, assume that $\mu$ is absolutely continuous with respect to the volume measure on $M$. Then, the Monge-Kantorovich mass transportation problem between $\mu$ and $\nu$ admits a unique optimally transported solution $T$ with
+\[T(\mu) = \nu\]
+such that
+%\[\pi = (I \times T)\#\mu\]
+%where
+\[T(x) = \exp_x [\nabla \phi(x)]\]
+for some $d^2/2$-convex potential $\phi$. 
+\end{theorem}
+
+\begin{corollary}
+There exists a unique, optimally transported mesh on the sphere that satisfies the equidistribution principle. Moreover, that mesh is defined by a $c$-convex scalar potential function.
+\end{corollary}
+
+\begin{proof}
+Clearly $M=S^2$ satisfies the conditions on $M$ in \autoref{mccannthm}. The first probability measure of interest, $\mu$, we define to be the lack of equidistribution under the original computational mesh, i.e.
+\begin{equation}
+\mu = \sum_{i=1}^{N}w_i \delta_i(\xi -\xi_i)
+\end{equation}
+where $N$ is the total number of cells in the mesh, $\delta_i(\xi -\xi_i)$ is the Dirac delta function located at the centre of cell $i$, $\xi_i$. $w_i$ is a weighting function which measures the local lack of equidistribution, i.e.
+\begin{equation}
+w_i = \int_{\xi_i \in \Omega_C} m(\mathbf{\xi}) \mathrm{d}\mathbf{\xi} - \frac{1}{N}\int_{\Omega_C} m(\mathbf{\xi}) \mathrm{d}\mathbf{\xi}
+\end{equation}
+
+
+%\begin{equation}
+%\mu = m(\mathbf{\xi}) - \int_{\Omega_C}m(\xi) \ \mathrm{d}\mathbf{\xi}.
+%\end{equation}
+The target probability measure is one of equidistribution under the desired mesh, i.e.
+\begin{equation}
+\nu = \sum_{i=1}^{N}\overline{w_i} \delta_i(x -x_i)
+\end{equation}
+where $x_i$ is the centre of the new cell $i$, and the weighting
+\begin{equation}
+\overline{w_i} = \int_{x_i \in \Omega_p} |\nabla \mathbf{x}|m(\mathbf{x}) \mathrm{d}\mathbf{x}% - \frac{1}{N}\int_{\Omega_p} m(\mathbf{x}) \mathrm{d}\mathbf{x}
+\end{equation}
+satisfies 
+\begin{equation}
+\overline{w_i} =\frac{1}{N}\int_{\Omega_p} m(\mathbf{x}) \mathrm{d}\mathbf{x} \qquad \forall i \in \{1,\ldots,N\}.
+\end{equation}
+
+%\begin{equation}
+%\nu = |\nabla \mathbf{x}|m(\mathbf{x}) - \int_{\Omega_p}m(\mathbf{x}) \ \mathrm{d}\mathbf{x}.
+%\end{equation}
+As $M=S^2$ these are trivially compactly supported. The monitor function $m(\mathbf{x})$ must be sufficiently smooth such that $\mu$ is absolutely continuous.
+Hence by \autoref{mccannthm} we have that there exists a unique solution, $T$, to the mass transportation problem between $\mu$ and $\nu$. Under this solution, $\nu$ satisfies the equidistribution principle.
+
+The map $T$ \textit{pushes-forward} the measure $\mu$ onto the desired solution $\nu$ via the exponential map. This exponential map is defined by the gradient of the $d^2/2$-convex potential $\phi$.
+Thus, if we can find such a potential $\phi$ on the sphere then we know it must define the unique, optimally transported mesh that satisfies the equidistribution principle.
+\end{proof}
+
+
+
+
+\bibliographystyle{apalike}
+\bibliography{/home/pbrowne/latex/bib/library,/home/pbrowne/Documents/Mendeley/library,/home/pbrowne/Dropbox/latex/bibliography}
+\end{document}

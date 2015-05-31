@@ -1,0 +1,45 @@
+
+
+> 1. Title .. we have to be careful here. Are we presenting a paper for JCP which gives a method for solving OT
+>       on the sphere with application to mesh generation, or a paper on mesh generation which uses OT
+>       methods?  It's really a question of which audience we want to read the paper.  For generating meshes
+>       we don't have to solve OT very accurately (OT is really a means to an end in this context, not the end itself) but we do need to
+>       worry about mesh tangling, mesh skewness etc. Personally I would prefer 'Mesh generation using OT methods on
+>       the sphere' but of course this is up to all of us to decide.
+
+I agree with Chris here - as OT is mainly just a regularising term for the equidistribution problem I don't think we should label this as solving *the* optimal transport problem. Maybe "Optimally transported meshes on the sphere via the numerical solution of a Monge-Ampere problem"?
+
+MC> I wanted optimal transport rather than Monge Ampere to be emphasised because a Monge-Ampere equation on the sphere is a rather technical concept we need to keep away from. I agree that the thrust is solving the equidistributioan problem and optimal transport is a way of doing it.
+
+> 2. We might also consider writing a separate paper targeted firmly at the OT community in which we look
+>       very carefully at solving OT accurately on the sphere as an end in itself. This is of course directly
+>       relevant to solutions of the Euler eqns etc.
+
+This would be a good thing to do later in the project, yes.
+
+MC> This would be a different but very worthwhile piece of research.
+
+> 3. I find the treatment in section 2.2 (especially following formula (8) ) quite abrupt and we may wish to soften it
+>      up for JCP readers who are unfamiliar with OT.  My own perspective has always been to define a mesh
+>     \tau_C in the computational domain and then consider the action of a continuous measure on this to give the
+>     target mesh \tau_P in the physical domain.  This avoids dirac measures and I find it a transparent way of
+>     doing things.  If you want to use dirac measures then I think we need to motivate them more in this context so
+>     that the JCP reader can see why this method of presentation has advantages.
+
+I have just updated this section (to be included in the document when Hilary returns from Germany). See the attached document for a standalone version of this. I've taken out the dirac measures here and gone on to derive the MA equation on the sphere.
+
+MC> This addresses my main comment. Additional comments on the revised version.
+
+ Still need to say what T(\mu)=\nu means, is it the normal OT definition of 'push forward'? In any case spell out what it means.
+
+The definition (3) could just be that \mu is Lebesgue measure on the surface of the sphere. Then your demonstration of the equivalence to equidistribution becomes trivial as the measure of the transported set is Lebesgue measure scaled by m which is exactly what you want. I think you have over-elaborated.
+
+Not sure whether (7) is  a correct way of writing a Monge-Ampere equation on the sphere, but you don't need it in any case, just solve the OT problem.
+
+
+
+
+> 6.  Im happy with section 6.  Note that for the Monitor in 6.3 (give it a number ??) we can estimate Q exactly, but not your measure of skewness.
+Can we estimate Q on the sphere using the methods you used on the plane? 
+Regardless, this is probably stuff to investigate a lot further in the future.
+

@@ -1,0 +1,48 @@
+1. Title .. we have to be careful here. Are we presenting a paper for JCP which gives a method for solving OT
+     on the sphere with application to mesh generation, or a paper on mesh generation which uses OT
+     methods?  It's really a question of which audience we want to read the paper.  For generating meshes
+     we don't have to solve OT very accurately (OT is really a means to an end in this context, not the end itself) but we do need to
+     worry about mesh tangling, mesh skewness etc. Personally I would prefer 'Mesh generation using OT methods on
+     the sphere' but of course this is up to all of us to decide.
+
+2. We might also consider writing a separate paper targeted firmly at the OT community in which we look
+     very carefully at solving OT accurately on the sphere as an end in itself. This is of course directly
+     relevant to solutions of the Euler eqns etc.
+
+3. I find the treatment in section 2.2 (especially following formula (8) ) quite abrupt and we may wish to soften it
+    up for JCP readers who are unfamiliar with OT.  My own perspective has always been to define a mesh
+   \tau_C in the computational domain and then consider the action of a continuous measure on this to give the
+   target mesh \tau_P in the physical domain.  This avoids dirac measures and I find it a transparent way of
+   doing things.  If you want to use dirac measures then I think we need to motivate them more in this context so
+   that the JCP reader can see why this method of presentation has advantages.
+
+   Having said that .. I very much like your c-convexity arguments
+
+4. I'm very happy with sections 3 and 4
+
+5.  Your definition of skewness in Section 5 does indeed differ from mine. As far as I can tell it exploits and requires the nonlinear
+    properties of the map. In contrast the Q measure is related to the properties of the Jacobian of the mesh and is thus 
+    a measure of the linear properties of the map. The Q measure naturally comes into local error estimates and can also be
+    estimated from the a-priori estimates of the solution of the MA eqn
+
+Your wording is currently:
+
+"This definition of skewness is
+different quantitatively and qualitatively from that of Budd et al. [9]. The skewness metric, Q, from
+Budd et al. [9] gives information about isotropy and orthogonality, not face skewness."
+
+I would prefer 
+
+"This definition of skewness is a feature of the nonlinearities of the map generating the mesh
+different quantitatively and qualitatively from the measure Q described by  Budd et al. [9] which can be calculated directly
+ the Jacobian of the map, and hence from the second derivatives of the solution of the Monge Ampere eqn. The skewness metric, Q, from
+Budd et al. [9] gives information about isotropy and orthogonality and local interpolation error, not face skewness."
+
+6.  Im happy with section 6.  Note that for the Monitor in 6.3 (give it a number ??) we can estimate Q exactly, but not your measure of skewness.
+
+7. In Figure 6 can we label the axes so that it is clear it is a lat-long projection?
+
+8. In section 6 you again refer to 'very large non-orthogonality' .. as always this is a matter of perspective. Maybe use the word 'large orthogonality'
+
+I hope that you have a good time with Robert. I will be talking to his group in Toronto on 16th June and will want to present our stuff.
+

@@ -1,0 +1,20 @@
+# occasional add
+#git add *pdf
+
+# regular add
+git add *.tex *.lyx figures/*sh figures/*tex comments/*txt \
+        figures/figs/*fig
+
+# commit and push to github
+git commit
+#git remote add github git@github.com:hilaryweller0/optimalMeshTransport.git
+#git remote add optimalMeshTransport https://github.com/hilaryweller0/optimalMeshTransport
+git pull https://github.com/hilaryweller0/optimalMeshTransport
+git push optimalMeshTransport master
+
+#git remote add origin https://github.com/hilaryweller0/optimalMeshTransport.git
+#git pull origin master
+
+cp main.pdf ~/Dropbox/BuddWeller/
+dropboxd
+

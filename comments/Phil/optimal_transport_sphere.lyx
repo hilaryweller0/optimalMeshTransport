@@ -1,0 +1,632 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass elsarticle
+\begin_preamble
+
+\usepackage{amsthm}
+%\usepackage[notref,notcite]{showkeys}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{pgfplots}
+%\usepackage{authblk}
+\usepackage[pagewise]{lineno}
+\usetikzlibrary{plotmarks}
+%\author[1,*]{Weller, Browne, Budd, Cullen}
+%\title{Numerical solution of the optimal transport problem for mesh generation on the sphere}
+ %\AtBeginDocument{ } 
+
+%\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\end_preamble
+\options review,square,comma,sort&compress,12pt
+\use_default_options false
+\maintain_unincluded_children false
+\language british
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "\@title"
+\pdf_author "\@author"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref section
+\pdf_pdfusetitle true
+\pdf_quoted_options "citecolor=black,linkcolor=black"
+\papersize default
+\use_geometry true
+\use_amsmath 2
+\use_esint 1
+\use_mhchem 0
+\use_mathdots 0
+\cite_engine natbib_numerical
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.5cm
+\topmargin 2.4cm
+\rightmargin 2.5cm
+\bottommargin 2.4cm
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+maketitle
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The equidistribution principle does not lead to a well-defined problem for
+ mesh generation on the sphere.
+ Indeed this problem is ill-posed in more than 1 dimension and so requires
+ the imposition of an extra constraint on the mesh we wish to find.
+ For the resulting applications, such as interpolation or the numerical
+ solution of a PDE, we postulate that a mesh which is as close as possible
+ to the original computational mesh will be appropriate and effective.
+ This is an 
+\emph on
+optimal transport
+\emph default
+ constraint - we seek to minimise the distance between the original and
+ resulting meshes in a certain measure which we shall discuss subsequently.
+ We write this minimization problem
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\min_{\mathbf{x}\in\Omega_{p}}D=d(\mathbf{x},\mathbf{\xi})
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the distance metric between the two meshes.
+ In Cartesian space 
+\begin_inset Formula $[0,1]^{n}$
+\end_inset
+
+ this metric can simply be the sum of the Euclidean distance between all
+ of the corresponding points defining the meshes.
+ On the sphere 
+\begin_inset Formula $\mathbf{S}^{2}$
+\end_inset
+
+, the appropriate metric is the Riemannian distance on the surface of the
+ sphere between all of the corresponding points defining the meshes.
+\end_layout
+
+\begin_layout Standard
+In Euclidean space the existence and uniqueness of the equidistribution
+ principle subject to the optimal transport constraint follows as a direct
+ result from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Brenier1991"
+
+\end_inset
+
+.
+ On the sphere we appeal to the generalised version of Brenier's theorem
+ given by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "McCann2001"
+
+\end_inset
+
+, a detailed discussion of which is given in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "villani2003"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{defn}
+\end_layout
+
+\end_inset
+
+[
+\begin_inset Formula $c$
+\end_inset
+
+-convex function] The 
+\begin_inset Formula $c$
+\end_inset
+
+-transform 
+\begin_inset Formula $\varphi^{c}$
+\end_inset
+
+ of a function 
+\begin_inset Formula $\varphi:\mathbf{S}^{2}\to\mathbf{R}$
+\end_inset
+
+ is defined as 
+\begin_inset Formula 
+\[
+\varphi^{c}(y)=\sup_{x\in\mathbf{S}^{2}}\{-c(x,y)-\varphi(x)\}.
+\]
+
+\end_inset
+
+The function 
+\begin_inset Formula $\varphi$
+\end_inset
+
+ is said to be 
+\emph on
+
+\begin_inset Formula $c$
+\end_inset
+
+-convex
+\emph default
+, or cost-convex, if 
+\begin_inset Formula $(\varphi^{c})^{c}=\varphi.$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{defn}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{theorem}[
+\backslash
+citet{McCann2001}]
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "mccannthm"
+
+\end_inset
+
+ Let 
+\begin_inset Formula $M$
+\end_inset
+
+ be a connected, complete smooth Riemannian manifold, equipped with its
+ standard volume measure 
+\begin_inset Formula $dx$
+\end_inset
+
+.
+ Let 
+\begin_inset Formula $\mu,\nu$
+\end_inset
+
+ be two probability measures on 
+\begin_inset Formula $M$
+\end_inset
+
+ with compact support, and let the objective function 
+\begin_inset Formula $c(x,y)$
+\end_inset
+
+ be equal to 
+\begin_inset Formula $d(x,y)^{2}$
+\end_inset
+
+, where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the geodesic distance on 
+\begin_inset Formula $M$
+\end_inset
+
+.
+ Further, assume that 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is absolutely continuous with respect to the volume measure on 
+\begin_inset Formula $M$
+\end_inset
+
+.
+ Then, the Monge-Kantorovich mass transportation problem between 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+ admits a unique optimally transported solution 
+\begin_inset Formula 
+\[
+\pi=(I\times T)\#\mu
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula 
+\[
+T(x)=\exp_{x}[\nabla\varphi(x)]
+\]
+
+\end_inset
+
+for some 
+\begin_inset Formula $d^{2}/2$
+\end_inset
+
+-convex potential 
+\begin_inset Formula $\varphi$
+\end_inset
+
+.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{theorem}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{corollary}
+\end_layout
+
+\end_inset
+
+ There exists a unique, optimally transported mesh on the sphere that satisfies
+ the equidistribution principle.
+ Moreover, that mesh is defined by a 
+\begin_inset Formula $c$
+\end_inset
+
+-convex scalar potential function.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{corollary}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{proof}
+\end_layout
+
+\end_inset
+
+ Clearly 
+\begin_inset Formula $M=S^{2}$
+\end_inset
+
+ satisfies the conditions on 
+\begin_inset Formula $M$
+\end_inset
+
+ in 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+autoref
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+mccannthm
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+.
+ The first probability measure of interest, 
+\begin_inset Formula $\mu$
+\end_inset
+
+, we define to be the lack of equidistribution under the original computational
+ mesh, i.e.
+ 
+\begin_inset Formula 
+\begin{equation}
+\mu=m(\mathbf{\xi})-\int_{\Omega_{C}}m(\xi)\ \mathrm{d}\mathbf{\xi}.
+\end{equation}
+
+\end_inset
+
+The target probability measure is one of equidistribution under the desired
+ mesh, i.e.
+ 
+\begin_inset Formula 
+\begin{equation}
+\nu=m(\mathbf{x})|J(\mathbf{\xi})|-\int_{\Omega_{p}}m(\mathbf{x})\ \mathrm{d}\mathbf{x}.
+\end{equation}
+
+\end_inset
+
+As 
+\begin_inset Formula $M=S^{2}$
+\end_inset
+
+ these are trivially compactly supported.
+ The monitor function 
+\begin_inset Formula $m(\mathbf{x})$
+\end_inset
+
+ must be sufficiently smooth such that 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is absolutely continuous.
+\end_layout
+
+\begin_layout Standard
+Hence by 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+autoref
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+mccannthm
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ we have that there exists a unique solution, 
+\begin_inset Formula $\pi$
+\end_inset
+
+, to the mass transportation problem between 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ Under this solution, 
+\begin_inset Formula $\nu=0$
+\end_inset
+
+ and hence the equidistribution principle is satisfied.
+\end_layout
+
+\begin_layout Standard
+The map 
+\begin_inset Formula $T$
+\end_inset
+
+ 
+\shape italic
+pushes-forward
+\shape default
+ the measure 
+\begin_inset Formula $\mu$
+\end_inset
+
+ onto the desired solution 
+\begin_inset Formula $\nu$
+\end_inset
+
+ via the exponential map.
+ This exponential map is defined by the gradient of the 
+\begin_inset Formula $d^{2}/2$
+\end_inset
+
+-convex potential 
+\begin_inset Formula $\varphi$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Thus, if we can find such a potential 
+\begin_inset Formula $\varphi$
+\end_inset
+
+ on the sphere then we know it must define the unique, optimally transported
+ mesh that satisfies the equidistribution principle.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{proof}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "pbrowne"
+options "apalike"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_body
+\end_document

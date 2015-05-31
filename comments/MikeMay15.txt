@@ -1,0 +1,16 @@
+Dear Hilary
+
+Much better still. But still one thing that needs sorting.
+
+Abstract: This should now reflect that we are primarily doing optimal transport. So at the beginning change the emphasis so that we are for the first time using OT to generate meshes. In Euclidean geometry this is equivalent to solving a Monge-Ampere equation as in previous work. 
+
+First paragraph of introduction. After summarising the Euclidean case, point out that this method is equivalent to solving an optimal transport problem and that the latter interpretation transfers smoothly to the surface of the sphere. 
+
+End of section 2.1. The convexity and invertibility follow from the optimal transport result stated before eq (2). The optimal transport solution is then shown to be a solution of a particular class of MA equation. However it is not correct, as stated at the end of the section, that a general MA solution implies convexity.
+
+Section 2.2. Eq (6). Does T(\mu)=\nu mean T#\mu=\nu in the normal sense of optimal transport? If not, what does it mean?
+
+More seriously, neither \mu or \nu as defined are absolutely continuous with respect to the area measure since they are made up of Dirac masses. The monitor function determines the weights, so its smoothness or otherwise doesn't affect this. You need to rethink how the measures are defined so as to come within the scope of the theorem.
+
+Section 4,2,2 and 4.2.2.2 Point out that the geometric approach is a direct discretisation of the OT problem (rather than a MA equation)
+

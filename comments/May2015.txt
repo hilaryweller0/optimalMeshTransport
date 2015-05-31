@@ -1,0 +1,107 @@
+from Mike:
+
+c-convexity is defined in Definition 2.10 of Guillen and Kitagawa http://arxiv.org/pdf/1212.4865v2.pdf. This paper contains a lot more which would be good background to help your understanding, particularly sections 2.1 and 2.2. Probably Villani (2009) is the best reference.
+
+The issue with naive discretisations of Monge Ampere is described in sections 3.1 and 3.2 of Froese, Oberman and  Salvador http://arxiv.org/pdf/1502.04969v1.pdf. There may well be better references including earlier publications by those authors. Chris may well suggest one. The point is that a naive method does not work, so you have to use the sort of pragmatic methods you describe. (An interesting idea described in Banff was the use of adaptive stencils which can allow for strongly anisotropic solutions.)
+
+It is important to make the point that a solution of Monge Ampere only controls det Hess(I+\nabla\phi), not the individual eigenvalues of Hess(I+\nabla\phi). If one eigenvalue gets large and the other small the Laplacian preconditioning will fail (hence the need for under-relaxation), cells though convex will be very anisotropic and may well be larger in one direction than the cells of the uniform mesh. Second derivative control is better in periodic geometry and with a smooth monitor function. However, anisotropy of the mesh is highly advantageous in cases like the Budd and Walsh frontal simulations, and is potentially advantageous in the situations shown by Phil’s grids. Chris may want to quote his own work in this area if published, but you could also use Loeper’s paper.
+
+U is BV if it is in L^1 and the inner product <Du,\phi>. Is bounded for all \phi which are continuous, compactly supported and bounded.
+
+from Mike:
+
+BV stands for 'bounded variation'. Though a function may have a small number of jumps, it cannot oscillate too fast. The gradient of a convex function is BV. I think the gradient of a c-convex function is also BV but don't know of a reference for this. In my definition \phi has the same number of components as U so you can calculate the inner product.
+
+If you solve det D^2\phi=\nu, you would like to estimate the magnitude of the individual second derivatives of \phi. This will then allow you to estimate the eigenvalues of the Hessian. If these are bounded away from zero and infinity you can control the aspect ratio of each cell on the grid.
+
+In section 3.2 you could rewrite the first unnumbered equation as T\xi=x as in Phil's note, and then write (5) as T_\# (r\cal L)^{-1}=\cal L  (*), where r is the function r(\phi) as you have defined it and \cal L is Lebesgue measure. This is written into Phil's note. Once you have said this section 3.4.2.2 can be stated to be a discretisation of (*). 
+
+
+
+from Mike:
+
+The extra bit required in Phil's note is the 'twist' condition which Phil will find in Villani's book. This ensures that the inverse of the optimal map is single valued, and is required to show that the optimal map is a map not a 'plan', which could be a joint probability measure. Once you have a map then the mesh cannot tangle. The conditions for this to be true are stated in Villani's theorems but I think absolute continuity of the measure is enough.
+
+from Chris:
+
+BV = bounded variation.
+
+Second derivative control ..
+
+The second derivative of the potential phi is the Hessian matrix H which is in turn in the Euclidean case the Jacobian matrix J of the transformation. (In the sphere it is related to the Jacobian via the exponential map). This Jacobian is necessarily symmetric and will have eigenvalues lam_1 and lam_2 and orthogonal eigenvectors e_1 and e_2.   The local scaling of the mesh is given by the product lam_1 lam_2 which is directly controlled by the size of the monitor function. The skewness of the mesh can be measured by the quantity Q given by
+Q = 1/2 (lam_1/lam_2 + lam_2/lam_1).
+This measures how distorted local cells are from being (say) equilateral in the usual Euclidean norm. Now, if the MA equation is posed in the form   det(H) = 1/M  then we have lam_1 lam_2 = 1/M
+so if lam_1 < lam_2 (say) we have 
+Q = 1/2(1/M 1/lam_2^2 + M lam_2^2)
+In other words Q is given by knowing M and also the largest eigen value of J.  Now this is the largest eigenvalue of H and hence is simply the norm of H ie. a measure of the size of the second derivative of phi.
+
+There has been a lot of work in the literature on finding bounds for this. The original results are due to Cafferrelli and Urban for the Euclidean problem and have been extended by 
+Loeper and others to different cases such as the sphere).  Basically if M is sufficiently smooth (typically Holder continuous which it will be for our problems)   then the second derivative of phi will also be Holder continuous. This gives a theoretical upper bound on Q which I assume is what MIke is referring to by second derivative control. As Mike says this control is better in periodic than Neumann type boundary conditions, and certainly in the latter we see more skewness close to the boundary.
+
+However in your examples we are also seeing skewness in the interior. This is exactly the situation that Emily Bob and I looked at i our recent JCP paper which I think you have a  copy of. What we did in this paper was to look at two commonly occurring features, namely radially symmetric rings/singularities and also strongly anisotropic linear features
+to see what sort of meshes a Monge Ampere solution would be likely to generate. We could study these through looking at exact separable solutions of the MA equation which gave us very precise information in these cases about both Q and also e_1 and e_2 which gives a lot more information than the more general second derivative bounds given above. Thus we were able to exactly assess the anisotropy in these cases. I would like to extend this onto the sphere and am thinking about how to do it.
+
+The key result is that when trying to approximate an anisotropic feature such as a front the MA meshes have a nice tendency to align themselves along this feature.
+The work I am now doing is to show precisely how this then translates into error measures on the mesh. This is really quite subtle!
+
+Of course you also get skewness close to the circular features in the paper. This can again be linked to the anisotropy for the ring type solutions which Emily and I considered in 
+our paper.
+
+
+from Chris:
+
+1. Convexity.
+
+The primary cause of mesh tangling is a local loss of invertibility of the Jacobian matrix J. Now J is the Hessian H of phi, and hence if phi is convex, H is positive definite and thus, in the Euclidean case, we have that J is invertible (it has eigenvalues bounded away from zero).  [Note that proving the solutions of PMA remain convex for all time is quite hard] This convexity in the Euclidean case prevents mesh tangling.  Cost convexity (c-convexity) extends this concept from the Euclidean distance to the Riemannian distance on the sphere, but I think that the same basic idea goes through, so that c-convexity of phi translates over to J being definite and hence prevents mesh tangling.
+
+2. Discretisation of the MA equation.
+
+The usual discretisation of the det(Hessian) operator using finite differences appears to have a chequer-board instability. One of the purposes of the smoothing we used in PMA was to damp this out.
+
+Comments on the paper
+
+p2. The comment by Dietachmayer et. al. is not really correct. Agreed r-adaptive methods do control mesh size. However MA based r-adaptive methods have implicit control over resolution in individual directions. This is the main point of my recent paper with Emily. Furthermore, there is now a whole class of r-adaptive methods based on tensor valued monitor functions (see Huang and Russel's book) that have explicit control over directions. 
+
+p3. Top .. can we quantify what we mean by cheap and expensive in this context. I think this is crucial to selling the paper.
+
+p4. Mid.  PMA converges as exp(-lambda tau) in time tau to the desired solution. Im not sure what you mean by optimal in this context. Note that one of the advantages of PMA 
+is that we can stop the iteration when we think that the mesh is good enough to calculate on. This can give a huge speed up in computational time.
+
+p5.  I think a short introduction is needed to say that r-adaptive methods work by identifying a map F from computational to physical space. This map acts on a known mesh tau_C 
+in computational space and maps it into the mesh tau_P in physical space.  tau_C is of course arbitrary. IN the simplest case it is made up of simplices, but in the paper we tend to use hexagons or similar.
+
+p6.Top  Maybe replace uniform measure with Lebesgue measure, monoticity with convexity. Also check date of Villani's book. 
+
+p7.  Mid.  Are each of your iterates phi^n convex?
+
+p8 Top.  What you say isn't really true about PMA.  What the effect of the smoothing does is it reduces the speed of convergence towards equidistribution, it doesn't push it away from equidistribution. So that if without smoothing the convergence goes like exp(-lambda tau)   then with smoothing it goes like exp(-mu tau) with mu < lambda. I can make this analysis precise if needed. Have you done a local analysis of your fixed point iteration? It may also be worth referring to the Newton methods that Finn et. al. use for this problem. Phil and I tried to summarise these various methods in our recent paper.
+
+point 4 ..  This is what Mike was concerned about.  As above the issue is that phi is convex which is more an issue of H(phi) than grad(phi).  Again my comment on the convexity of phi^n applies
+
+Rest of section 3 is great : )
+
+Section 4. I would like to add a bit extra here on skewness and orthogonality and how we have both some control over this and also an understanding of the sort of meshes that MA type approaches will deliver.  A useful local skewness measure is the quantity Q I described in my last email.
+
+Section 5.  Mostly great. But 5.5 is central and needs work.  Can you be clear about what is being measured/described in Figure 11. What is the y-axis?
+
+More generally, I have partial results on the precise link between skewness and monitor function, but the link is quite subtle and we need to work on this as part of the overall project. (Things are clearer with tensor valued monitor functions). We can certainly get a general estimate for the skewness in terms of the second derivatives of phi which are in turn linked to the holder continuity of M. But lots to do here.
+
+Also you use the word 'unacceptably' in the start of 5.6. This is a rather loaded word and the meshes might be acceptable for some things and not for others. We need to be more precise here.  Also .. do you have speed comparisons between the Lloyd meshes and the optimally transported meshes?
+
+
+from Chris:
+
+As a further comment. In your figure 10 and also figure 12 you state that there is a big difference between Lloyd and OT. However, looking at them there seems to be (i) little difference in Fig 10 so that the (an)-isotropy of the meshes looks similar and (ii) in Fig 12 the OT mesh seems to be less skew.  
+
+
+from Mike:
+
+Just to add that Chris' first comment about loss of invertibility relates to the comment I made to Phil and Hilary yesterday about the 'twist' condition required for the optimal transport plan to be a map. This condition will guarantee no tangling.
+
+
+from Chris:
+
+A small clarification. When you calculate the really splendid precipitation mesh at the end, do you do a Voronoi calculation after the initial OT calculation, or are you presenting the OT calculation only?
+Also .. can you give timings?
+I think  these final figures are so good we want to say a bit more about them if possible.
+
