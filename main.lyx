@@ -110,8 +110,8 @@
 \begin_body
 
 \begin_layout Title
-Numerical Solution of the Optimal Transport Problem for Mesh Generation
- on the Sphere
+Mesh generation on the sphere using Optimal Transport and the numerical
+ solution of a Monge-Ampère equation
 \end_layout
 
 \begin_layout Author
@@ -133,11 +133,11 @@ Hilary Weller, Philip Browne, Chris Budd and Mike Cullen
 The Monge-Ampère equation has, for the first time, been solved numerically
  on the surface of the sphere in order to generate optimally transported
  (OT) meshes, equidistributed with respect to a monitor function.
- Optimal transport generates meshes do not tangle and keep the same connectivity
- as the original mesh, making them suitable for r-adaptive simulations,
- in which the equations of motion can be solved in a moving frame of reference
- in order to avoid mapping the solution between old and new meshes and to
- avoid load balancing problems on parallel computers.
+ Optimal transport generates meshes that keep the same connectivity as the
+ original mesh, making them suitable for r-adaptive simulations, in which
+ the equations of motion can be solved in a moving frame of reference in
+ order to avoid mapping the solution between old and new meshes and to avoid
+ load balancing problems on parallel computers.
  
 \end_layout
 
@@ -161,8 +161,8 @@ bution is more accurate, the number of iterations to convergence is independent
 \end_layout
 
 \begin_layout Standard
-It is shown that the optimal transport problems leads to meshes that do
- not tangle on the sphere.
+It is shown that optimal transport on the sphere leads to meshes that do
+ not tangle.
  However, tangling can be introduced by numerical errors in calculating
  the gradient of the mesh potential.
  Methods for alleviating this problem are explored.
@@ -717,14 +717,14 @@ where
 \end_inset
 
 .
- We need to ascertain if unique solutions of [
+ We need to ascertain if unique solutions of (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:MAsph"
 
 \end_inset
 
-] exist which minimise the distance between the original and resulting meshes.
+) exist which minimise the distance between the original and resulting meshes.
  
 \lang british
 On the sphere 
@@ -871,7 +871,7 @@ key "McC01"
 \end_inset
 
  be equal to 
-\begin_inset Formula $d(\bm{\xi},\mathbf{x})$
+\begin_inset Formula $d(\bm{\xi},\mathbf{x})^{2}$
 \end_inset
 
 , where 
@@ -1046,77 +1046,25 @@ status collapsed
 \begin_inset Formula $\mu$
 \end_inset
 
-, we define to be the lack of equidistribution under the original computational
- mesh, i.e.
+, we define to be the constant function:
 \lang english
 
 \begin_inset Formula 
 \begin{equation}
-\mu=\sum_{i=1}^{N}w_{i}\delta_{i}(\xi-\xi_{i})
-\end{equation}
-
-\end_inset
-
-where 
-\begin_inset Formula $N$
-\end_inset
-
- is the total number of cells in the mesh, 
-\begin_inset Formula $\delta_{i}(\xi-\xi_{i})$
-\end_inset
-
- is the Dirac delta function located at the centre of cell 
-\begin_inset Formula $i$
-\end_inset
-
-.
- 
-\begin_inset Formula $w_{i}$
-\end_inset
-
- is a weighting function which measures the local lack of equidistribution,
- i.e.
- 
-\begin_inset Formula 
-\begin{equation}
-w_{i}=\int_{\xi_{i}\in\Omega_{C}}m(\mathbf{\xi})\mathrm{d}\mathbf{\xi}-\frac{1}{N}\int_{\Omega_{C}}m(\mathbf{\xi})\mathrm{d}\mathbf{\xi}
+\mu=\frac{1}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}.
 \end{equation}
 
 \end_inset
 
 
 \lang british
-The target probability measure is one of equidistribution under the desired
- mesh, i.e.
+The target probability measure is the scaled version of the monitor function
+ to be equidistribed:
 \lang english
 
 \begin_inset Formula 
 \begin{equation}
-\nu=\sum_{i=1}^{N}\overline{w_{i}}\delta_{i}(x-x_{i})
-\end{equation}
-
-\end_inset
-
-where 
-\begin_inset Formula $x_{i}$
-\end_inset
-
- is the centre of the new cell 
-\begin_inset Formula $i$
-\end_inset
-
-, and the weighting 
-\begin_inset Formula 
-\begin{equation}
-\overline{w_{i}}=\int_{x_{i}\in\Omega_{p}}|\nabla\mathbf{x}|m(\mathbf{x})\mathrm{d}\mathbf{x}
-\end{equation}
-
-\end_inset
-
-satisfies 
-\begin_inset Formula 
-\begin{equation}
-\overline{w_{i}}=\frac{1}{N}\int_{\Omega_{p}}m(\mathbf{x})\mathrm{d}\mathbf{x}\qquad\forall i\in\{1,\ldots,N\}.
+\nu=\frac{m(\mathbf{x})}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}.
 \end{equation}
 
 \end_inset
@@ -1128,19 +1076,12 @@ As
 \end_inset
 
  these are trivially compactly supported.
- The monitor function 
-\begin_inset Formula $m(\mathbf{x})$
-\end_inset
-
- must be sufficiently smooth such that 
+ As 
 \begin_inset Formula $\mu$
 \end_inset
 
- is absolutely continuous.
-\end_layout
-
-\begin_layout Standard
-Hence by 
+ is constant it is absolutely continuous.
+ Hence by 
 \begin_inset ERT
 status collapsed
 
@@ -1188,49 +1129,118 @@ status collapsed
 \end_inset
 
 .
- Under this solution, 
-\begin_inset Formula $\nu$
+ From (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:t2"
+
 \end_inset
 
+) we can see that any point in the new mesh, 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, is defined by the action of the exponential map on the scalar potential,
  
-\lang english
-satisfies the equidistribution principle.
-\end_layout
-
-\begin_layout Standard
-The map 
-\begin_inset Formula $T$
-\end_inset
-
- 
-\shape italic
-pushes-forward
-\shape default
- the measure 
-\begin_inset Formula $\mu$
-\end_inset
-
- onto the desired solution 
-\begin_inset Formula $\nu$
-\end_inset
-
- via the exponential map.
- This exponential map is defined by the gradient of the 
-\begin_inset Formula $d^{2}/2$
-\end_inset
-
--convex potential 
 \begin_inset Formula $\phi$
 \end_inset
 
 .
- Thus, if we can find such a potential 
-\begin_inset Formula $\phi$
+\end_layout
+
+\begin_layout Standard
+To see that this map, 
+\begin_inset Formula $T$
 \end_inset
 
- on the sphere then we know it must define the unique, optimally transported
- mesh that satisfies the equidistribution principle.
+, will give a mesh that satisfies the equidistribution principle, consider
+ a cell 
+\begin_inset Formula $A_{c}$
+\end_inset
+
+ in the original computational mesh, 
+\begin_inset Formula $\Omega_{C}$
+\end_inset
+
+ with volume 
+\begin_inset Formula $\mathcal{A}_{c}$
+\end_inset
+
+.
+ The mapping of the cell under 
+\begin_inset Formula $T$
+\end_inset
+
+ gives the new cell, 
+\begin_inset Formula $A_{p}$
+\end_inset
+
+ in the physical mesh 
+\begin_inset Formula $\Omega_{p}$
+\end_inset
+
+.
+ Considering the ratio of the volume of the cell 
+\begin_inset Formula $A_{c}$
+\end_inset
+
+ to the volume of the computational mesh we find:
+\begin_inset Formula 
+\begin{equation}
+\frac{\mathcal{A}_{c}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=\frac{\int_{A_{c}}1\ d\bm{\xi}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=\int_{A_{c}}\mu\ d\bm{\xi}=\int_{A_{p}}\nu\ d\mathbf{x}=\frac{\int_{A_{p}}m(\mathbf{x})\ d\mathbf{x}}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}.
+\end{equation}
+
+\end_inset
+
+Hence the ratio of the integral of the monitor function over the new cell
+ with the total integral of the monitor function is equal to the proportion
+ of the volume that the original cell occupied in the original mesh.
+ This is precisely what it means for the monitor function to be equidistributed
+ on a discretised mesh.
  
+\end_layout
+
+\begin_layout Standard
+Using a change of variables, we have:
+\begin_inset Formula 
+\begin{equation}
+\frac{\mathcal{A}_{c}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=\frac{\int_{A_{p}}m(\mathbf{x})\ d\mathbf{x}}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}=\frac{\int_{A_{c}}m(\exp_{\xi}[\nabla\phi(\bm{\xi})])|J(\bm{\xi})|\ d\bm{\xi}}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}\label{eq:cov}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $|J(\bm{\xi})|$
+\end_inset
+
+ is the determinant of the Jacobian of the map 
+\begin_inset Formula $T(\bm{\xi})=\exp_{\xi}[\nabla\phi(\bm{\xi})]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:cov"
+
+\end_inset
+
+) must hold for arbitrary sets 
+\begin_inset Formula $A_{c}\in\Omega_{C}$
+\end_inset
+
+, the following Monge-Ampère equation on the sphere results:
+\begin_inset Formula 
+\begin{equation}
+m\left(\exp_{\xi}[\nabla\phi(\bm{\xi})]\right)|J(\bm{\xi})|=\frac{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=c.
+\end{equation}
+
+\end_inset
+
+
 \begin_inset ERT
 status collapsed
 
@@ -1373,15 +1383,15 @@ reference "eq:t2"
 \end_inset
 
  is locally invertible, i.e.
- for each point in the new mesh 
+ for each point in the new mesh, 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- there is a unique point in the original mesh 
+, there is a unique point in the original mesh, 
 \begin_inset Formula $\bm{\xi}$
 \end_inset
 
- which maps to it - i.e.
+, which maps to it - i.e.
  mesh tangling is not present.
  
 \begin_inset ERT
@@ -1477,7 +1487,7 @@ There are two challenging parts to solving the Monge-Amp
 è
 \lang british
 re equation.
- Firstly we need a 
+ Firstly we need 
 \lang english
 spatial discretisation methods both for the Hessian, 
 \begin_inset Formula $H$
@@ -1567,7 +1577,7 @@ key "FN09"
 \end_inset
 
  approximate the Monge-Ampère equation by a fourth-order quasi-linear equation
- in order to used mixed finite elements for the spatial discretisation.
+ in order to use mixed finite elements for the spatial discretisation.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -2270,7 +2280,8 @@ key "TRSK09"
 \begin_layout Standard
 We are considering a finite-volume discretisation on initially orthogonal
  nearly uniform polygonal prisms.
- This and the above requirements suggests the following spatial discretisation:
+ This and the above requirements suggests the following spatial discretisation
+ on the computational mesh:
 \end_layout
 
 \begin_layout Subsubsection
@@ -2679,7 +2690,7 @@ In order to calculate the mesh map and consequently to calculate
 \end_inset
 
 .
- Ideally, this operation should not produce and non-convex cells and it
+ Ideally, this operation should not produce any non-convex cells and it
  turns out to be particularly sensitive to the numerical approximation and
  its stencil.
  If the stencil is too large, grid-scale oscillations in 
@@ -3106,7 +3117,7 @@ reference "eq:meshMap"
  volume weighting.
  Then the moved generating points can be re-tesselated to create a new Voronoi
  tesselation.
- However, the re-tesselation mesh may not have exactly the same connectivity
+ However, the re-tesselation may not have exactly the same connectivity
  due to edge swapping in the Delaunay algorithm.
  This technique therefore may not be so suitable for r-adaptivity.
 \end_layout
@@ -3177,11 +3188,11 @@ Here we describe how
 
  is calculated.
  We start by defining the source terms of these equations to be 
-\begin_inset Formula $s^{n}=|I+H\left(\phi^{n}\right)|-\frac{c}{m({\bf x}^{n})}$
+\begin_inset Formula $s^{n}=|I+H\left(\phi^{n}\right)|-c/m({\bf x}^{n})$
 \end_inset
 
  and 
-\begin_inset Formula $s^{n}=r\left(\phi^{n}\right)-\frac{c}{m({\bf x}^{n})}$
+\begin_inset Formula $s^{n}=r\left(\phi^{n}\right)-c/m({\bf x}^{n})$
 \end_inset
 
  respectively.
@@ -3264,7 +3275,7 @@ y defined monitor functions.
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-m & = & m^{\prime}\left(\exp_{\xi}\nabla\phi\right)+\frac{1}{4}\nabla\cdot\left(|\mathbf{d}|^{2}\nabla m^{\prime}\left(\exp_{\xi}\nabla\phi\right)\right)
+m & = & m^{\prime}\left(\exp_{\xi}\nabla\phi\right)+\frac{1}{4}\nabla\cdot\left(|\mathbf{d}_{f}|^{2}\nabla m^{\prime}\left(\exp_{\xi}\nabla\phi\right)\right)
 \end{eqnarray*}
 
 \end_inset
@@ -3299,10 +3310,10 @@ reference "eq:PMA_SIsph"
 
 ).
  The diffusion coefficient used is the mesh spacing, 
-\begin_inset Formula $|\mathbf{d}|$
+\begin_inset Formula $|\mathbf{d}_{f}|$
 \end_inset
 
-.
+ on the computational grid.
 \end_layout
 
 \begin_layout Section
@@ -3414,15 +3425,16 @@ The diagnostics of mesh quality consider cell centres, defined as cell centroids
  or centres of mass of the moved cells, and face centres, defined in the
  same way.
  The will also use the face area vector, 
-\begin_inset Formula $\mathbf{S}_{f}$
+\begin_inset Formula $\mathbf{S}_{x}$
 \end_inset
 
-, the normal vector to each face with magintude equal to the face area and
+, the normal vector to each face with magnitude equal to the face area and
  
-\begin_inset Formula $\mathbf{d}_{f}$
+\begin_inset Formula $\mathbf{d}_{x}$
 \end_inset
 
-, the vector between cell centres either side of a face (see fig 
+, the vector between cell centres either side of a face of the moved mesh
+ (see fig 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:cell"
@@ -3435,7 +3447,7 @@ reference "fig:cell"
 \begin_layout Standard
 In order to measure mesh quality, firstly we will consider mesh spacing,
  
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
 , between adjacent cell centres for each cell face as a scatter diagram
@@ -3443,7 +3455,7 @@ In order to measure mesh quality, firstly we will consider mesh spacing,
  cases).
  This informs us about the aspect ratios of the cells since cells with high
  aspect ratio will give a large scatter of values of 
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
  for a given distance to the axis of symmetry.
@@ -3454,7 +3466,7 @@ In order to measure mesh quality, firstly we will consider mesh spacing,
 
 .
  Therefore, for the meshes of quadrilaterals, 
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
  will be compared with 
@@ -3462,7 +3474,7 @@ In order to measure mesh quality, firstly we will consider mesh spacing,
 \end_inset
 
  and for the meshes of mostly hexagons, 
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
  will be compared with 
@@ -3477,7 +3489,7 @@ The second mesh quality diagnostic is non-orthogonality for each cell face
  which is measured as
 \begin_inset Formula 
 \begin{equation}
-\text{non-orthogonality}=\cos^{-1}\frac{\mathbf{S}_{f}\cdot\mathbf{d}_{f}}{|\mathbf{S}_{f}||\mathbf{d}_{f}|}.\label{eq:nonOrthog}
+\text{non-orthogonality}=\cos^{-1}\frac{\mathbf{S}_{x}\cdot\mathbf{d}_{x}}{|\mathbf{S}_{x}||\mathbf{d}_{x}|}.\label{eq:nonOrthog}
 \end{equation}
 
 \end_inset
@@ -3492,17 +3504,17 @@ The third mesh quality diagnostic is the face skewness, measured as the
 \end_inset
 
 , between the face centre and the crossing point between the vector 
-\begin_inset Formula $\mathbf{d}_{f}$
+\begin_inset Formula $\mathbf{d}_{x}$
 \end_inset
 
  with the face, normalised by 
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
 :
 \begin_inset Formula 
 \begin{equation}
-\text{skewness}=\frac{d_{s}}{|\mathbf{d}_{f}|}.\label{eq:skewness}
+\text{skewness}=\frac{d_{s}}{|\mathbf{d}_{x}|}.\label{eq:skewness}
 \end{equation}
 
 \end_inset
@@ -3520,7 +3532,8 @@ reference "fig:cell"
 \end_inset
 
 .
- This definition of skewness is different quantitatively and qualitatively
+ This definition of skewness is a feature of the non-linearities of the
+ map generating the mesh and is different quantitatively and qualitatively
  from that of 
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -3528,7 +3541,7 @@ key "BRW15"
 
 \end_inset
 
-.
+ which can be calculated directly the Jacobian of the map.
  The skewness metric, 
 \begin_inset Formula $Q$
 \end_inset
@@ -4049,7 +4062,7 @@ reference "fig:planeMeshConvergence"
 \end_inset
 
  on the left shows the initial residual of the matrix solution as a function
- of iteration number for the calculation of all of the meshes of the sphere.
+ of iteration number for the calculation of all of the meshes on the plane.
  Using the finite difference Hessian, the solution converges rapidly but
  convergence stalls when using the geometric Hessian.
  There are two possible reasons for the stalling.
@@ -4321,9 +4334,9 @@ tion of the cell area in these regions, where the derivatives of
  look problematic.
  If the OT mesh is smoother than that specified by the monitor function
  then it could be beneficial.
- The meshes generated using the geometric Hessian fit are more accurately
- equidistributed with respect to the monitor function, despite the lack
- of convergence of the initial residual.
+ The meshes generated using the geometric Hessian are more accurately equidistri
+buted with respect to the monitor function, despite the lack of convergence
+ of the initial residual.
  
 \end_layout
 
@@ -5127,7 +5140,7 @@ reference "fig:convergence"
 
 \end_inset
 
- that then number of iterations is independent of the mesh size.
+ that the number of iterations is independent of the mesh size.
 \end_layout
 
 \begin_layout Standard
@@ -5307,7 +5320,7 @@ reference "fig:boostLaplacian"
 \end_inset
 
  does rise after initialisation.
- This implies that the maximim of the source term increases before it decreases.
+ This implies that the maximum of the source term increases before it decreases.
  However the initial residual monotonically decreasing during these early
  iterations.
  This is because the initial residual is a mean over the whole domain whereas
@@ -5832,7 +5845,7 @@ X16
 
 \begin_layout Plain Layout
 Cell-centre to cell-centre geodesic distance (
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
  as defined in section 
@@ -5871,7 +5884,7 @@ name "fig:distDxX2X4"
 
 \begin_layout Standard
 Scatter plots of the cell-centre to cell-centre distance, 
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
 , as a function of distance to the centre of the refined region are shown
@@ -5897,7 +5910,7 @@ reference "fig:distDxX2X4"
 \end_inset
 
 : there is a wide range of 
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
  at the same distance to the centre of the refined region, indicating anisotropy.
@@ -5917,7 +5930,7 @@ Unlike the meshes on the plane, the meshes on the sphere are isotropic in
  on the edge of the coarse region.
  This is not ideal for atmospheric simulations since global errors are often
  proportional to the largest 
-\begin_inset Formula $|\mathbf{d}_{f}|$
+\begin_inset Formula $|\mathbf{d}_{x}|$
 \end_inset
 
  
@@ -6482,7 +6495,7 @@ X16
 
 \begin_layout Plain Layout
 Face skewness (
-\begin_inset Formula $d_{s}/|\mathbf{d}_{f}|$
+\begin_inset Formula $d_{s}/|\mathbf{d}_{x}|$
 \end_inset
 
 , as defined in eqn.
@@ -6555,7 +6568,7 @@ reference "sub:betterMeshQuality"
 
 \begin_layout Standard
 The OT meshes have less face skewness, 
-\begin_inset Formula $d_{s}/|\mathbf{d}_{f}|$
+\begin_inset Formula $d_{s}/|\mathbf{d}_{x}|$
 \end_inset
 
 , than the centroidal Voronoi meshes (fig 
@@ -6604,8 +6617,8 @@ reference "sub:meshQualitySph"
 
 \end_inset
 
- have some very large non-orthogonality at regions where the resolution
- is changing rapidly (fig 
+ have some large non-orthogonality at regions where the resolution is changing
+ rapidly (fig 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:meshOrthogX2X4"
@@ -7079,8 +7092,8 @@ The problem with the large stencil calculation of
 \begin_inset Formula $\nabla_{v}\phi$
 \end_inset
 
- is that convergence is slowed and orthogonality is not reduced enough (fig
- 
+ is that convergence is slowed and orthogonality is only reduced a little
+ (fig 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:gradp_5_16"
@@ -7244,7 +7257,7 @@ status open
 \backslash
 rotatebox[origin=l]{90}{$|
 \backslash
-mathbf{d}_f|$}
+mathbf{d}_x|$}
 \end_layout
 
 \end_inset
@@ -7352,7 +7365,7 @@ status open
 \backslash
 rotatebox[origin=l]{90}{Skewness, $d_s/|
 \backslash
-mathbf{d}_f|$}
+mathbf{d}_x|$}
 \end_layout
 
 \end_inset
@@ -7495,7 +7508,7 @@ m=\frac{p+p_{\min}}{p_{\max}+p_{min}}
 
 \end_inset
 
-where the mininum allowable values is set to 
+where the minimum allowable values is set to 
 \begin_inset Formula $p_{\min}=10^{-5}\text{kg}\text{m}^{-2}\text{s}^{-1}$
 \end_inset
 
@@ -7649,7 +7662,7 @@ key "RJG+11"
 \end_inset
 
 .
- With the geometric Hessian, we accurately equidistributed meshes on the
+ The geometric Hessian created accurately equidistributed meshes on the
  surface of the sphere.
  The algorithm is found to be sensitive to the numerical method used to
  calculate the gradient of the mesh potential (the map to the new mesh)

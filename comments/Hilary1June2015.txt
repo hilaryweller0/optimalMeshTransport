@@ -1,0 +1,28 @@
+Phil
+
+I have included your edits to your note on optimal tranpsort on the sphere. But I have not addressed Mike's comments:
+
+"Still need to say what T(\mu)=\nu means, is it the normal OT definition of 'push forward'? In any case spell out what it means.
+
+The definition (3) could just be that \mu is Lebesgue measure on the surface of the sphere. Then your demonstration of the equivalence to equidistribution becomes trivial as the measure of the transported set is Lebesgue measure scaled by m which is exactly what you want. I think you have over-elaborated.
+
+Not sure whether (7) is  a correct way of writing a Monge-Ampere equation on the sphere, but you don't need it in any case, just solve the OT problem."
+
+
+Chris
+
+I have written:
+"The skewness metric, Q, from Budd et al. [9] gives information about isotropy and orthogonality, not face skewness."
+rather than
+"The skewness metric, Q, from Budd et al. [9] gives information about isotropy and orthogonality and local interpolation error, not face skewness."
+as you requested because Q does not tell you everything about interpolation errors. Face skewness is also important for interpolation errors. 
+
+From Chris:
+"In section 6 you again refer to 'very large non-orthogonality' .. as always this is a matter of perspective. Maybe use the word 'large orthogonality'"
+I have replaced this with:
+"...the OT meshes ... have high non-orthogonality where the second derivative of the monitor function is high. In fact the non-orthogonality reaches over 70 degrees for some cells in the X16 mesh. This is unlikely to be a good mesh for simulation."
+70 degrees really is very high! We would like 0 degrees and 90 degrees would mean tangling. The 90 degrees is a problem with the numerical method, not OT in general. This high non-orthogonality is the motivation for section 6.6 on "Improving Convexity".
+
+In 4.2.3 I have written:
+"If φ has bounded variation, then the transported mesh will be convex"
+But is this really true? Surely not. That was what I understood from one of Mike's comments. But it seems unlikely.
