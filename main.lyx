@@ -579,7 +579,7 @@ The change in cell volume under the coordinate transform is given by the
  determinant of the Jacobian of the map, 
 \lang british
 
-\begin_inset Formula $|\nabla\mathbf{x}|$
+\begin_inset Formula $|J(\xi)|=|\mathbf{\nabla\mathbf{x}}(\bm{\xi})|$
 \end_inset
 
 , the gradient of 
@@ -906,10 +906,23 @@ key "McC01"
 \begin_inset Formula $T$
 \end_inset
 
- with 
+ where 
+\begin_inset Formula $T$
+\end_inset
+
+ pushes forward the measure 
+\begin_inset Formula $\mu$
+\end_inset
+
+ onto 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ Then, (using classical optimal transport notation): 
 \begin_inset Formula 
 \begin{equation}
-T(\mu)=\nu\label{eq:t1}
+T_{\#}\mu=\nu\label{eq:t1}
 \end{equation}
 
 \end_inset
@@ -2709,7 +2722,12 @@ In order to calculate the mesh map and consequently to calculate
  distorted.
  So the approximation and the stencil need to be just right - we need the
  Goldilocks gradient.
- If 
+ 
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+If 
 \begin_inset Formula $\phi$
 \end_inset
 
@@ -2730,8 +2748,25 @@ In order to calculate the mesh map and consequently to calculate
 \end_inset
 
  has bounded variation, then the transported mesh will be convex.
- Here, we propose three techniques for calculating the gradient at vertices,
- none of which guarantee bounded variation for convex functions.
+ 
+\end_layout
+
+\end_inset
+
+Here, we propose three techniques for calculating the gradient at vertices,
+ none of which are guaranteed to lead to convex cells in the transformed
+ mesh.
+ 
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+, none of which guarantee bounded variation for convex functions.
+ 
+\end_layout
+
+\end_inset
+
  Future work will include the search for a numerical approximation with
  this property.
 \end_layout
@@ -6552,7 +6587,7 @@ ty by using the cell centroid as the cell centre rather than using the Voronoi
  generating point.
  Even so, they remain very close to orthogonal in comparison to the OT meshes
  which have high non-orthogonality where the second derivative of the monitor
- function is high.
+ function is high (for this test case).
  In fact the non-orthogonality reaches over 70 degrees for some cells in
  the X16 mesh.
  This is unlikely to be a good mesh for simulation.

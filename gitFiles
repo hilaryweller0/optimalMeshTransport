@@ -15,6 +15,6 @@ git push optimalMeshTransport master
 #git remote add origin https://github.com/hilaryweller0/optimalMeshTransport.git
 #git pull origin master
 
-cp MAsphereWeller1June2015.pdf ~/Dropbox/BuddWeller
-dropboxd
+cp MAsphereWeller2June2015.pdf ~/Dropbox/BuddWeller
+dropboxd &
 

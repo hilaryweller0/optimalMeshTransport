@@ -26,3 +26,10 @@ I have replaced this with:
 In 4.2.3 I have written:
 "If φ has bounded variation, then the transported mesh will be convex"
 But is this really true? Surely not. That was what I understood from one of Mike's comments. But it seems unlikely.
+
+Chris:
+With reference to your comments on skewness. You comment that the skewness is high when the second derivative of the monitor is high. I dont think this is true in general. In our case it is due to the jump in M from the inner to the outer region of the top hat. This I can analyse completely (at least for the Q measure) and is a feature of the top hat monitor function. 
+
+I have changed this to:
+"Even so, they remain very close to orthogonal in comparison to the OT meshes which have high non-orthogonality where the second derivative of the monitor function is high (for this test case)"
+
