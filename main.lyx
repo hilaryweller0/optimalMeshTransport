@@ -112,7 +112,7 @@
 
 \begin_layout Title
 Mesh generation on the sphere using Optimal Transport and the numerical
- solution of a Monge-Ampère equation
+ solution of a Monge-Ampère type equation
 \end_layout
 
 \begin_layout Author
@@ -121,6 +121,11 @@ Hilary Weller, Philip Browne, Chris Budd and Mike Cullen
 
 \begin_layout Standard
 \align center
+Graphical abstract
+\begin_inset Newline newline
+\end_inset
+
+
 \begin_inset Graphics
 	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/6/8/pptMesh.pdf
 	width 80text%
@@ -131,8 +136,8 @@ Hilary Weller, Philip Browne, Chris Budd and Mike Cullen
 \end_layout
 
 \begin_layout Standard
-The Monge-Ampère equation has, for the first time, been solved numerically
- on the surface of the sphere in order to generate optimally transported
+An equation of Monge-Ampère type has, for the first time, been solved numericall
+y on the surface of the sphere in order to generate optimally transported
  (OT) meshes, equidistributed with respect to a monitor function.
  Optimal transport generates meshes that keep the same connectivity as the
  original mesh, making them suitable for r-adaptive simulations, in which
@@ -143,9 +148,9 @@ The Monge-Ampère equation has, for the first time, been solved numerically
 \end_layout
 
 \begin_layout Standard
-The semi-implicit solution of the Monge-Ampère equation involves a new linearisa
-tion of the Hessian term, and exponential maps are used to map from old
- to new meshes on the sphere.
+The semi-implicit solution of the Monge-Ampère type equation involves a
+ new linearisation of the Hessian term, and exponential maps are used to
+ map from old to new meshes on the sphere.
  The determinant of the Hessian is evaluated as the change in volume between
  old and new mesh cells, rather than using numerical approximations to the
  gradients.
@@ -231,9 +236,10 @@ key "BHR09"
 \end_inset
 
 .
- However the Monge-Ampère equation has not before been solved numerically
- on the surface of a sphere, which would be necessary for weather and climate
- prediction.
+ We will see that the optimal transport problem on the sphere leads to a
+ slightly different equation of Monge-Ampère type, which has not before
+ been solved numerically on the surface of a sphere, which would be necessary
+ for weather and climate prediction using r-adaptivity.
 \end_layout
 
 \begin_layout Standard
@@ -364,14 +370,12 @@ reference "sec:OT"
 
 \end_inset
 
- we describe mesh generation by optimal transport in Euclidean space and
- show how these concepts can extend to mesh generation on the sphere.
- The optimal transport problem leads to a Monge-Ampère equation and numerical
- techniques for solving the Monge-Amp
-\lang english
-è
-\lang british
-re equation in Euclidean geometry are reviewed in section 
+ we describe mesh generation by optimal transport in Euclidean space leading
+ to a Monge-Ampère equation.
+ We then show how these concepts can extend to mesh generation on the sphere,
+ leading to an equation of Monge-Ampère type.
+ Existing numerical solution techniques in Euclidean geometry are reviewed
+ in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:review"
@@ -386,11 +390,11 @@ reference "sec:method"
 
 \end_inset
 
- we describe the new numerical method for solving the Monge-Amp
+ we describe the new numerical methods for solving the Monge-Amp
 \lang english
 è
 \lang british
-re equation both on a Euclidean plane and on the sphere.
+re type equations, both on a Euclidean plane and on the sphere.
  In order to address issues of mesh distortion, a range of diagnostics of
  mesh quality are presented.
  These diagnostics, along with the diagnostics of solution convergence,
@@ -1494,7 +1498,7 @@ reference "eq:cov"
 \begin_inset Formula $A_{c}\in\Omega_{C}$
 \end_inset
 
-, the following Monge-Ampère equation on the sphere results:
+, the following equation of Monge-Ampère type:
 \begin_inset Formula 
 \begin{equation}
 m\left(\exp_{\xi}[\nabla\phi(\bm{\xi})]\right)|J(\bm{\xi})|=\frac{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=c.
@@ -1966,11 +1970,11 @@ n proposed may also be beneficial for calculating the first guess for a
 \end_layout
 
 \begin_layout Standard
-The Monge-Amp
+Equations of Monge-Amp
 \lang english
 è
 \lang british
-re equation has not before been solved numerically on the sphere.
+re type have not before been solved numerically on the sphere.
  The description of the optimally transported mesh problem using the Monge-Amp
 \lang english
 è
@@ -2010,8 +2014,8 @@ name "sec:method"
 \begin_layout Standard
 
 \lang english
-There are two aspects to solving the Monge-Ampère equation in order to calculate
- optimally transported (OT) meshes.
+There are two aspects to solving equations of Monge-Ampère type in order
+ to calculate optimally transported (OT) meshes.
  The spatial discretisation describes how to calculate the gradient and
  the Hessian of the mesh potential, 
 \begin_inset Formula $\phi$
@@ -2510,12 +2514,7 @@ If the solution,
 \begin_inset Formula $\nabla\phi$
 \end_inset
 
- should be sufficiently smooth but the analysis has not been done to find
- how smooth 
-\begin_inset Formula $\nabla\phi$
-\end_inset
-
- should be.
+ should have bounded variation.
  
 \begin_inset Foot
 status open
@@ -2966,7 +2965,7 @@ In order to calculate the mesh map and consequently to calculate
  and convergence is slow.
  If the stencil is too small, on a hexagonal mesh, grid-scale oscillations
  of the approximation of the gradient at vertices can grow since the calculation
- of the gradient is not smooth.
+ of the gradient does not lead to a gradient with bounded variation.
  This does not slow down convergence but the resulting meshes are locally
  distorted.
  So the approximation and the stencil need to be just right - we need the
@@ -3189,8 +3188,8 @@ Vertex Gradient using the Goldilocks Stencil
 
 \lang english
 The Goldilocks stencil should be large enough to calculate a smooth gradient
- but without including averaging and thus hiding grid-scale oscillations
- in 
+ (with bounded variation) but without including averaging and thus hiding
+ grid-scale oscillations in 
 \begin_inset Formula $\phi$
 \end_inset
 
@@ -7744,9 +7743,9 @@ In order to demonstrate the numerical solution of the Monge-Amp
 \lang english
 è
 \lang british
-re equation using realistic data as a monitor function, meshes are generated
- based on the daily average precipitation rate from the NOAA-CIRES 20th
- Century Reanalysis version 2 (
+re type equation using realistic data as a monitor function, meshes are
+ generated based on the daily average precipitation rate from the NOAA-CIRES
+ 20th Century Reanalysis version 2 (
 \begin_inset CommandInset citation
 LatexCommand citealp
 key "CWS11"
@@ -7915,14 +7914,14 @@ name "sec:concs"
 
 \lang english
 A technique for generating optimally transported (OT) meshes, solving a
- Monge-Ampère equation on the surface of the sphere, has been developed
+ Monge-Ampère type equation on the surface of the sphere, has been developed
  in order to generate meshes which are equidistributed with respect to a
  monitor function.
- The Monge-Ampère equation has not before been solved numerically on the
- surface of a sphere.
- We show that a unique solution to the Monge-Ampère equation exists on the
- sphere and exponential maps are used to create the map from the old to
- the new mesh.
+ Equations of Monge-Ampère type have not before been solved numerically
+ on the surface of a sphere.
+ We show that a unique solution to the optimal mesh transport problem on
+ the sphere exists and exponential maps are used to create the map from
+ the old to the new mesh.
  We introduce a geometric interpretation of the Hessian rather than a numerical
  approximation which is accurate on the surface of the sphere.
  In order to create a semi-implicit algorithm, a new linearisation of the
@@ -7954,8 +7953,8 @@ key "RJG+11"
  to very slow convergence.
  The mesh tangling can be eliminated by creating a Voronoi tessellation
  of the cell centres of the final mesh.
- The exact solution of the Monge-Ampère equation on the sphere is c-convex
- which means that the mesh should not tangle.
+ The exact solution of the OT problem on the sphere is c-convex which means
+ that the mesh should not tangle.
  A numerical method which reproduces this property will be the subject of
  future work.
  

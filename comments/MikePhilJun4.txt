@@ -1,0 +1,25 @@
+Mike:
+
+I would have thought it was much simpler to say instead of (9) that \mu is Lebesgue measure and instead of (10) that \nu is just m(x). Obviously m(x) has to be normalised to integrate to the Lebesgue measure of S^2. Then the volume of a set A using measure \mu (i.e. \int_Ad\mu) is just the volume in the standard sense and the volume using measure \nu is \int_Am(x)dx. Thus the volume of set Ap is exactly the integral of m(x) over the set A_c, which is equidistribution. 
+
+My worry about describing (13) as an MA equation is that it might not be. On Wikipedia it says
+
+Monge–Ampère equations arise naturally in several problems in Riemannian geometry, conformal geometry, and CR geometry. One of the simplest of these applications is to the problem of prescribed Gauss curvature. Suppose that a real-valued function K is specified on a domain Ω in Rn, the problem of prescribed Gauss curvature seeks to identify a hypersurface of Rn+1 as a graph z=u(x) over x∈Ω so that, at each point of the surface the Gauss curvature is given by K(x). The resulting partial differential equation is
+
+    \det D^2 u - K(\mathbf{x})(1+|Du|^2)^{(n+2)/2} = 0.
+
+Is that the same?
+
+In section 4.2, bullet 4, it is said that it is not known how smooth grad phi should be. If phi is convex, grad phi is definitely BV and so cannot oscillate. On the sphere it is conjectured that a c-convex phi has BV gradients. I think this should be said. (see Wilkipedia again)
+
+Phil:
+I think the normalisation constants are important to write explicitly. In that case, with \mu Lebesgue measure, \nu = m(x) \frac{\int dx}{\int m(x)dx}.
+
+Is this true? Assume that all cells are equal volume. If A_c is in a place where m(x) is small, then we want its volume to increase. But if the volume of Ap is the integral of m(x) over A_c, then this is small and not large as we want. This confusion is why I have explicitly written how the OT problem as defined equidistributes the mesh.
+
+I now see why you are worried that it might not be a MA equation. I'm going to explicitly calculate the terms here and see what results.
+
+Mike:
+
+The point is how to write item 4 in section 4.2. Convexity of cells requires grad phi to define an invertible map. This should be preserved by the discretisation. However it is nothing to do with smoothness of grad phi as your second sentence states. Either just omit your second sentence, or include the BV bit which says that grad phi doesn't oscillate which is necessary but not sufficient for what you want.
+
