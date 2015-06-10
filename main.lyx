@@ -981,7 +981,7 @@ reference "eq:MAsph"
  
 \lang british
 On the sphere 
-\begin_inset Formula $\mathbf{S}^{2}$
+\begin_inset Formula $\mathbb{S}^{2}$
 \end_inset
 
 , the appropriate distance metric is the Riemannian distance on the surface
@@ -1031,13 +1031,13 @@ begin{defn}
 \end_inset
 
  of a function 
-\begin_inset Formula $\phi:\mathbf{S}^{2}\to\mathbf{R}$
+\begin_inset Formula $\phi:\mathbb{S}^{2}\to\mathbf{\mathbb{R}}$
 \end_inset
 
  is defined as 
 \begin_inset Formula 
 \begin{equation}
-\phi^{c}(y)=\sup_{\bm{\xi}\in\mathbf{S}^{2}}\{-c(\bm{\xi},\mathbf{x})-\phi(\bm{\xi})\}.
+\phi^{c}(y)=\sup_{\bm{\xi}\in\mathbf{\mathbb{S}}^{2}}\{-c(\bm{\xi},\mathbf{x})-\phi(\bm{\xi})\}.
 \end{equation}
 
 \end_inset
@@ -1107,7 +1107,7 @@ key "McC01"
 
  be a connected, complete smooth Riemannian manifold, equipped with its
  standard volume measure 
-\begin_inset Formula $dx$
+\begin_inset Formula $\mathrm{d}x$
 \end_inset
 
 .
@@ -1265,7 +1265,7 @@ begin{proof}
 \end_inset
 
  Clearly 
-\begin_inset Formula $M=S^{2}$
+\begin_inset Formula $M=\mathbb{S}^{2}$
 \end_inset
 
  satisfies the conditions on 
@@ -1312,25 +1312,29 @@ status collapsed
 \begin_inset Formula $\mu$
 \end_inset
 
-, we define to be the constant function:
+, we define to be the scaled Lebesgue measure such that:
 \lang english
 
 \begin_inset Formula 
 \begin{equation}
-\mu=\frac{1}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}.
+\mathrm{d}\mu=\frac{\mathrm{d}x}{\int_{\mathbb{S}^{2}}\mathrm{d}x}.
 \end{equation}
 
 \end_inset
 
 
 \lang british
-The target probability measure is the scaled version of the monitor function
- to be equidistribed:
+The target probability measure, 
+\begin_inset Formula $\mu$
+\end_inset
+
+, is the Lebesgue measure appropriately scaled by the monitor function to
+ be equidistribed, such that:
 \lang english
 
 \begin_inset Formula 
 \begin{equation}
-\nu=\frac{m(\mathbf{x})}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}.
+\mathrm{d}\nu=\frac{m(\mathbf{x})\mathrm{d}x}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}.
 \end{equation}
 
 \end_inset
@@ -1338,15 +1342,15 @@ The target probability measure is the scaled version of the monitor function
 
 \lang british
 As 
-\begin_inset Formula $M=S^{2}$
+\begin_inset Formula $M=\mathbb{S}^{2}$
 \end_inset
 
  these are trivially compactly supported.
- As 
+ 
 \begin_inset Formula $\mu$
 \end_inset
 
- is constant it is absolutely continuous.
+ is absolutely continuous.
  Hence by 
 \begin_inset ERT
 status collapsed
@@ -1421,7 +1425,7 @@ To see that this map,
 
 , will give a mesh that satisfies the equidistribution principle, consider
  a cell 
-\begin_inset Formula $A_{c}$
+\begin_inset Formula $A_{\xi}$
 \end_inset
 
  in the original computational mesh, 
@@ -1429,7 +1433,7 @@ To see that this map,
 \end_inset
 
  with volume 
-\begin_inset Formula $\mathcal{A}_{c}$
+\begin_inset Formula $V_{\xi}$
 \end_inset
 
 .
@@ -1438,7 +1442,7 @@ To see that this map,
 \end_inset
 
  gives the new cell, 
-\begin_inset Formula $A_{p}$
+\begin_inset Formula $A_{x}$
 \end_inset
 
  in the physical mesh 
@@ -1446,21 +1450,31 @@ To see that this map,
 \end_inset
 
 .
- Considering the ratio of the volume of the cell 
-\begin_inset Formula $A_{c}$
+ As 
+\begin_inset Formula $T$
 \end_inset
 
- to the volume of the computational mesh we find:
+ is a (optimal) transport map, then the integral over a set with respect
+ to the measure 
+\begin_inset Formula $\mu$
+\end_inset
+
+ equals the integral over the image of that set with respect to 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ Hence:
 \begin_inset Formula 
 \begin{equation}
-\frac{\mathcal{A}_{c}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=\frac{\int_{A_{c}}1\ d\bm{\xi}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=\int_{A_{c}}\mu\ d\bm{\xi}=\int_{A_{p}}\nu\ d\mathbf{x}=\frac{\int_{A_{p}}m(\mathbf{x})\ d\mathbf{x}}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}.
+\int_{A_{\xi}}\mathrm{d}\mu=\int_{A_{x}}\mathrm{d}\nu\implies\frac{V_{\xi}}{\int_{\mathbb{S}^{2}}\mathrm{d}x}=\frac{\int_{A_{x}}m(\mathbf{x})\ \mathrm{d}x}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}.
 \end{equation}
 
 \end_inset
 
-Hence the ratio of the integral of the monitor function over the new cell
- with the total integral of the monitor function is equal to the proportion
- of the volume that the original cell occupied in the original mesh.
+The ratio of the integral of the monitor function over the new cell with
+ the total integral of the monitor function is equal to the proportion of
+ the volume that the original cell occupied in the original mesh.
  This is precisely what it means for the monitor function to be equidistributed
  on a discretised mesh.
  
@@ -1470,7 +1484,7 @@ Hence the ratio of the integral of the monitor function over the new cell
 Using a change of variables, we have:
 \begin_inset Formula 
 \begin{equation}
-\frac{\mathcal{A}_{c}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=\frac{\int_{A_{p}}m(\mathbf{x})\ d\mathbf{x}}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}=\frac{\int_{A_{c}}m(\exp_{\xi}[\nabla\phi(\bm{\xi})])|J(\bm{\xi})|\ d\bm{\xi}}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}\label{eq:cov}
+\frac{V_{\xi}}{\int_{\mathbb{S}^{2}}\mathrm{d}x}=\frac{\int_{A_{x}}m(\mathbf{x})\ \mathrm{d}x}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}=\frac{\int_{A_{\xi}}m(\exp_{\xi}[\nabla\phi(\bm{\xi})])|J(\bm{\xi})|\ \mathrm{d}\xi}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}\label{eq:cov}
 \end{equation}
 
 \end_inset
@@ -1495,13 +1509,13 @@ reference "eq:cov"
 \end_inset
 
 ) must hold for arbitrary sets 
-\begin_inset Formula $A_{c}\in\Omega_{C}$
+\begin_inset Formula $A_{\xi}\in\Omega_{C}$
 \end_inset
 
-, the following equation of Monge-Ampère type:
+, the following equation of Monge-Ampère type on the sphere results:
 \begin_inset Formula 
 \begin{equation}
-m\left(\exp_{\xi}[\nabla\phi(\bm{\xi})]\right)|J(\bm{\xi})|=\frac{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ d\mathbf{x}}{\int_{\mathbb{S}^{2}}1\ d\bm{\xi}}=c.
+m\left(\exp_{\xi}[\nabla\phi(\bm{\xi})]\right)|J(\bm{\xi})|=\frac{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}{\int_{\mathbb{S}^{2}}\mathrm{d}x}=c.
 \end{equation}
 
 \end_inset
