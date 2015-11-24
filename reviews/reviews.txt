@@ -1,0 +1,173 @@
+Re: JCOMP-D-15-00759
+
+Dear Dr. Weller,
+
+Based on the received referee report, which is appended below, I have come to the decision on your manuscript entitled "Mesh generation on the sphere using Optimal Transport and the numerical solution of a Monge-Ampère type equation".
+
+In view of the referee report, I have come to the conclusion that after minor revisions your paper can be reconsidered for publication in the Journal of Computational Physics. Therefore, I am looking forward to receiving the revised version of the paper together with a reply to the reports and a summary of the revisions made. The changes you will have made in the revised submission should be highlighted (please use one color per reviewer).
+
+Note: While submitting the revised manuscript, please double check the author names provided in the submission so that authorship related changes are made in the revision stage. If your manuscript is accepted, any authorship change will involve approval from co-authors and respective editor handling the submission and this may cause a significant delay in publishing your manuscript.
+
+If the revised version is submitted within two months of receipt of this e-mail, the manuscript will retain the original submission date. After two months, your paper might be treated as a new submission and may be sent to new reviewers.
+
+Please note that this journal offers a new, free service called AudioSlides: brief, webcast-style presentations that are shown next to published articles on ScienceDirect (see also http://www.elsevier.com/audioslides). If your paper is accepted for publication, you will automatically receive an invitation to create an AudioSlides presentation.
+
+NOTE: Upon submitting your revised manuscript, please upload the source files for your article. For additional details regarding acceptable file formats, please refer to the Guide for Authors at: http://www.elsevier.com/journals/journal-of-computational-physics/0021-9991/guide-for-authors
+
+When submitting your revised paper, we ask that you include the following items:
+
+Response to Reviewers (mandatory)
+
+This should be a separate file labeled "Response to Reviewers" that carefully addresses, point-by-point, the issues raised in the comments appended below. You should also include a suitable rebuttal to any specific request for change that you have not made. Mention the page, paragraph, and line number of any revisions that are made. Indicate in the revised manuscript the changes you have made by highlighting the text in different colors for different reviewers.
+
+Manuscript and Figure Source Files (mandatory)
+
+We cannot accommodate PDF manuscript files for production purposes. We also ask that when submitting your revision you follow the journal formatting guidelines.  Figures and tables may be embedded within the source file for the submission as long as they are of sufficient resolution for Production. For any figure that cannot be embedded within the source file (such as *.PSD Photoshop files), the original figure needs to be uploaded separately. Refer to the Guide for Authors for additional information.
+http://www.elsevier.com/journals/journal-of-computational-physics/0021-9991/guide-for-authors
+
+Highlights (optional)
+
+Highlights consist of a short collection of bullet points that convey the core findings of the article and should be submitted in a separate file in the online submission system. Please use 'Highlights' in the file name and include 3 to 5 bullet points (maximum 85 characters, including spaces, per bullet point). See the following website for more information
+http://www.elsevier.com/highlights
+
+Graphical Abstract (optional)
+
+Graphical Abstracts should summarize the contents of the article in a concise, pictorial form designed to capture the attention of a wide readership online. Refer to the following website for more information: http://www.elsevier.com/graphicalabstracts
+
+The revised version of your submission is due by Jan 20, 2016.
+
+With best regards,
+
+Soniya Deepak
+Journal Manager
+Journal Of Computational Physics
+
+
+
+The reviewers' comments are as follows:
+
+************************************************************
+Associate Editor: All three reviewers recommend minor revisions, and offer numerous comments that aim at improving the presentation. I read the paper closely and can see that it needs a careful proofreading, preferably by all the co-authors. Furthermore, the paper is rather long, and trimming digressive passages may improve its readability. References should be accurate, complete and consistently adhere to the Journal style. Theorem 1 seems to combine theorems 8 and 9 in McCann 2001; if this is the case (I have no final version of that paper, but only postscript file available on the web), then this should be acknowledged. Figure 2 and the accompanying discussion appear confusing. In particular, (24) is a Gateaux derivative in the direction of d_f. Why is it referred to as a "normal" gradient; normal to what? Furthermore, the symbol \hat{S} in (26) and (28) seems undefined. Independently, what happens to the solvers in (17) and (20) in the special case when one desires mesh
+movement that preserves cell volumes? In other words, can the proposed formalism be adopted to the case where r=1 everywhere?
+
+
+Reviewer #1: This paper introduces a new method for solving the Monge-Ampere equation on the surface of a sphere, with the goal of producing equidistributing meshes.  
+
+The numerical resolution of the Monge-Ampere equation has received a great deal of attention recently, but as far as I know, all methods to date have been confined to Euclidean space.  Solving the equation on the sphere is a new and exciting problem.
+
+The techniques introduced in this paper are somewhat ad hoc, and certainly lack mathematical rigor and show some drawbacks.  However, as a first attempt at solving a very challenging problem, this makes an interesting study that will hopefully lead to stronger results in the future.  Additionally, the motivation of this paper is the problem of mesh generation, and for these problems high accuracy is not typically needed as long as the mesh exhibits certain important qualitative properties.
+
+Comments:
+
+- A main assumption that is left unjustified is in section 4.1.2: that equation (5) can be approximated by equation (4).  The finite difference approximation of the Hessian relies on this assumption, and it is not clear how reliable this is.  The geometric approach seems more likely to be consistent.
+
+Some minor details:
+
+- Corollary 1 (p. 7): Mention that the c-convex potential satisfies a Monge-Ampere type equation, since showing this seems to be a main thrust of the proof.
+
+- Section 3 (p. 9): Discusses the 2 challenges of discretization and numerical algorithms.  It should be mentioned that another huge challenge is the need to ensure that the solution is convex, and some discrete version of this condition needs to be enforced by either the discretization or the solution method.
+
+- First sentence of p. 10: There has been some work on discretizations of f.  For example, see [Froese, 2012] and [Saumier, Agueh, and Khouider, 2015].
+
+- Last sentence of 4.1.1 (p. 12): the problem with controlling the eigenvalues is presumably related to the fact that the discretization and algorithm have no means for enforcing convexity of the solution.
+
+- In the discussions of discretization, how is the exponential map (from equation 22) calculated/approximated?
+
+- Figure 2 (p. 14): The short grey line indicating skewness is nearly invisible.  Perhaps the figure could be larger, or this section could be zoomed.
+
+- The same paper by McCann is listed twice in the bibliography.
+
+
+
+Reviewer #2: Review of the manuscript JCOMP-D-15-00759 titled ``Mesh generation on the sphere using Optimal Transport and the numerical solution of a Monge-Ampere type equation" by Hilary Weller, et al.
+
+I) Overview
+
+This paper present a mesh adaptation technique aimed at only moving the vertex positions without changing the connectities of the mesh, the so-called r-adaptivity method. There are a number of interesting points and contributions in this paper:
+
+-The moving mesh problem is first viewed as an equidistribution problem with respect to a monitor function. Then it is formulated as an Optimal transportation (OT) problem, which leads to a Monge-Amp\'ere type equation.
+
+- The existence of OT meshes on the sphere is shown.
+
+- Numerical methods for solving Monge-Amp\'ere equation is reviewed. The methods for solving this equation on the sphere is described in detail.
+
+- Experimental results are presented in planar and sphere cases. Comparsion with another approach based on centroidal Voronoi tessellation is given.  
+
+To my opinion, this paper contains some useful contributions to this topic and is worthy to be published.
+Next section contains my suggestion and comments for this paper.
+
+II) Comments
+
+i) In the title of this paper, it is more approproate to use ``mesh adaptation" instead of ``mesh generation".  Mesh generation usually means a mesh for a domin/region does not exist yet, and it must be created.  Mesh adaptation is applied directly on an existing mesh and make changes on it. 
+
+ii) For related work, only centroidal Voronoi tessellation is mentioned. However, moving mesh methods are developed extensively in the literatures.  Some of the methods might be needed to be mentioned and cited, please see the followin one and the references therein.
+
+@Article{Huang01-adaption,
+  Title                    = {Variational mesh adaption: Isotropy and equidistribution},
+  Author                   = {Huang, W.},
+  Journal                  = {Journal of Computational Physics},
+  Year                     = {2001},
+  Pages                    = {903--924},
+  Volume                   = {174}
+}
+
+iii) Section 4.2, Spatial Discretisation. It is not obvious which spatial grid is used for discrtising Laplacian. It is mentioned that a finite difference and finite volume grid is used. Fig.2 shows just two local cells of the grid. It would be very helpful to show at least one full grid.
+
+iv) Section 4.2.2.1 Do you use the same grid for discretising Laplacian and Hessian?
+
+v) Section 4.2.2.2 Is the equation (29) exact, or the ratio of the volumes (right hand side) is just an approxiation of the left hand side?
+
+vi) Section 4.2.3 Please add a reference for the Goldilocks gradient.
+
+vii) Section 6.1. Please clarify or show the initial mesh of the Ring mesh and Bell mesh shown in Figure 4.
+
+viii) Section 6.2. lines 477-479, the reasons for the stalling of geometric Hessian were too rough. Why it worked after the monitor function was smoothed?
+
+ix) Section 6.3, what are the initial meshes in this compariosn (in Figure 7)?
+
+x) Some typos
+
+- Page 12, line 265, ... preconditioning with not ...
+- Page 17, line 376
+
+
+
+
+
+
+
+
+
+
+
+
+Reviewer #3: Review:
+Mesh Generation on the sphere using optimal Transport and the numerical solution of a Monge-Ampere type equation, Hilary Weller, Philip Brown, Chris Budd, Mike Cullen
+
+This paper considers the numerical solution of the Monge-Ampere equation on the 
+Surface of the sphere in order to generate meshes for the purpose of numerical weather simulations. It uses the generalised version of Brenier's theorem as set out by McCann that the optimal transport problem on the surface of the sphere admits a unique solution (which is an exponential map of a potential function) to make the case that it is suitable for r-adaptive mesh generation. The authors present a strong case as to why this form of mesh adaptivity could potentially be attractive from the point of view of global atmospheric modelling, whilst also citing its possible limitations. The advantages and disadvantages of this approach compared to centroidal Voronoi meshes which uses Lloyd's algorithm are also considered.
+
+The resultant Monge-Ampere equation is then solved using a fixed point iteration scheme.
+This is a similar approach to that taken previously by a few of the co-authors for mesh generation on the plane. Although, it is not apparent to me why this approach should accelerate convergence as the author states, since both methods rely on a somewhat arbitrary parameter for convergence. The authors also claim that this approach is based on a linearization of the Monge-ampere equation, although it does not appear that they have used the correct linearized form of the equation. 
+
+Numerical results are presented for two analytic monitor functions and precipitation data. Various discretisation schemes are compared with respect to their convergence properties and various mesh quality measures are considered. The meshes generated are compared with centroidal Voronoi meshes and are found to be non-orthogonal and less isotropic, but have less face skewness (although these comparisons are only made using one type of monitor function).
+
+In summary this paper presents for the first time a numerical solution of a monge-ampere type equation on the surface of the sphere, and the numerical results presented demonstrate it's potential for global atmospheric modelling. I would therefore recommend this paper for publication subject to the following:
+
+Page 4,  line 69: suggest to replace 'uses' to  'using'.
+Page 5, line 114: suggest to re-write this sentence 'Given the solution of the Monge-Ampere equation $\phi$ is convex,  the hessian of $\phi$ is positive…'
+Page 6, lines 135-136: remove full stop after equation.
+Page 12, lines 276-281: Is this the correct linearization? Could you elaborate further as to why equation 21 will accelerate convergence compared to 22?
+Page 13, line 285: replace 'on' with 'of'.
+Page 14, lines 309-110 and Page 15, lines 324-325: Suggest to remove brackets from equations 23 and 25 in the normal gradient to make consistent with notation elsewhere in the text.
+Page 16, lines 346-347: This statement is not clear, the description of the Goldilocks gradient in lines 371-373 might be better placed here .
+Page 17, line 376; The dashed lines do not appear on my copy of the paper in figure 3. I am unclear as to what this region is.
+Page 17, lines 384-385: This description of this procedure is not very clear. Is this also how eqution (21) is solved?
+Page 18, lines 399-400: suggest to replace 'calculated evaluated' with 'which is evaluated', and also 'use' with 'used' and 'applying' with 'apply'.
+Page 19, lines 426-427: Sentence is confusing. Is $\phi$ a vector of initial values and/or the values from the previous iteration?
+Page 19, Line 437: Suggest to replace 'The' with 'These'.
+Page 25, line 535: 'residual is monot…'
+Page 36, line 596: suggest to remove 'the minimum allowable values is set to' 
+
+
+

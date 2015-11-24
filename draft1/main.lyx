@@ -2,7 +2,7 @@
 \lyxformat 413
 \begin_document
 \begin_header
-\textclass article
+\textclass elsarticle
 \begin_preamble
 %\usepackage{color}
 %\newcommand{\nicefrac}[2]{\ensuremath ^{#1}\!\!/\!_{#2}}
@@ -35,8 +35,10 @@
 \newtheorem{corollary}{Corollary}
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}
+
+\usepackage{lineno}
 \end_preamble
-\options review,square,comma,sort&compress,12pt
+\options review,square,comma,sort&compress,12pt,times,authoryear
 \use_default_options true
 \maintain_unincluded_children false
 \language british
@@ -79,7 +81,7 @@
 \use_esint 1
 \use_mhchem 0
 \use_mathdots 0
-\cite_engine natbib_numerical
+\cite_engine natbib_authoryear
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -110,74 +112,27 @@
 
 \begin_body
 
-\begin_layout Title
-Mesh generation on the sphere using Optimal Transport and the numerical
- solution of a Monge-Ampère type equation
-\end_layout
-
-\begin_layout Author
-Hilary Weller, Philip Browne, Chris Budd and Mike Cullen
-\end_layout
-
 \begin_layout Standard
-\align center
-Graphical abstract
-\begin_inset Newline newline
-\end_inset
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
 
 
-\begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/6/8/pptMesh.pdf
-	width 80text%
+\backslash
+linenumbers
+\end_layout
 
 \end_inset
 
 
-\end_layout
+\begin_inset CommandInset include
+LatexCommand include
+filename "frontMatter.tex"
 
-\begin_layout Standard
-An equation of Monge-Ampère type has, for the first time, been solved numericall
-y on the surface of the sphere in order to generate optimally transported
- (OT) meshes, equidistributed with respect to a monitor function.
- Optimal transport generates meshes that keep the same connectivity as the
- original mesh, making them suitable for r-adaptive simulations, in which
- the equations of motion can be solved in a moving frame of reference in
- order to avoid mapping the solution between old and new meshes and to avoid
- load balancing problems on parallel computers.
- 
-\end_layout
+\end_inset
 
-\begin_layout Standard
-The semi-implicit solution of the Monge-Ampère type equation involves a
- new linearisation of the Hessian term, and exponential maps are used to
- map from old to new meshes on the sphere.
- The determinant of the Hessian is evaluated as the change in volume between
- old and new mesh cells, rather than using numerical approximations to the
- gradients.
- 
-\end_layout
 
-\begin_layout Standard
-OT meshes are generated to compare with centroidal Voronoi tesselations
- on the sphere and are found to have advantages and disadvantages; OT equidistri
-bution is more accurate, the number of iterations to convergence is independent
- of the mesh size, face skewness is reduced and the connectivity does not
- change.
- However anisotropy is higher and the OT meshes are non-orthogonal.
-\end_layout
-
-\begin_layout Standard
-It is shown that optimal transport on the sphere leads to meshes that do
- not tangle.
- However, tangling can be introduced by numerical errors in calculating
- the gradient of the mesh potential.
- Methods for alleviating this problem are explored.
- 
-\end_layout
-
-\begin_layout Standard
-Finally, OT meshes are generated using observed precipitation as a monitor
- function, in order to demonstrate the potential power of the technique.
 \end_layout
 
 \begin_layout Section
@@ -7839,7 +7794,8 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/5/8/pptMesh.pdf
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/5/8/pptMesh.png
+	lyxscale 50
 	width 100text%
 
 \end_inset
@@ -7849,7 +7805,8 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/6/8/pptMesh.pdf
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/6/8/pptMesh.png
+	lyxscale 50
 	width 100text%
 
 \end_inset
@@ -8001,10 +7958,25 @@ Finally, we generate a mesh using a monitor function based on reanalysis
  of future work.
 \end_layout
 
+\begin_layout Section*
+
+\lang english
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Weller acknowledges support from NERC grant NE/H015698/1 and Browne from
+ NERC grant NE/J005878/1.
+ Budd acknowledges support the Pacific Institute for the Mathematical Sciences
+ (PIMS) who have funded his sabbaticals.
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "numerics,pbrowne"
+bibfiles "numerics,comments/Phil3/bibfile"
 options "abbrvnat"
 
 \end_inset

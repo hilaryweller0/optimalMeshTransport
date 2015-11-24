@@ -1,0 +1,71 @@
+% a command for generating a tables of meshes of different types all
+% for the same refinement level. The first argument is the mesh number
+% and the second is the refinement level
+
+\newcommand{\Xmeshes}[2]
+{
+\begin{tabular}{ccc}
+\rotatebox[origin=l]{90}{Lloyd} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_RinglerLloyd_#1_#2_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_RinglerLloyd_#1_#2_0_meshZoom.pdf}
+\\
+\rotatebox[origin=l]{90}{FD Hessian} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_MongeAmpereV0_#1_#2_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_MongeAmpereV0_#1_#2_0_meshZoom.pdf}
+\\
+\rotatebox[origin=l]{90}{Volume Hessian} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_MongeAmpereV1_#1_#2_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_MongeAmpereV1_#1_#2_0_meshZoom.pdf}
+\\
+\rotatebox[origin=l]{90}{FD Voronoi} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_MongeAmpereV0Voronoi_#1_#2_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_MongeAmpereV0Voronoi_#1_#2_0_meshZoom.pdf}
+\\
+\rotatebox[origin=l]{90}{Volume Voronoi} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_MongeAmpereV1Voronoi_#1_#2_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_MongeAmpereV1Voronoi_#1_#2_0_meshZoom.pdf}
+\end{tabular}
+}
+
+% a command for generating a table of meshes of different refinements
+% and zoomed in for a different case
+
+\newcommand{\meshes}[1]
+{
+\begin{tabular}{ccc}
+X2 &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_#1_5_2_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_#1_5_2_0_meshZoom.pdf}
+\\
+X4 &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_#1_5_4_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_#1_5_4_0_meshZoom.pdf}
+\\
+X8 &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_#1_5_8_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_#1_5_8_0_meshZoom.pdf}
+\\
+X16 &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_#1_5_16_0_mesh.pdf} &
+\includegraphics[width=0.49\textwidth]
+    {../graphics/meshes_sphereMeshes_#1_5_16_0_meshZoom.pdf}
+\\
+\end{tabular}
+}

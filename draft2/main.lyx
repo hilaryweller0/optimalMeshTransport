@@ -1,0 +1,7988 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass elsarticle
+\begin_preamble
+%\usepackage{color}
+%\newcommand{\nicefrac}[2]{\ensuremath ^{#1}\!\!/\!_{#2}}
+\newcommand{\half}{\nicefrac{1}{2}}
+%\usepackage { fancybox}
+
+%\journal{Journal of Computational Physics}
+
+%\usepackage{babel}
+
+% Floats at end
+%\usepackage[nolists]{endfloat}
+%\renewcommand{\efloatseparator}{\mbox{}}
+
+% Phil's packagages
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usepackage{tikz-3dplot}
+\usepackage{pgfplots}
+%\usepackage{authblk}
+\usetikzlibrary{plotmarks}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+
+\usepackage{lineno}
+\end_preamble
+\options review,square,comma,sort&compress,12pt,times,authoryear
+\use_default_options true
+\maintain_unincluded_children false
+\language british
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format pdf5
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_title "\@title"
+\pdf_author "\@author"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "citecolor=black,linkcolor=black"
+\papersize default
+\use_geometry true
+\use_amsmath 2
+\use_esint 1
+\use_mhchem 0
+\use_mathdots 0
+\cite_engine natbib_authoryear
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.4cm
+\topmargin 2.4cm
+\rightmargin 2.4cm
+\bottommargin 2.4cm
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+linenumbers
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand include
+filename "frontMatter.tex"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+
+\lang english
+Introduction
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The need to represent scale interactions in weather and climate prediction
+ models has, for many decades, motivated research into the use of adaptive
+ meshes 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "BO84,SK93,Wan01"
+
+\end_inset
+
+.
+ R-adaptivity - mesh 
+\bar under
+r
+\bar default
+edistribution - involves deforming a mesh in order to vary local resolution
+ and was first considered for atmospheric modelling more than twenty years
+ ago by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DD92"
+
+\end_inset
+
+.
+ It is an attractive form of adaptivity since it does not involve altering
+ the mesh connectivity, does not create load balancing problems because
+ points are never created or destroyed, does not require mapping of solutions
+ between meshes 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "LTZ01"
+
+\end_inset
+
+, does not lead to sudden changes in resolution and can be retro-fitted
+ into existing models.
+ The solution of the Monge-Ampère equation to generate an optimally transported
+ (OT) mesh based on a monitor function is a useful form of r-adaptive mesh
+ generation because it generates a mesh equidistributed with respect to
+ a monitor function and does not lead to mesh tangling 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "BHR09"
+
+\end_inset
+
+.
+ We will see that the optimal transport problem on the sphere leads to a
+ slightly different equation of Monge-Ampère type, which has not before
+ been solved numerically on the surface of a sphere, which would be necessary
+ for weather and climate prediction using r-adaptivity.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+At first glance, r-adaptivity does not look ideal for adaptive meshing of
+ the global atmosphere; 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DD92"
+
+\end_inset
+
+ pointed out that the resulting meshes can be quite distorted which leads
+ to truncation errors and it is not always possible to control the resolution
+ in individual directions, just the total cell size (area or volume); with
+ r-adaptivity, it is not possible, for example, to increase the total number
+ of points around the equator, just re-distribute them 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "FT93"
+
+\end_inset
+
+.
+ However, if the mesh redistribution starts from a mesh with enough points
+ around the equator, then these points can be redistributed according to
+ transient features of the flow.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Models of the global atmosphere are being developed with accurate treatment
+ of non-orthogonality and which allow arbitrary grid structures 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "GR04,MTN+11,CS12,MSC14,Wel14"
+
+\end_inset
+
+.
+ The time may therefore be right to reconsider r-adaptive modelling of the
+ global atmosphere.
+\end_layout
+
+\begin_layout Standard
+A powerful form of adaptivity that, like r-adaptivity, retains the same
+ total number of points, is centroidal Voronoi tesselation using a non-uniform
+ density (or monitor) function to control the mesh spacing, using Lloyd's
+ algorithm 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RJG+11"
+
+\end_inset
+
+.
+ Lloyd's algorithm generates smoothly varying, orthogonal, near centroidal
+ isotropic meshes suitable for finite-volume models and is being used by
+ the Model for Prediction Across Scales 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "MPAS,"
+key "SKD+12"
+
+\end_inset
+
+.
+ Lloyd's algorithm alters the mesh connectivity meaning that, if it is used
+ in conjunction with dynamic mesh adaptivity, mapping between old and new
+ solutions is needed and there is an additional layer of complexity involved
+ with changing the data structures and moving information between parallel
+ processors.
+ Also, Lloyd's algorithm is extremely expensive, using an explicit solution
+ to find an equidistributed mesh - an elliptic problem.
+ The cost per iteration is proportional to the number of points, 
+\begin_inset Formula $N$
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "JGR+13"
+
+\end_inset
+
+ and, in one dimension, the number of iterations is proportional to 
+\begin_inset Formula $N$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "DFG99"
+
+\end_inset
+
+.
+ Therefore, overall, the cost is proportional to 
+\begin_inset Formula $N^{2}$
+\end_inset
+
+.
+ Conversely, generating optimally transported meshes uses a semi-implicit
+ technique, has convergence independent of the mesh size and the overall
+ cost is proportional to 
+\begin_inset Formula $N\log N$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "BBPC14"
+
+\end_inset
+
+.
+ We therefore propose r-adaptivity which uses cheaper mesh generation and
+ fixed data structures associated with the mesh.
+\end_layout
+
+\begin_layout Standard
+In section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:OT"
+
+\end_inset
+
+ we describe mesh generation by optimal transport in Euclidean space leading
+ to a Monge-Ampère equation.
+ We then show how these concepts can extend to mesh generation on the sphere,
+ leading to an equation of Monge-Ampère type.
+ Existing numerical solution techniques in Euclidean geometry are reviewed
+ in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:review"
+
+\end_inset
+
+.
+ In section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:method"
+
+\end_inset
+
+ we describe the new numerical methods for solving the Monge-Amp
+\lang english
+è
+\lang british
+re type equations, both on a Euclidean plane and on the sphere.
+ In order to address issues of mesh distortion, a range of diagnostics of
+ mesh quality are presented.
+ These diagnostics, along with the diagnostics of solution convergence,
+ are described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:diags"
+
+\end_inset
+
+ and the diagnostics of the meshes generated are presented in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:results"
+
+\end_inset
+
+.
+ The meshes generated, both on the plane and on the sphere, are shown and
+ described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:results"
+
+\end_inset
+
+ and the meshes on the sphere are compared with centroidal Voronoi meshes
+ generated using Lloyd's algorithm 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RJG+11"
+
+\end_inset
+
+ with the same monitor function.
+ In order to demonstrate the performance of the mesh generation using real
+ data as a monitor function, meshes are generated using a monitor function
+ derived from reanalysis precipitation in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:results"
+
+\end_inset
+
+.
+ Final conclusions and recommendations for future work are drawn in section
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:concs"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+Mesh Generation by Optimal Transport (OT) 
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:OT"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Optimally Transported Meshes in Euclidean Space
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+A mesh is equidistributed with respect to a monitor function when the product
+ of the cell volumes and the monitor function in the cell is constant across
+ all mesh cells.
+ 
+\lang british
+The equidistribution principle alone does not lead to a well-defined problem
+ for mesh generation.
+ Indeed this problem is ill-posed in more than 1 dimension and so requires
+ the imposition of an extra constraint.
+ 
+\lang english
+
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BW06"
+
+\end_inset
+
+ introduced optimal transport for mesh generation to find a map from the
+ original mesh (or computational space, 
+\begin_inset Formula $\Omega_{c}$
+\end_inset
+
+) to the new mesh (or physical space, 
+\begin_inset Formula $\Omega_{p}$
+\end_inset
+
+).
+ This technique was further developed by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BHR09"
+
+\end_inset
+
+ and extended to 3 spatial dimensions by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+.
+ The 
+\shape italic
+optimal transport 
+\shape default
+constraint says that the new mesh should be as close as possible to the
+ original mesh 
+\lang british
+- we seek to minimise the distance between the two meshes in a certain measure
+ which we shall discuss.
+ We write this minimization problem:
+\begin_inset Formula 
+\begin{equation}
+\min_{\mathbf{x}\in\Omega_{p}}d(\bm{\xi},\mathbf{x})^{2}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the distance metric between the two meshes and 
+\begin_inset Formula $\bm{\xi}\in\Omega_{c}$
+\end_inset
+
+ maps to 
+\begin_inset Formula $\mathbf{x}\in\Omega_{p}$
+\end_inset
+
+.
+ In Cartesian space 
+\begin_inset Formula $[0,1]^{n}$
+\end_inset
+
+ this metric can simply be the sum of the Euclidean distance between all
+ of the corresponding points defining the meshes.
+ Brenier's theorem 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "brenier1991"
+
+\end_inset
+
+ then tells us that the unique, optimal transport map from 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ to 
+\begin_inset Formula $\bm{\xi}$
+\end_inset
+
+ is the gradient of a convex scalar potential, 
+\begin_inset Formula $\phi$
+\end_inset
+
+,
+\lang english
+ so that the new mesh locations are given by: 
+\begin_inset Formula 
+\begin{equation}
+{\bf x}=\bm{\xi}+\nabla\phi.\label{eq:meshMap}
+\end{equation}
+
+\end_inset
+
+The change in cell volume under the coordinate transform is given by the
+ determinant of the Jacobian of the map, 
+\lang british
+
+\begin_inset Formula $|J(\xi)|=|\mathbf{\nabla\mathbf{x}}(\bm{\xi})|$
+\end_inset
+
+, the gradient of 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ with respect to 
+\begin_inset Formula $\bm{\xi}$
+\end_inset
+
+.
+ Therefore, for equidistribution with respect to a monitor function, 
+\begin_inset Formula $m$
+\end_inset
+
+, the new mesh locations should satisfy
+\begin_inset Formula 
+\begin{equation}
+|\nabla\mathbf{x}|\ m\left(\mathbf{x}\right)=c\label{eq:equiDist}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $c$
+\end_inset
+
+ is a constant, uniform over space, which will be determined once the numerical
+ method is defined.
+ Taking the determinant of the gradient of eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:meshMap"
+
+\end_inset
+
+), we can see that 
+\begin_inset Formula $|\nabla\mathbf{x}|=|I+\nabla\nabla\phi|=|I+H\left(\phi\right)|$
+\end_inset
+
+ where 
+\begin_inset Formula $I$
+\end_inset
+
+ is the identity tensor and 
+\begin_inset Formula $H$
+\end_inset
+
+ is the Hessian.
+ Consequently, for the mesh to be optimally transported and equidistributed,
+ the mesh potential,
+\lang english
+ 
+\begin_inset Formula $\phi$
+\end_inset
+
+, must satisfy a Monge-Ampère equation: 
+\begin_inset Formula 
+\begin{equation}
+|I+H\left(\phi\right)|m({\bf x})=c.\label{eq:MA}
+\end{equation}
+
+\end_inset
+
+The presence of the identity tensor in this Monge-Ampère equation will be
+ exploited in the linearisation to create a novel numerical algorithm.
+ 
+\end_layout
+
+\begin_layout Standard
+Mesh tangling is caused by a local loss of invertibility of the Jacobian
+ of the map from the original to the tranported mesh.
+ 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is convex since it is the solution of a Monge-Amp
+\lang english
+è
+\lang british
+re equation, so the Hessian of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is positive definite and hence the Jacobian is invertible and the mesh
+ will not tangle 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "BHR09"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+
+\lang english
+Optimally Transported Meshes 
+\lang british
+on the Sphere
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+A naive approach to r-adaptivity on the sphere, 
+\begin_inset Formula $\mathbb{S}^{2}$
+\end_inset
+
+, would be to map the surface onto the plane, use an established method
+ to solve a mesh redistribution problem on the plane, then map back to the
+ sphere.
+ As shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "commutative_diagram"
+
+\end_inset
+
+, the desired map 
+\begin_inset Formula $T$
+\end_inset
+
+ could be written as a composition of mappings as 
+\begin_inset Formula $T=g^{-1}\circ t\circ g$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em]
+\end_layout
+
+\begin_layout Plain Layout
+
+  {
+\end_layout
+
+\begin_layout Plain Layout
+
+     
+\backslash
+mathbb{S}^2 & 
+\backslash
+mathbb{S}^2 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+     
+\backslash
+mathbb{R}^2 & 
+\backslash
+mathbb{R}^2 
+\backslash
+
+\backslash
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+path[-stealth]
+\end_layout
+
+\begin_layout Plain Layout
+
+    (m-1-1) edge node [left] {$g$} (m-2-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (m-1-1) edge [double] node [below] {$T$} (m-1-2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (m-2-2) edge node [right] {$g^{-1}$} (m-1-2)
+\end_layout
+
+\begin_layout Plain Layout
+
+    (m-2-1) edge [double] node [below] {$t$} (m-2-2);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang english
+Commutative diagram showing an naive approach to meshing on the sphere by
+ converting the problem to the plane
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset CommandInset label
+LatexCommand label
+name "commutative_diagram"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+A map 
+\begin_inset Formula $g:\mathbb{S}^{2}\to\mathbb{R}^{2}$
+\end_inset
+
+ must be chosen and an optimal transport map 
+\begin_inset Formula $t$
+\end_inset
+
+ found.
+ The boundary conditions for the problem of finding 
+\begin_inset Formula $t$
+\end_inset
+
+ must be specified, and those boundary conditions would necessarily depend
+ on 
+\begin_inset Formula $g$
+\end_inset
+
+.
+ For example in the case where the mapping 
+\begin_inset Formula $g$
+\end_inset
+
+ is simply the lat-lon decomposition of 
+\begin_inset Formula $\mathbb{S}^{2}$
+\end_inset
+
+, the boundary conditions for the mesh redistribution problem on the plane
+ will then be periodic in the zonal direction.
+ In the the meridional direction, Neumann boundary conditions would not
+ be appropriate as the poles will not be free to move and they will be mapped
+ back to their original location under 
+\begin_inset Formula $g^{-1}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The Hairy Ball Theorem tells us that there must be at least one fixed point
+ of the map 
+\begin_inset Formula $T:\mathbb{S}^{2}\to\mathbb{S}^{2}$
+\end_inset
+
+.
+ The decomposition 
+\begin_inset Formula $T=g^{-1}\circ t\circ g$
+\end_inset
+
+ would then be possible if 
+\begin_inset Formula $g$
+\end_inset
+
+ maps the fixed points of 
+\begin_inset Formula $T$
+\end_inset
+
+ to a Neumann boundary of 
+\begin_inset Formula $\mathbb{R}^{2}$
+\end_inset
+
+.
+ However the location of the fixed points of 
+\begin_inset Formula $T$
+\end_inset
+
+ are not known 
+\shape italic
+a priori
+\shape default
+, and hence choosing 
+\begin_inset Formula $g$
+\end_inset
+
+ appropriately would form a significant problem by itself.
+ Hence we will seek a direct optimal transport map, 
+\begin_inset Formula $T:\mathbb{S}^{2}\to\mathbb{S}^{2}$
+\end_inset
+
+ which will be described in this section.
+\end_layout
+
+\begin_layout Standard
+On the surface of the sphere, we would still like to define an optimally
+ transported mesh satisfying equidistribution:
+\lang english
+
+\begin_inset Formula 
+\begin{equation}
+r\left(\phi\right)m\left(\bm{x}\right)=c.\label{eq:MAsph}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $r=V_{\xi}/V_{x}$
+\end_inset
+
+ is the ratio of the volumes of the original mesh cells, 
+\begin_inset Formula $V{}_{\xi}$
+\end_inset
+
+, with vertices at positions 
+\begin_inset Formula $\bm{\xi}$
+\end_inset
+
+, and the volumes of the new mesh cells, 
+\begin_inset Formula $V_{x}$
+\end_inset
+
+, with vertices at positions 
+\begin_inset Formula $\bm{x}$
+\end_inset
+
+.
+ We need to ascertain if unique solutions of (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MAsph"
+
+\end_inset
+
+) exist which minimise the distance between the original and resulting meshes.
+ 
+\lang british
+On the sphere 
+\begin_inset Formula $\mathbb{S}^{2}$
+\end_inset
+
+, the appropriate distance metric is the Riemannian distance on the surface
+ of the sphere between all of the corresponding points defining the meshes.
+ We cannot use Brenier's theorem on the sphere.
+ Instead, we appeal to the generalised version of Brenier's theorem given
+ by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "McCann2001"
+
+\end_inset
+
+, a detailed discussion of which is given in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "villani2003"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{defn}
+\end_layout
+
+\end_inset
+
+[
+\begin_inset Formula $c$
+\end_inset
+
+-convex function] The 
+\begin_inset Formula $c$
+\end_inset
+
+-transform 
+\begin_inset Formula $\phi^{c}$
+\end_inset
+
+ of a function 
+\begin_inset Formula $\phi:\mathbb{S}^{2}\to\mathbf{\mathbb{R}}$
+\end_inset
+
+ is defined as 
+\begin_inset Formula 
+\begin{equation}
+\phi^{c}(y)=\sup_{\bm{\xi}\in\mathbf{\mathbb{S}}^{2}}\{-c(\bm{\xi},\mathbf{x})-\phi(\bm{\xi})\}.
+\end{equation}
+
+\end_inset
+
+The function 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is said to be 
+\emph on
+
+\begin_inset Formula $c$
+\end_inset
+
+-convex
+\emph default
+, or cost-convex, if 
+\begin_inset Formula $(\phi^{c})^{c}=\phi.$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{defn}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{theorem}
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "mccannthm"
+
+\end_inset
+
+ [
+\begin_inset CommandInset citation
+LatexCommand citealt
+key "McC01"
+
+\end_inset
+
+] Let 
+\begin_inset Formula $M$
+\end_inset
+
+ be a connected, complete smooth Riemannian manifold, equipped with its
+ standard volume measure 
+\begin_inset Formula $\mathrm{d}x$
+\end_inset
+
+.
+ Let 
+\begin_inset Formula $\mu,\nu$
+\end_inset
+
+ be two probability measures on 
+\begin_inset Formula $M$
+\end_inset
+
+ with compact support, and let the objective function 
+\begin_inset Formula $c(\bm{\xi},\mathbf{x})$
+\end_inset
+
+ be equal to 
+\begin_inset Formula $d(\bm{\xi},\mathbf{x})^{2}$
+\end_inset
+
+, where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the geodesic distance on 
+\begin_inset Formula $M$
+\end_inset
+
+.
+ Further, assume that 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is absolutely continuous with respect to the volume measure on 
+\begin_inset Formula $M$
+\end_inset
+
+.
+ Then, the Monge-Kantorovich mass transportation problem between 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+ admits a unique optimal transported map
+\lang english
+ 
+\begin_inset Formula $T$
+\end_inset
+
+ where 
+\begin_inset Formula $T$
+\end_inset
+
+ pushes forward the measure 
+\begin_inset Formula $\mu$
+\end_inset
+
+ onto 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ Then, (using classical optimal transport notation): 
+\begin_inset Formula 
+\begin{equation}
+T_{\#}\mu=\nu\label{eq:t1}
+\end{equation}
+
+\end_inset
+
+such that 
+\begin_inset Formula 
+\begin{equation}
+\mathbf{x}=T(\bm{\xi})=\exp_{\bm{\xi}}[\nabla\phi(\bm{\xi})]\label{eq:t2}
+\end{equation}
+
+\end_inset
+
+
+\lang british
+for some 
+\begin_inset Formula $d^{2}/2$
+\end_inset
+
+-convex potential 
+\begin_inset Formula $\phi$
+\end_inset
+
+.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{theorem}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{corollary}
+\end_layout
+
+\end_inset
+
+ There exists a unique, optimally transported mesh on the sphere that satisfies
+ the equidistribution principle.
+ Moreover, that mesh is defined by a 
+\begin_inset Formula $c$
+\end_inset
+
+-convex scalar potential function.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{corollary}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{proof}
+\end_layout
+
+\end_inset
+
+ Clearly 
+\begin_inset Formula $M=\mathbb{S}^{2}$
+\end_inset
+
+ satisfies the conditions on 
+\begin_inset Formula $M$
+\end_inset
+
+ in 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+autoref
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+mccannthm
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+.
+ The first probability measure of interest, 
+\begin_inset Formula $\mu$
+\end_inset
+
+, we define to be the scaled Lebesgue measure such that:
+\lang english
+
+\begin_inset Formula 
+\begin{equation}
+\mathrm{d}\mu=\frac{\mathrm{d}x}{\int_{\mathbb{S}^{2}}\mathrm{d}x}.
+\end{equation}
+
+\end_inset
+
+
+\lang british
+The target probability measure, 
+\begin_inset Formula $\mu$
+\end_inset
+
+, is the Lebesgue measure appropriately scaled by the monitor function to
+ be equidistribed, such that:
+\lang english
+
+\begin_inset Formula 
+\begin{equation}
+\mathrm{d}\nu=\frac{m(\mathbf{x})\mathrm{d}x}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}.
+\end{equation}
+
+\end_inset
+
+
+\lang british
+As 
+\begin_inset Formula $M=\mathbb{S}^{2}$
+\end_inset
+
+ these are trivially compactly supported.
+ 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is absolutely continuous.
+ Hence by 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+autoref
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+mccannthm
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ we have that there exists a unique solution, 
+\begin_inset Formula $T$
+\end_inset
+
+, to the mass transportation problem between 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ From (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:t2"
+
+\end_inset
+
+) we can see that any point in the new mesh, 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, is defined by the action of the exponential map on the scalar potential,
+ 
+\begin_inset Formula $\phi$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To see that this map, 
+\begin_inset Formula $T$
+\end_inset
+
+, will give a mesh that satisfies the equidistribution principle, consider
+ a cell 
+\begin_inset Formula $A_{\xi}$
+\end_inset
+
+ in the original computational mesh, 
+\begin_inset Formula $\Omega_{C}$
+\end_inset
+
+ with volume 
+\begin_inset Formula $V_{\xi}$
+\end_inset
+
+.
+ The mapping of the cell under 
+\begin_inset Formula $T$
+\end_inset
+
+ gives the new cell, 
+\begin_inset Formula $A_{x}$
+\end_inset
+
+ in the physical mesh 
+\begin_inset Formula $\Omega_{p}$
+\end_inset
+
+.
+ As 
+\begin_inset Formula $T$
+\end_inset
+
+ is a (optimal) transport map, then the integral over a set with respect
+ to the measure 
+\begin_inset Formula $\mu$
+\end_inset
+
+ equals the integral over the image of that set with respect to 
+\begin_inset Formula $\nu$
+\end_inset
+
+.
+ Hence:
+\begin_inset Formula 
+\begin{equation}
+\int_{A_{\xi}}\mathrm{d}\mu=\int_{A_{x}}\mathrm{d}\nu\implies\frac{V_{\xi}}{\int_{\mathbb{S}^{2}}\mathrm{d}x}=\frac{\int_{A_{x}}m(\mathbf{x})\ \mathrm{d}x}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}.
+\end{equation}
+
+\end_inset
+
+The ratio of the integral of the monitor function over the new cell with
+ the total integral of the monitor function is equal to the proportion of
+ the volume that the original cell occupied in the original mesh.
+ This is precisely what it means for the monitor function to be equidistributed
+ on a discretised mesh.
+ 
+\end_layout
+
+\begin_layout Standard
+Using a change of variables, we have:
+\begin_inset Formula 
+\begin{equation}
+\frac{V_{\xi}}{\int_{\mathbb{S}^{2}}\mathrm{d}x}=\frac{\int_{A_{x}}m(\mathbf{x})\ \mathrm{d}x}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}=\frac{\int_{A_{\xi}}m(\exp_{\xi}[\nabla\phi(\bm{\xi})])|J(\bm{\xi})|\ \mathrm{d}\xi}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}\label{eq:cov}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $|J(\bm{\xi})|$
+\end_inset
+
+ is the determinant of the Jacobian of the map 
+\begin_inset Formula $T(\bm{\xi})=\exp_{\xi}[\nabla\phi(\bm{\xi})]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:cov"
+
+\end_inset
+
+) must hold for arbitrary sets 
+\begin_inset Formula $A_{\xi}\in\Omega_{C}$
+\end_inset
+
+, the following equation of Monge-Ampère type on the sphere results:
+\begin_inset Formula 
+\begin{equation}
+m\left(\exp_{\xi}[\nabla\phi(\bm{\xi})]\right)|J(\bm{\xi})|=\frac{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}{\int_{\mathbb{S}^{2}}\mathrm{d}x}=c.
+\end{equation}
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{proof}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{corollary}
+\end_layout
+
+\end_inset
+
+ The optimally transported mesh on the sphere satisfying the equidistribution
+ principle does not exhibit tangling.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{corollary}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{proof}
+\end_layout
+
+\end_inset
+
+ The choice of cost function 
+\begin_inset Formula $c$
+\end_inset
+
+ to be the squared geodesic distance is crucial to the proof of uniqueness
+ in 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+autoref
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+mccannthm
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+.
+ Indeed simply taking 
+\begin_inset Formula $c$
+\end_inset
+
+ to be the square of the Euclidean distance is not sufficient 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ahmad2004"
+
+\end_inset
+
+.
+ The squared geodesic distance is necessary to ensure that the classical
+ 
+\emph on
+twist
+\emph default
+ condition holds, i.e.
+ 
+\begin_inset Formula $T$
+\end_inset
+
+ given in 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:t1"
+
+\end_inset
+
+ is injective and hence is a map.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The injectivity of this map ensures that 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:t2"
+
+\end_inset
+
+ is locally invertible, i.e.
+ for each point in the new mesh, 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, there is a unique point in the original mesh, 
+\begin_inset Formula $\bm{\xi}$
+\end_inset
+
+, which maps to it - i.e.
+ mesh tangling is not present.
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{proof}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+A Review of Numerical Methods for solving the Monge-Amp
+\lang english
+è
+\lang british
+re Equation
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:review"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The fully non-linear, second-order, elliptic Monge-Amp
+\lang english
+è
+\lang british
+re equation is:
+\begin_inset Formula 
+\begin{equation}
+|H\left(\phi\left(\bm{\xi}\right)\right)|=f\left(\bm{\xi},\phi\right)\label{eq:MA1}
+\end{equation}
+
+\end_inset
+
+for independent variable 
+\begin_inset Formula $\bm{\xi}\in\Omega$
+\end_inset
+
+ and 
+\begin_inset Formula $\Omega\subset\mathbb{R}^{d}$
+\end_inset
+
+ where 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is the (scalar) dependent variable, 
+\begin_inset Formula $f$
+\end_inset
+
+ is a known scalar function of 
+\begin_inset Formula $\bm{\xi}$
+\end_inset
+
+ and 
+\begin_inset Formula $\phi$
+\end_inset
+
+, 
+\begin_inset Formula $H=\nabla\nabla$
+\end_inset
+
+ is the Hessian (the tensorial gradient of the gradient) and 
+\begin_inset Formula $|H|$
+\end_inset
+
+ is the determinant of the Hessian.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FO11"
+
+\end_inset
+
+ give an excellent review of some numerical methods for solving this equation
+ and this review draws from and adds to their review.
+\end_layout
+
+\begin_layout Standard
+There are two challenging parts to solving the Monge-Amp
+\lang english
+è
+\lang british
+re equation.
+ Firstly we need 
+\lang english
+spatial discretisation methods both for the Hessian, 
+\begin_inset Formula $H$
+\end_inset
+
+ and for the source term, 
+\begin_inset Formula $f$
+\end_inset
+
+ (although 
+\begin_inset Formula $f$
+\end_inset
+
+ is a known function, it can be a function of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ or of 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+, so numerical approximations are necessary).
+ The spatial discretisation leads to a set of non-linear algebraic equations.
+ Secondly, the algebraic equations require a numerical algorithm to find
+ solutions.
+ We will start by considering the spatial discretisation of the Hessian,
+ 
+\begin_inset Formula $H$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BHR09"
+
+\end_inset
+
+ used finite differences on a structured, Cartesian grid to discretise the
+ Hessian, a technique that was extended to three dimensions by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Obe08"
+
+\end_inset
+
+ describe a finite difference method that uses a wide stencil to calculate
+ the Hessian on a structured Cartesian grid.
+ This was extended to three dimensions by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FO11"
+
+\end_inset
+
+.
+ The wide stencil was needed to ensure monotonicity of the iterative solution
+ to the convex, numerical solution.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FOS1x"
+
+\end_inset
+
+ study the slightly different, 2-Hessian equation and describe how they
+ rotate the coordinate system so that the Hessian is diagonal and hence
+ the solution is convex and the discretisation is monotone.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FN09"
+
+\end_inset
+
+ approximate the Monge-Ampère equation by a fourth-order quasi-linear equation
+ in order to use mixed finite elements for the spatial discretisation.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "DG06,DG06b"
+
+\end_inset
+
+ also use mixed finite-elements on triangulations of the unit plane.
+ All of these techniques have been used on either 2D or 3D Euclidean geometry.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+There has been less discussion of the discretisation methods needed to calculate
+ 
+\begin_inset Formula $f$
+\end_inset
+
+, which is not trivial since 
+\begin_inset Formula $f$
+\end_inset
+
+ can be a function of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ or, in our case, of 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Once the Monge-Ampère equation is discretised in space, it is necessary
+ to solve the resulting non-linear algebraic equations, the part of the
+ method that we describe as the 
+\begin_inset Quotes eld
+\end_inset
+
+algorithm
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BW06,BHR09"
+
+\end_inset
+
+ introduced a parabolic version of the Monge-Ampère equation which is solved
+ by time-stepping, including an implicit relaxation term to smooth the transient
+ solution and to speed up convergence:
+\begin_inset Formula 
+\begin{equation}
+\left(I-\gamma\nabla^{2}\right)\frac{\partial\phi}{\partial t}=\left(m\left(\nabla\phi\right)|I+H\left(\phi\right)|\right)^{\frac{1}{d}}\label{eq:PMA}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ is a scalar parameter defining the amount of smoothing applied, 
+\begin_inset Formula $\nabla^{2}$
+\end_inset
+
+ is the Laplacian operator and 
+\begin_inset Formula $d$
+\end_inset
+
+ is the number of spatial dimensions.
+ The time-stepping effectively creates fixed-point iterations but it may
+ be possible to create more convergent iterations, without smoothing towards
+ a uniform mesh.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BFO10"
+
+\end_inset
+
+ also used fixed-point iterations by linearising the two-dimensional Hessian
+ term with a Laplacian:
+\begin_inset Formula 
+\begin{equation}
+|H\left(\phi\right)|=\frac{1}{2}\left(\nabla^{2}\phi\right)^{2}-\frac{\phi_{xx}^{2}+\phi_{yy}^{2}}{2}-\phi_{xy}^{2}.
+\end{equation}
+
+\end_inset
+
+After some manipulation, this results in a Poisson equation which can be
+ solved implicitly with the non-linear terms on the right hand side.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FO11"
+
+\end_inset
+
+ describe this as a semi-implicit method and use it to find the starting
+ point for a Newton method.
+ A Newton method is a common algorithm for solving the algebraic equations
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "DG06,FO11,CSC14"
+
+\end_inset
+
+.
+ However the cost and complexity of the Newton method may not be necessary
+ for mesh generation.
+ In this paper we focus on fixed-point iterations, although the new linearisatio
+n proposed may also be beneficial for calculating the first guess for a
+ Newton method.
+ 
+\end_layout
+
+\begin_layout Standard
+Equations of Monge-Amp
+\lang english
+è
+\lang british
+re type have not before been solved numerically on the sphere.
+ The description of the optimally transported mesh problem using the Monge-Amp
+\lang english
+è
+\lang british
+re equation relies on properties of Euclidean geometry 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "BHR09"
+
+\end_inset
+
+.
+ The numerical solution technique for the optimal transport problem on the
+ surface of a sphere will be described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:method"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+
+\lang english
+Numerical Method for Calculating OT Meshes
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:method"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+There are two aspects to solving equations of Monge-Ampère type in order
+ to calculate optimally transported (OT) meshes.
+ The spatial discretisation describes how to calculate the gradient and
+ the Hessian of the mesh potential, 
+\begin_inset Formula $\phi$
+\end_inset
+
+, from discrete values (in this instance in finite volume cells).
+ This will convert the PDE into a set of non-linear algebraic equations.
+ The algorithm describes how to linearise and solve the large set of non-linear
+ algebraic equations.
+\end_layout
+
+\begin_layout Subsection
+The Numerical Algorithm
+\end_layout
+
+\begin_layout Subsubsection
+
+\lang english
+In Euclidian Space
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:linearPlane"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+A fixed-point iteration sequence to solve eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA"
+
+\end_inset
+
+)
+\lang british
+ can be found by observing that the linear terms of 
+\begin_inset Formula $|I+H\left(\phi\right)|$
+\end_inset
+
+ are in fact
+\lang english
+ 
+\begin_inset Formula $1+\nabla^{2}\phi$
+\end_inset
+
+ where 
+\begin_inset Formula $\nabla^{2}$
+\end_inset
+
+ is the Laplacian operator.
+ Eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA"
+
+\end_inset
+
+) can then be written as fixed-point iterations:
+\begin_inset Formula 
+\begin{equation}
+1+\nabla^{2}\phi^{n+1}=1+\nabla^{2}\phi^{n}-|I+H\left(\phi^{n}\right)|+\frac{c^{n}}{m({\bf x}^{n})}\label{eq:MA_SI}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $n$
+\end_inset
+
+ is the iteration number and where:
+\begin_inset Formula 
+\begin{equation}
+{\bf x}^{n}=\bm{\xi}+\nabla\phi^{n}.
+\end{equation}
+
+\end_inset
+
+This is simpler than the fixed-point iterations used by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FN09,BFO10"
+
+\end_inset
+
+ because of the presence of the identity tensor in our Monge-Ampère equation
+ which simplifies the linearisation.
+ These fixed-point iterations are similar to the solution of the parabolic
+ Monge-Ampère equation by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+ but could have advantages because the Laplacian term should initially accelerat
+e convergence whereas the Laplacian smoothing used by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+ was only used to smooth intermediate iterations.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Given suitable spatial discretisations, eqn
+\lang british
+.
+
+\lang english
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA_SI"
+
+\end_inset
+
+) can be solved for 
+\begin_inset Formula $\phi^{n+1}$
+\end_inset
+
+ given known values 
+\begin_inset Formula $\phi^{n}$
+\end_inset
+
+.
+ Assuming periodic boundary conditions, for the Poisson equation (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA_SI"
+
+\end_inset
+
+) to have a solution, 
+\begin_inset Formula $c^{n}$
+\end_inset
+
+ must take the value
+\begin_inset Formula 
+\begin{equation}
+c^{n}=\frac{\sum|I+H\left(\phi^{n}\right)|V_{\xi}}{\sum\frac{V_{\xi}}{m\left(\mathbf{x}^{n}\right)}}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $V_{\xi}$
+\end_inset
+
+ are the volumes of the original, computational mesh cells and the summations
+ are over all cells of the computational mesh.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Without a monotone spatial discretisation, numerical solutions of the Monge-Ampè
+re equation can become non-convex leading to artificial oscillations in
+ the numerical solution and non-convergence 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "FOS1x"
+
+\end_inset
+
+.
+ The spatial discretisation described here is not monotone and the numerical
+ solution can become non-convex.
+ Therefore, in order to improve stability of the fixed-point iteration sequence,
+ the Laplacian terms of eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA_SI"
+
+\end_inset
+
+) can be multiplied by a factor, 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+, where 
+\begin_inset Formula $\alpha\ge0$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\left(1+\alpha\right)\nabla^{2}\phi^{n+1}=\left(1+\alpha\right)\nabla^{2}\phi^{n}-|I+H\left(\phi^{n}\right)|+\frac{c^{n}}{m({\bf x}^{n})}\label{eq:PMA_SI}
+\end{equation}
+
+\end_inset
+
+which clearly has no affect on a converged solution but will alter the convergen
+ce of the fixed-point iterations used to find 
+\begin_inset Formula $\phi$
+\end_inset
+
+ and can help to keep the numerical solution smooth.
+ This is a form of under-relaxation and the value of 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ will be defined in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:underRelax"
+
+\end_inset
+
+.
+ A solution of the Monge-Ampère equation only controls 
+\begin_inset Formula $|I+H\left(\phi\right)|$
+\end_inset
+
+, not the individual eigenvalues of 
+\begin_inset Formula $I+H\left(\phi\right)$
+\end_inset
+
+.
+ If one of the eigenvalues gets large and the other small, the Laplacian
+ preconditioning with not lead to convergent iterations without the under-relaxa
+tion.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+
+\lang english
+On the Surface of the Sphere
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+In order to define convergent fixed-point iterations, we need to find a
+ linearisation of eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MAsph"
+
+\end_inset
+
+).
+ Assuming that eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MAsph"
+
+\end_inset
+
+) can be approximated by eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA"
+
+\end_inset
+
+) on a tangent plane to the sphere, we use the same linearisation as in
+ section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:linearPlane"
+
+\end_inset
+
+ and the same fixed-point iteration sequence:
+\begin_inset Formula 
+\begin{equation}
+\left(1+\alpha\right)\nabla\phi^{n+1}=\left(1+\alpha\right)\nabla^{2}\phi^{n}-r\left(\phi^{n}\right)+\frac{c^{n}}{m({\bf x}^{n})}\label{eq:PMA_SIsph}
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{equation}
+\mathbf{x}^{n}=\exp_{\bm{\xi}}[\nabla\phi^{n}(\bm{\xi})].
+\end{equation}
+
+\end_inset
+
+No further approximation is needed for 
+\begin_inset Formula $r=V_{\xi}^{n}/V_{x}^{n}$
+\end_inset
+
+ since the old and new cell volumes can be computed explicitly at every
+ iteration.
+ The linearisation will now be less accurate than in the Euclidean case
+ due to the curvature of the sphere, so it may be necessary to increase
+ 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ further to avoid divergence.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The fixed-point iteration sequences defined in eqns.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+) and (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SIsph"
+
+\end_inset
+
+) are preferred to the solution of the parabolic Monge-Ampère equation as
+ used by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BCW13,BBPC14"
+
+\end_inset
+
+ since the Laplacian term used above is a linearisation of the Hessian and
+ so will accelerate convergence to the given monitor function whereas the
+ Laplacian used by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BCW13,BBPC14"
+
+\end_inset
+
+ smoothes the solution towards a uniform mesh.
+ However there may be further scope for improvement by combining the best
+ aspects of the two approaches.
+\end_layout
+
+\begin_layout Subsection
+Spatial Discretisation 
+\end_layout
+
+\begin_layout Standard
+For the solution of the Monge-Amp
+\lang english
+è
+\lang british
+re equation in Euclidian geometry to be convex and converge monotonically,
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FO11"
+
+\end_inset
+
+ use a Newton solver and a wide-stencil finite-difference scheme.
+ In Euclidean geometry we are solving a different version on the Monge-Amp
+\lang english
+è
+\lang british
+re eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+) and on the sphere (eqn 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SIsph"
+
+\end_inset
+
+), no previous solution technique exists.
+ We use fixed-point iterations and have found, by trial and error, some
+ desirable properties of the spatial discretisation in order to achieve
+ convergence.
+ Further work to improve the spatial discretisation and prove convergence
+ is needed.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The discretisation of 
+\begin_inset Formula $|I+H\left(\phi^{n}\right)|$
+\end_inset
+
+ should be consistent with the discretisation of 
+\begin_inset Formula $1+\nabla^{2}\phi$
+\end_inset
+
+ otherwise the linearisation will not be 
+\lang english
+close
+\lang british
+ and the iterative solution will not converge quickly.
+ In this context, consistent means that the trace of the discretised 
+\begin_inset Formula $H\left(\phi\right)$
+\end_inset
+
+ must be equal to 
+\begin_inset Formula $\nabla^{2}\phi$
+\end_inset
+
+, as occurs analytically.
+ This is only possible when solving eqn (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+), not eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SIsph"
+
+\end_inset
+
+) since the relationship between 
+\begin_inset Formula $r$
+\end_inset
+
+ and 
+\begin_inset Formula $1+\nabla^{2}\phi$
+\end_inset
+
+ is not known numerically.
+\end_layout
+
+\begin_layout Enumerate
+The spatial discretisation should be at least second-order accurate and
+ the errors should be smooth.
+ If we have rough truncation errors or truncation errors which are proportional
+ to the mesh size, 
+\begin_inset Formula $|\mathbf{d}_{f}|$
+\end_inset
+
+, and we are deforming mesh cells of size 
+\begin_inset Formula $|\mathbf{d}_{f}|$
+\end_inset
+
+ to size, say 
+\begin_inset Formula $0.1|\mathbf{d}_{f}|$
+\end_inset
+
+, then truncation errors will lead to mesh tangling.
+\end_layout
+
+\begin_layout Enumerate
+To avoid grid-scale oscillations in the solution of 
+\begin_inset Formula $\phi$
+\end_inset
+
+, the spatial discretisation should be as compact as possible so that grid-scale
+ oscillations of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ are not hidden in the discretisations of 
+\begin_inset Formula $|I+H\left(\phi^{n}\right)|$
+\end_inset
+
+ and 
+\begin_inset Formula $m\left(\bm{x}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+If the solution, 
+\begin_inset Formula $\phi$
+\end_inset
+
+, is convex or locally convex, then convex cells in the initial mesh should
+ remain convex in the mapped mesh.
+ This implies that 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+ should have bounded variation.
+ 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+We postulate that, following the TRiSK discretisation on polygons 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "TRSK09"
+
+\end_inset
+
+, the divergence of the mesh map on the initial (primal) mesh should be
+ a convex combination of the divergence of the mesh map if it were calculated
+ on a dual mesh (eg a triangulation).
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We are considering a finite-volume discretisation on initially orthogonal
+ nearly uniform polygonal prisms.
+ This and the above requirements suggests the following spatial discretisation
+ on the computational mesh:
+\end_layout
+
+\begin_layout Subsubsection
+Discretisation of the Laplacian
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:discLaplace"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For cell 
+\begin_inset Formula $i$
+\end_inset
+
+ with faces 
+\begin_inset Formula $f\in i$
+\end_inset
+
+ and neighbour cells 
+\begin_inset Formula $i_{f}$
+\end_inset
+
+, the simplest, most compact discretisation of the Laplacian, suitable for
+ an orthogonal grid, using Gauss's divergence theorem, is:
+\begin_inset Formula 
+\begin{equation}
+\nabla_{i}^{2}\phi\approx\frac{1}{V_{i}}\sum_{f\in i}\nabla_{nf}\left(\phi\right)|\mathbf{S}_{f}|
+\end{equation}
+
+\end_inset
+
+where cell 
+\begin_inset Formula $i$
+\end_inset
+
+ has volume 
+\begin_inset Formula $V_{i}$
+\end_inset
+
+, 
+\begin_inset Formula $\mathbf{S}_{f}$
+\end_inset
+
+ is the outward pointing normal vector to cell 
+\begin_inset Formula $i$
+\end_inset
+
+ at face 
+\begin_inset Formula $f$
+\end_inset
+
+ with area equal to the face area so that 
+\begin_inset Formula $|\mathbf{S}_{f}|$
+\end_inset
+
+ is the face area and the normal gradient at each face is:
+\begin_inset Formula 
+\begin{equation}
+\nabla_{nf}\phi=\frac{\phi_{i_{f}}-\phi_{i}}{|\mathbf{d}_{f}|}\label{eq:snGrad}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $|\mathbf{d}_{f}|$
+\end_inset
+
+ is the (geodesic) distance between cell centre 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $i_{f}$
+\end_inset
+
+.
+ This simple form ensures curl free pressure gradients (assuming that the
+ curl is calculated using Stokes circulation theorem around every edge of
+ the 3D mesh).
+ If cell 
+\begin_inset Formula $i$
+\end_inset
+
+ has centre 
+\begin_inset Formula $\bm{\xi}_{i}$
+\end_inset
+
+ then 
+\begin_inset Formula $\mathbf{d}_{f}=\bm{\xi}_{i}-\bm{\xi}_{i_{f}}$
+\end_inset
+
+ in Euclidean geometry.
+ On the surface of the sphere, 
+\begin_inset Formula $|\mathbf{d}_{f}|$
+\end_inset
+
+ is the great circle distance between 
+\begin_inset Formula $\bm{\xi}_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\bm{\xi}_{if}$
+\end_inset
+
+.
+ Locations 
+\begin_inset Formula $\bm{\xi}_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\bm{\xi}_{i_{f}}$
+\end_inset
+
+, vector 
+\begin_inset Formula $\mathbf{S}_{f}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathbf{d}_{f}$
+\end_inset
+
+ for cells 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $i_{f}$
+\end_inset
+
+ are shown in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cell"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset External
+	template XFig
+	filename figures/figs/cell.fig
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Cell centre locations, 
+\begin_inset Formula $\bm{\xi}_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\bm{\xi}_{i_{f}}$
+\end_inset
+
+ of cells 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $i_{f}$
+\end_inset
+
+, face area vector 
+\begin_inset Formula $\mathbf{S}_{f}$
+\end_inset
+
+ and vector between cell centres, 
+\begin_inset Formula $\mathbf{d}_{f}$
+\end_inset
+
+.
+ 
+\begin_inset Formula $\bm{\xi}_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\bm{\xi}_{i_{f}}$
+\end_inset
+
+ have been placed in order to accentuate the orthogonality and skewness
+ (section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:diags"
+
+\end_inset
+
+).
+ The skewness of face 
+\begin_inset Formula $f$
+\end_inset
+
+ is shown by a short grey line of length 
+\begin_inset Formula $d_{s}$
+\end_inset
+
+ in the plane of the face.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:cell"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Discretisation of the Hessian
+\end_layout
+
+\begin_layout Standard
+Two approaches are taken to calculate the Hessian.
+ The first we define a finite-difference approach (which uses both finite
+ volume and finite difference approximations).
+ The second uses the fact that, in solving the Monge-Amp
+\lang english
+è
+\lang british
+re equation for mesh generation, we are approximating the change in cell
+ volume by the determinant of the Hessian.
+ Therefore, rather than calculating a discretised Hessian, we can simply
+ use the change in cell volume, 
+\begin_inset Formula $r$
+\end_inset
+
+.
+ This is the geometric approach.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Finite Difference Discretisation of the Hessian
+\end_layout
+
+\begin_layout Standard
+For a discretisation of the Hessian consistent with the discretisation of
+ the Laplacian, we use Gauss's theorem:
+\begin_inset Formula 
+\begin{equation}
+H\left(\phi\right)_{i}=\nabla\nabla_{i}\phi=\frac{1}{V_{i}}\sum_{f\in i}\nabla_{f}\left(\phi\right)\mathbf{S}_{f}\label{eq:FDhess}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\nabla_{f}\phi$
+\end_inset
+
+ is the vector gradient of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ located at face 
+\begin_inset Formula $f$
+\end_inset
+
+ of cell 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ The vector gradient, 
+\begin_inset Formula $\nabla_{f}\phi$
+\end_inset
+
+, is reconstructed from normal components, 
+\begin_inset Formula $\nabla_{nf}\phi$
+\end_inset
+
+ using a least-squares fit which is derived by assuming that 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+ is uniform so that it is first-order accurate on non-uniform meshes.
+ This approach starts by reconstructing a cell-centred gradient from surrounding
+ normal gradients using a least squares fit:
+\begin_inset Formula 
+\begin{equation}
+\nabla_{i}\phi=\left(\sum_{f\in i}\hat{\mathbf{S}}_{f}\mathbf{S}_{f}^{T}\right)^{-1}\sum_{f\in i}\nabla_{nf}\phi\ \mathbf{S}_{f}.\label{eq:gradc}
+\end{equation}
+
+\end_inset
+
+Next, a temporary value of the vector valued gradient at each face is calculated
+:
+\begin_inset Formula 
+\begin{equation}
+\nabla_{f}^{\prime}\phi=\lambda_{f}\nabla_{i}\phi+\left(1-\lambda_{f}\right)\nabla_{i_{f}}\phi
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\lambda_{f}$
+\end_inset
+
+ is the coefficient for linear interpolation.
+ For consistency with the Laplacian, we must have 
+\begin_inset Formula $\nabla_{f}\phi\cdot\mathbf{S_{f}}=\nabla_{nf}\phi|\mathbf{S}_{f}|$
+\end_inset
+
+ which can be enforced with an explicit correction:
+\begin_inset Formula 
+\begin{equation}
+\nabla_{f}\phi=\nabla_{f}^{\prime}\phi+\left(\nabla_{nf}\phi-\nabla_{f}^{\prime}\phi\cdot\hat{\mathbf{S}}_{f}\right)\hat{\mathbf{S}}_{f}.\label{eq:gradf}
+\end{equation}
+
+\end_inset
+
+The Hessian calculated using eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:FDhess"
+
+\end_inset
+
+) is not symmetric, as the analytic version would be.
+ 
+\end_layout
+
+\begin_layout Paragraph
+Geometric approach to calculating the Hessian
+\end_layout
+
+\begin_layout Standard
+A numerical approximation to calculating 
+\begin_inset Formula $H$
+\end_inset
+
+ will introduce truncation errors so instead we can simply use the change
+ in cell volume:
+\begin_inset Formula 
+\begin{equation}
+r_{i}=|I+H_{i}\left(\phi\right)|=\frac{V_{i}\left(\mathbf{x}\right)}{V_{i}\left(\bm{\xi}\right)}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $V_{i}\left(\mathbf{x}\right)$
+\end_inset
+
+ is the volume of the transported mesh cell 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $V_{i}\left(\bm{\xi}\right)$
+\end_inset
+
+ is the volume of the original cell.
+ Volumes are calculated on the surface of the sphere by decomposing every
+ polyhedron (on the original and new meshes) into tetrahedra with curved
+ surfaces which are flat in spherical geometry.
+ The volumes of these tetrahedra are found using the formula for the area
+ of a spherical triangle.
+\end_layout
+
+\begin_layout Subsubsection
+The Gradient at the Vertices
+\end_layout
+
+\begin_layout Standard
+In order to calculate the mesh map and consequently to calculate 
+\begin_inset Formula $m$
+\end_inset
+
+, we must calculate 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+ at the mesh vertices, 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+.
+ Ideally, this operation should not produce any non-convex cells and it
+ turns out to be particularly sensitive to the numerical approximation and
+ its stencil.
+ If the stencil is too large, grid-scale oscillations in 
+\begin_inset Formula $\phi$
+\end_inset
+
+ can grow which are not seen in 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ and convergence is slow.
+ If the stencil is too small, on a hexagonal mesh, grid-scale oscillations
+ of the approximation of the gradient at vertices can grow since the calculation
+ of the gradient does not lead to a gradient with bounded variation.
+ This does not slow down convergence but the resulting meshes are locally
+ distorted.
+ So the approximation and the stencil need to be just right - we need the
+ Goldilocks gradient.
+ 
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+If 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is convex, then it should have bounded variation - it should not oscillate
+ too fast.
+ On a mesh, the variation of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ will depend on the numerical approximation of the gradient.
+ We would like to find a numerical gradient that implies that 
+\begin_inset Formula $\phi$
+\end_inset
+
+ has bounded variation.
+ If 
+\begin_inset Formula $\phi$
+\end_inset
+
+ has bounded variation, then the transported mesh will be convex.
+ 
+\end_layout
+
+\end_inset
+
+Here, we propose three techniques for calculating the gradient at vertices,
+ none of which are guaranteed to lead to convex cells in the transformed
+ mesh.
+ 
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+, none of which guarantee bounded variation for convex functions.
+ 
+\end_layout
+
+\end_inset
+
+ Future work will include the search for a numerical approximation with
+ this property.
+\end_layout
+
+\begin_layout Paragraph
+Vertex Gradient using a Large Stencil
+\begin_inset CommandInset label
+LatexCommand label
+name "par:wideGradv"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In order to calculate 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ at the vertices, 
+\begin_inset Formula $\nabla_{f}\phi$
+\end_inset
+
+ at the faces is calculated using eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:gradf"
+
+\end_inset
+
+).
+ These values are then interpolated onto the vertices using linear interpolation.
+ On a mesh of squares, four values of 
+\begin_inset Formula $\nabla_{f}\phi$
+\end_inset
+
+ are averaged to calculate each 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ at a vertex and on a mesh of hexagons, three values of 
+\begin_inset Formula $\nabla_{f}\phi$
+\end_inset
+
+ are averaged to calculate each 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+.
+ Including the calculation of 
+\begin_inset Formula $\nabla_{f}\phi$
+\end_inset
+
+, the reconstruction of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ from 
+\begin_inset Formula $\phi$
+\end_inset
+
+ uses a stencil of 10 hexagons on a hexagonal mesh and 12 squares on a mesh
+ of squares.
+ Due to these large stencils, the gradients calculated are smooth even if
+ the 
+\begin_inset Formula $\phi$
+\end_inset
+
+ field is not smooth.
+ Due to the averaging (interpolation) of the gradient from the cell centres
+ to the vertices there will be some consistency between gradients at different
+ vertices and so cells may remain convex.
+ 
+\end_layout
+
+\begin_layout Paragraph
+
+\lang english
+Vertex Gradient using a Small Stencil
+\begin_inset CommandInset label
+LatexCommand label
+name "par:smallGradv"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The vector gradient at each vertex, 
+\lang british
+
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+,
+\lang english
+ can be reconstructed directly from the normal component of the gradient
+ at the surrounding faces using a least squares fit
+\begin_inset Formula 
+\begin{equation}
+\nabla_{v}\phi=\left(\sum_{f\in v}\mathbf{d}_{f}\mathbf{d}_{f}^{T}\right)^{-1}\sum_{f\in v}\left(\mathbf{d}_{f}\nabla_{nf}\phi\right)\label{eq:compactGradv}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $f\in v$
+\end_inset
+
+ is the set of faces which share vertex 
+\begin_inset Formula $v$
+\end_inset
+
+.
+ This approximation is exact for a uniform vector field, 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+, and is consequently first order accurate on an arbitrary mesh.
+ However on a hexagonal mesh, eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:compactGradv"
+
+\end_inset
+
+) only uses information from three surrounding faces and three surrounding
+ hexagons and the resulting gradients are prone to grid-scale oscillations
+ which can lead to the creation of non-convex cells.
+ The small amount of information used at every vertex means that neighbouring
+ vertices can have very different gradients.
+ We therefore need a larger stencil, but not as large as the stencil used
+ in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:wideGradv"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+On a mesh of squares, 
+\begin_inset Formula $\phi$
+\end_inset
+
+ at four squares is sufficient to reconstruct a smooth 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ to second order.
+\end_layout
+
+\begin_layout Paragraph
+
+\lang english
+Vertex Gradient using the Goldilocks Stencil
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The Goldilocks stencil should be large enough to calculate a smooth gradient
+ (with bounded variation) but without including averaging and thus hiding
+ grid-scale oscillations in 
+\begin_inset Formula $\phi$
+\end_inset
+
+.
+ The stencil used includes the faces which share vertex 
+\begin_inset Formula $v$
+\end_inset
+
+ and the face neighbours of those faces (fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:goldilocksStencil"
+
+\end_inset
+
+).
+ The vertex gradient is then reconstructed using a least squares fit:
+\begin_inset Formula 
+\begin{equation}
+\nabla_{v}\phi=\left(\sum_{f\in v\in f\in v}\mathbf{d}_{f}\mathbf{d}_{f}^{T}\right)^{-1}\sum_{f\in v\in f\in v}\left(\mathbf{d}_{f}\nabla_{nf}\phi\right)\label{eq:golilocksGradv}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $f\in v\in f\in v$
+\end_inset
+
+ is the set of faces shown by dashed lines in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:goldilocksStencil"
+
+\end_inset
+
+.
+ In the least squares fit in eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:golilocksGradv"
+
+\end_inset
+
+), the central faces are counted three times (making the fit more accurate
+ near the centre, following 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "WWF09"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+
+\lang english
+\begin_inset External
+	template XFig
+	filename figures/figs/goldilocksStencil.fig
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang english
+The Goldilocks stencil for recontructing the full gradient of the mesh potential
+, 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+, at the central vertex, 
+\begin_inset Formula $v$
+\end_inset
+
+, from the component of the normal gradient at each face, 
+\begin_inset Formula $\nabla_{nf}\phi$
+\end_inset
+
+.
+ This results in a stencil of six hexagons to calculate 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ at a vertex.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:goldilocksStencil"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Linear equation solver and fixed point iterations
+\end_layout
+
+\begin_layout Standard
+The Laplacian is solved implicitly in eqns (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+,
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SIsph"
+
+\end_inset
+
+) using the OpenFOAM GAMG solver (geometric algebraic multi-grid, 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "OpenFOAM"
+
+\end_inset
+
+) using diagonal incomplete Cholesky smoothing with 50 cells in the coarsest
+ level.
+ At each fixed point iteration (ie each value of 
+\begin_inset Formula $n$
+\end_inset
+
+ in eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+)) the Laplacian is solved once with a relative tolerance of 0.001, so that
+ the final residual is 0.001 times the initial residual.
+ Then the right hand side of eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+) is updated, incrementing 
+\begin_inset Formula $n$
+\end_inset
+
+ and the Laplacian is solved again until the initial residual is less than
+ 
+\begin_inset Formula $10^{-8}$
+\end_inset
+
+.
+ A weaker tolerance is probably acceptable for mesh generation but we are
+ using a tight tolerance to have more confidence that the numerical method
+ is convergent.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Moving Voronoi Generating Points
+\end_layout
+
+\begin_layout Standard
+If the initial mesh is Voronoi and it is required that the transported mesh
+ is also Voronoi, then the Voronoi generating points can be moved using
+ eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:meshMap"
+
+\end_inset
+
+) using the cell centre gradient, reconstructed from the face gradient using
+ volume weighting.
+ Then the moved generating points can be re-tesselated to create a new Voronoi
+ tesselation.
+ However, the re-tesselation may not have exactly the same connectivity
+ due to edge swapping in the Delaunay algorithm.
+ This technique therefore may not be so suitable for r-adaptivity.
+\end_layout
+
+\begin_layout Subsubsection
+Calculating the Monitor Function
+\end_layout
+
+\begin_layout Standard
+When using r-adaptivity, the mesh monitor function (that controls the mesh
+ density) will need to be mapped from the previous mesh onto the new transported
+ mesh so that it can be evaluated when solving eqns.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+) or (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SIsph"
+
+\end_inset
+
+).
+ In section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:results"
+
+\end_inset
+
+, we first present results using an analytic monitor function, calculated
+ evaluated at the transported mesh cell centres.
+ We then used observed meteorological data to calculate a monitor function
+ by mapping the data to the computational grid and then applying Laplacian
+ smoothing, as described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:smoothingm"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Enforcing Stability 
+\end_layout
+
+\begin_layout Subsubsection
+Under-relaxation
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:underRelax"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Here we describe how 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is calculated.
+ We start by defining the source terms of these equations to be 
+\begin_inset Formula $s^{n}=|I+H\left(\phi^{n}\right)|-c/m({\bf x}^{n})$
+\end_inset
+
+ and 
+\begin_inset Formula $s^{n}=r\left(\phi^{n}\right)-c/m({\bf x}^{n})$
+\end_inset
+
+ respectively.
+ For convergence to occur, we would like the source term to decrease relative
+ to the Laplacian term, 
+\begin_inset Formula $\nabla^{2}\phi$
+\end_inset
+
+.
+ Initially, the source term has order 1.
+ In the tests undertaken, both on the plane and on a sphere, it has been
+ sufficient to keep the ratio of the Laplacian to the source term greater
+ than four and to always ensure that 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ increases with iteration number, 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ So 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ is set to be:
+\begin_inset Formula 
+\begin{equation}
+1+\alpha^{n+1}=\max\left(1+\alpha^{n},\ 4\max\left(^{1}\!\!/\!_{4},\ \max\left(|s^{n}|\right)\right)\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Smoothing the Monitor Function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:smoothingm"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Following 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BBPC14"
+
+\end_inset
+
+, we experimented with smoothing the monitor function and this smoothing
+ certainly improved convergence and generated meshes with smoother grading
+ and hence lower anisotropy and skewness and better orthogonality (see section
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:diags"
+
+\end_inset
+
+).
+ However the purpose of this work is to describe a robust solution of the
+ Monge-Amp
+\lang english
+è
+\lang british
+re equation on the sphere for any monitor function.
+ So smoothing of the monitor function will not be considered for the analyticall
+y defined monitor functions.
+ However, when using meteorological data to define a monitor function, the
+ monitor function is smoothed on the computational grid during each iteration
+ using Laplacian smoothing:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+m & = & m^{\prime}\left(\exp_{\xi}\nabla\phi\right)+\frac{1}{4}\nabla\cdot\left(|\mathbf{d}_{f}|^{2}\nabla m^{\prime}\left(\exp_{\xi}\nabla\phi\right)\right)
+\end{eqnarray*}
+
+\end_inset
+
+where 
+\begin_inset Formula $m^{\prime}$
+\end_inset
+
+ is the monitor function mapped from the meteorological data onto the physical
+ grid at position 
+\begin_inset Formula $\exp_{\xi}\nabla\phi$
+\end_inset
+
+ and 
+\begin_inset Formula $m$
+\end_inset
+
+ is the monitor function used in the source terms of eqns.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+,
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SIsph"
+
+\end_inset
+
+).
+ The diffusion coefficient used is the mesh spacing, 
+\begin_inset Formula $|\mathbf{d}_{f}|$
+\end_inset
+
+ on the computational grid.
+\end_layout
+
+\begin_layout Section
+Diagnostics of Convergence and of Mesh Quality
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:diags"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Firstly, convergence is measured by plotting the initial residual of the
+ implicit solution of the Laplacian at every fixed point iteration as a
+ function of iteration number.
+ If the Poisson equation, (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SIsph"
+
+\end_inset
+
+), is discretised and represented as a matrix equation, 
+\begin_inset Formula $A\bm{\phi}=\mathbf{b}$
+\end_inset
+
+, then the initial residual is given by
+\begin_inset Formula 
+\begin{equation}
+\frac{\sum|\mathbf{b}-A\bm{\phi}|}{\sum\left(|\mathbf{b}|+|A\mathbf{\bm{\phi}}|\right)}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\bm{\phi}$
+\end_inset
+
+ is the vector of all of the values of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ and we are considering the initial guess for 
+\begin_inset Formula $\bm{\phi}$
+\end_inset
+
+, before the solution of the Poisson equation, from the previous fixed point
+ iteration, 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ The sum is over all cells of the mesh (ie over all elements of the vectors
+ 
+\begin_inset Formula $\mathbf{b}$
+\end_inset
+
+ and 
+\begin_inset Formula $A\bm{\phi}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Secondly, the convergence of the final solution is assessed by plotting
+ the change in cell area between the initial mesh and the final iteration
+ for every cell in comparison to 
+\begin_inset Formula $c/m$
+\end_inset
+
+.
+ At convergence, these should be equal.
+ The test cases considered use an axi-symmetric monitor function, 
+\begin_inset Formula $m$
+\end_inset
+
+, so this measure is plotted as a scatter plot against distance to the axis
+ of symmetry.
+ This tells us where the solution is not converging to the required monitor
+ function and also, for solutions using 
+\begin_inset Formula $|I+H\left(\phi^{n}\right)|$
+\end_inset
+
+ instead of 
+\begin_inset Formula $r\left(\phi^{n}\right)$
+\end_inset
+
+ (ie using the finite difference Hessian rather than the geometric Hessian)
+ in the Monge-Amp
+\lang english
+è
+\lang british
+re equation, it tells us how well 
+\begin_inset Formula $|I+H\left(\phi^{n}\right)|$
+\end_inset
+
+ approximates 
+\begin_inset Formula $r\left(\phi^{n}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The diagnostics of mesh quality consider cell centres, defined as cell centroids
+ or centres of mass of the moved cells, and face centres, defined in the
+ same way.
+ The will also use the face area vector, 
+\begin_inset Formula $\mathbf{S}_{x}$
+\end_inset
+
+, the normal vector to each face with magnitude equal to the face area and
+ 
+\begin_inset Formula $\mathbf{d}_{x}$
+\end_inset
+
+, the vector between cell centres either side of a face of the moved mesh
+ (see fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cell"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+In order to measure mesh quality, firstly we will consider mesh spacing,
+ 
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+, between adjacent cell centres for each cell face as a scatter diagram
+ as a function of distance to the axis of symmetry (for the axi-symmetric
+ cases).
+ This informs us about the aspect ratios of the cells since cells with high
+ aspect ratio will give a large scatter of values of 
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+ for a given distance to the axis of symmetry.
+ If the mesh is perfectly equidistributed then cell areas should be given
+ by 
+\begin_inset Formula $c/m$
+\end_inset
+
+.
+ Therefore, for the meshes of quadrilaterals, 
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+ will be compared with 
+\begin_inset Formula $\sqrt{c/m}$
+\end_inset
+
+ and for the meshes of mostly hexagons, 
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+ will be compared with 
+\begin_inset Formula $\sqrt{2c\ \tan(\pi/3)/3m}$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+The second mesh quality diagnostic is non-orthogonality for each cell face
+ which is measured as
+\begin_inset Formula 
+\begin{equation}
+\text{non-orthogonality}=\cos^{-1}\frac{\mathbf{S}_{x}\cdot\mathbf{d}_{x}}{|\mathbf{S}_{x}||\mathbf{d}_{x}|}.\label{eq:nonOrthog}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The third mesh quality diagnostic is the face skewness, measured as the
+ distance, 
+\begin_inset Formula $d_{s}$
+\end_inset
+
+, between the face centre and the crossing point between the vector 
+\begin_inset Formula $\mathbf{d}_{x}$
+\end_inset
+
+ with the face, normalised by 
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+\text{skewness}=\frac{d_{s}}{|\mathbf{d}_{x}|}.\label{eq:skewness}
+\end{equation}
+
+\end_inset
+
+The skewness distance, 
+\begin_inset Formula $d_{s}$
+\end_inset
+
+, is shown as a short grey line in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cell"
+
+\end_inset
+
+.
+ This definition of skewness is a feature of the non-linearities of the
+ map generating the mesh and is different quantitatively and qualitatively
+ from that of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BRW15"
+
+\end_inset
+
+ which can be calculated directly the Jacobian of the map.
+ The skewness metric, 
+\begin_inset Formula $Q$
+\end_inset
+
+, from 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BRW15"
+
+\end_inset
+
+ gives information about isotropy and orthogonality, not face skewness.
+\end_layout
+
+\begin_layout Section
+
+\lang english
+Results
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:results"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Optimally transported meshes are generated in two-dimensional planar geometry
+ to compare with those generated by numerical solution of the parabolic
+ Monge-Ampère equation by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BRW15"
+
+\end_inset
+
+.
+ Next, OT meshes are generated on the surface of the sphere in order to
+ compare with the centroidal Voronoi meshes generated by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RJG+11"
+
+\end_inset
+
+ using Lloyd's algorithm.
+ Finally, OT meshes are generated on the sphere using observed precipitation
+ to define a monitor function.
+\end_layout
+
+\begin_layout Subsection
+Optimally Transported Meshes in Euclidean Geometry
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Meshes are generated on a finite plane, 
+\begin_inset Formula $[-1,1]^{2}$
+\end_inset
+
+, using the radially symmetric monitor function used by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BRW15"
+
+\end_inset
+
+ defined for each location 
+\begin_inset Formula $\mathbf{x}_{i}$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+m\left(\mathbf{x}_{i}\right)=1+\alpha_{1}\text{sech}^{2}\left(\alpha_{2}\left(R^{2}-a^{2}\right)\right)\label{eq:planeMonitor}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\mathbf{x}_{c}$
+\end_inset
+
+ is the centre of the refined region (the origin for these results), 
+\begin_inset Formula $R$
+\end_inset
+
+ is the distance of 
+\begin_inset Formula $\mathbf{x}_{i}$
+\end_inset
+
+ to 
+\begin_inset Formula $\mathbf{x}_{c}$
+\end_inset
+
+ and 
+\begin_inset Formula $\alpha_{1}$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $a$
+\end_inset
+
+ control the variations of the density function.
+ Following 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BRW15"
+
+\end_inset
+
+ we generate two types of mesh with this monitor function, the first we
+ call the ring mesh using 
+\begin_inset Formula $a=0.25$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{1}=10$
+\end_inset
+
+ and 
+\begin_inset Formula $\alpha_{2}=200$
+\end_inset
+
+ and the second the bell mesh using 
+\begin_inset Formula $a=0$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha_{1}=50$
+\end_inset
+
+ and 
+\begin_inset Formula $\alpha_{2}=100$
+\end_inset
+
+, both using periodic boundary conditions for 
+\begin_inset Formula $\phi$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The ring and bell meshes generated using both the finite difference and
+ the geometric Hessian on the plane are shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:planeMeshes"
+
+\end_inset
+
+.
+ The convergence diagnostics will be presented in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:convPlane"
+
+\end_inset
+
+.
+ Mesh quality for these meshes was analysed by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BRW15"
+
+\end_inset
+
+ and this is not repeated here.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Finite Difference Hessian
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Geometric Hessian
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+rotatebox[origin=l]{90}{Ring mesh}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V0/0/mesh.pdf
+	lyxscale 50
+	width 48text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V1/0/mesh.pdf
+	lyxscale 50
+	width 48text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+rotatebox[origin=l]{90}{Bell mesh}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V0/0/mesh.pdf
+	lyxscale 50
+	width 48text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V1/0/mesh.pdf
+	lyxscale 50
+	width 48text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang english
+A quarter of the ring and bell meshes using the finite difference and volume
+ Hesssian.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:planeMeshes"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The meshes in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:planeMeshes"
+
+\end_inset
+
+ calculated using both Hessian techniques are similar to each other and
+ they are also similar to the meshes generated by 
+\lang english
+
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BRW15"
+
+\end_inset
+
+
+\lang british
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+Convergence of the Monge-Amp
+\lang english
+è
+\lang british
+re Solution in Euclidean Geometry
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:convPlane"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/plots/MAresids.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/plots/boostLaplacian.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang english
+Convergence of initial residual of the solution of the Poisson equation
+ for each fixed point iteration and 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+ as a function of iteration number for the planar meshes generated with
+ the monitor function defined in eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:planeMonitor"
+
+\end_inset
+
+).
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:planeMeshConvergence"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:planeMeshConvergence"
+
+\end_inset
+
+ on the left shows the initial residual of the matrix solution as a function
+ of iteration number for the calculation of all of the meshes on the plane.
+ Using the finite difference Hessian, the solution converges rapidly but
+ convergence stalls when using the geometric Hessian.
+ There are two possible reasons for the stalling.
+ Firstly, the Laplacian is no longer a good linearisation of the geometric
+ Hessian and secondly, a solution at this resolution may not exist.
+ Smoothing the monitor function removes the stall in convergence and speeds
+ convergence of all solutions (not shown).
+ However this is not the topic of this paper.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The underelaxation factor, 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+, is shown in the right of fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:planeMeshConvergence"
+
+\end_inset
+
+.
+ It never rises above the initial value because the source term never increases
+ above its initial value.
+ The initial value of 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+ is simply 
+\begin_inset Formula $4\max|1-c/m|$
+\end_inset
+
+ and so 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+ is independent of the Hessian calculation method.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ring mesh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bell mesh
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Finite Difference Hessian
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V0/distArea.eps
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V0/distArea.eps
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Geometric Hessian
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.4_V1/distArea.eps
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/plane/BuddRusselWalsh/Fig4.5_V1/distArea.eps
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang english
+Cell area as a function of distance from the axis of symmetry in comparison
+ to that implied by the monitor function (
+\begin_inset Formula $c/m$
+\end_inset
+
+) for the planar meshes generated with the monitor function defined in eqn.
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:planeMonitor"
+
+\end_inset
+
+)..
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:planeMeshArea"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In order to diagnose how closely the final mesh equidistributes the monitor
+ function, we plot the cell area as a scatter plot for every cell in the
+ mesh as a function of the distance from the axis of symmetry in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:planeMeshArea"
+
+\end_inset
+
+ in comparison with 
+\begin_inset Formula $c/m$
+\end_inset
+
+.
+ Using the finite difference Hessian, there are discrepancies between 
+\begin_inset Formula $c/m$
+\end_inset
+
+ and the cell area where the second derivative of 
+\begin_inset Formula $c/m$
+\end_inset
+
+ is high.
+ This is because the discrete calculation of the Hessian is not a good approxima
+tion of the cell area in these regions, where the derivatives of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ are varying rapidly.
+ However, for the purpose of mesh generation, these discrepancies do not
+ look problematic.
+ If the OT mesh is smoother than that specified by the monitor function
+ then it could be beneficial.
+ The meshes generated using the geometric Hessian are more accurately equidistri
+buted with respect to the monitor function, despite the lack of convergence
+ of the initial residual.
+ 
+\end_layout
+
+\begin_layout Subsection
+Optimally transported and Centroidal Voronoi meshes on the Sphere 
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:sphMeshes"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Meshes are generated using the geometric Hessian in order to compare with
+ the locally refined centroidal Voronoi meshes generated using Lloyd's algorithm
+ by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RJG+11"
+
+\end_inset
+
+.
+ We use a monitor function given by the square root of the density function
+ of the corrected eqn.
+ (4) of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RJG+11"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+m\left(\mathbf{x}_{i}\right)=\sqrt{\frac{1}{2\left(1+\gamma\right)}\left(\tanh\frac{\beta-||\mathbf{x}_{c}-\mathbf{x}_{i}||}{\alpha}+1\right)+\gamma}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\mathbf{x}_{c}$
+\end_inset
+
+ is the centre of the refined region which has a latitude of 
+\begin_inset Formula $30^{o}$
+\end_inset
+
+ and a longitude of 
+\begin_inset Formula $90^{o}$
+\end_inset
+
+.
+ 
+\begin_inset Formula $||\mathbf{x}_{c}-\mathbf{x}_{i}||$
+\end_inset
+
+ is the geodesic distance between the points and is computed as 
+\begin_inset Formula $\cos^{-1}\left(\mathbf{x}_{c}\cdot\mathbf{x}_{i}\right)$
+\end_inset
+
+.
+ 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ and 
+\begin_inset Formula $\beta$
+\end_inset
+
+ are in radians and they control the size of the refined region and the
+ distance over which the mesh changes from fine to coarse resolution.
+ We follow 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RJG+11"
+
+\end_inset
+
+ and use 
+\begin_inset Formula $\alpha=\pi/20$
+\end_inset
+
+ and 
+\begin_inset Formula $\beta=\pi/6$
+\end_inset
+
+.
+ 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ controls the ratio between the finest and coarsest resolution and we use
+ 
+\begin_inset Formula $\gamma=\left(1/2\right)^{4}$
+\end_inset
+
+, 
+\begin_inset Formula $\gamma=(1/4)^{4}$
+\end_inset
+
+, 
+\begin_inset Formula $\gamma=(1/8)^{4}$
+\end_inset
+
+ and 
+\begin_inset Formula $\gamma=(1/16)^{4}$
+\end_inset
+
+ for meshes with finest mesh spacing factors of 2, 4, 8 and 16 times smaller
+ than that of the coarsest.
+ Following 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RJG+11"
+
+\end_inset
+
+, these meshes are referred to as X2, X4, X8 and X16.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The X1 meshes are not shown but the X1 centroidal Voronoi meshes and the
+ OT meshes are slightly different.
+ The X1 centroidal Voronoi meshes are generated using Lloyd's algorithm
+ which guarantees that the X1 meshes are nearly centroidal (the Voronoi
+ generating point is co-located with the cell centre) whereas the X1 OT
+ meshes are 
+\lang british
+the 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "HR95b"
+
+\end_inset
+
+ version of the hexagonal icosahedron, optimised to reduce face skewness.
+ The X2, X4, X8 and X16 meshes are shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:X24meshes"
+
+\end_inset
+
+ with the ratio between the cell area and the average cell area coloured.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Centroidal Voronoi
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optimally transported
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/0/V2.pdf
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/0/V2.pdf
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V2_volRatio.eps
+	width 90text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/0/V4.pdf
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/0/V4.pdf
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V4_volRatio.eps
+	width 90text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/0/V8.pdf
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/0/V8.pdf
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V8_volRatio.eps
+	width 90text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/0/V16.pdf
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/0/V16.pdf
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/legends/V16_volRatio.eps
+	width 90text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\lang english
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\lang english
+X2, X4, X8 and X16 meshes of the sphere of 2,562 cells and the cell volumes
+ relative to the average cell volume in colour.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:X24meshes"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The centroidal Voronoi meshes  in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:X24meshes"
+
+\end_inset
+
+ are orthogonal, close to centroidal and the mesh topology (connectivity)
+ is different for all the refinement levels.
+ (Lloyd's algorithm generates meshes that are centroidal relative to a density
+ function which means that they are not centroidal when the centroid is
+ simply the centre of mass.) The OT meshes all have the same connectivity
+ and they are centroidal but not orthogonal.
+ (Orthogonality could be achieved by Voronoi tesselating the meshes, at
+ the expense of centroidality, see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:betterMeshQuality"
+
+\end_inset
+
+.)
+\end_layout
+
+\begin_layout Standard
+All of the
+\lang english
+ OT meshes in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:X24meshes"
+
+\end_inset
+
+ have regions of anisotropy in between the fine and coarse regions whereas
+ the centroidal Voronoi meshes remain isotropic and the mesh topology changes
+ between resolutions.
+ The anisotropy will be investigated further in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:meshQualitySph"
+
+\end_inset
+
+.
+ Before looking in more detail at the mesh quality in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:meshQualitySph"
+
+\end_inset
+
+, we will examine diagnostics of convergence in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:convSph"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+Convergence of the Monge-Amp
+\lang english
+è
+\lang british
+re Solution on the Sphere
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:convSph"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+642 cells
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2,562 cells
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/4/MAresiduals.eps
+	lyxscale 50
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/MAresiduals.eps
+	lyxscale 50
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10,242 cells
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+40,962 cells
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/6/MAresiduals.eps
+	lyxscale 50
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/7/MAresiduals.eps
+	lyxscale 50
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Convergence of initial residuals with iteration number for all of the optimally
+ transported meshes on the sphere 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:convergence"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Convergence of the initial residual is shown in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:convergence"
+
+\end_inset
+
+ for the X2-X16 meshes of various resolutions.
+ Convergence is rapid for the X2 and X4 meshes but slows after around 100
+ iterations, once the non-linearities have grown and the Laplacian is no
+ longer a good approximation for the Hessian and once the exact solutions
+ becomes difficult to achieve at finite resolution.
+ It is clear from fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:convergence"
+
+\end_inset
+
+ that the number of iterations is independent of the mesh size.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+642 cells
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2,562 cells
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/4/boostLaplacian.eps
+	lyxscale 50
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/6/boostLaplacian.eps
+	lyxscale 50
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10,242 cells
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+40,962 cells
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/boostLaplacian.eps
+	lyxscale 50
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/7/boostLaplacian.eps
+	lyxscale 50
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Under-relaxation factor, 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+, for with iteration number for all of the optimally transported meshes
+ on the sphere
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:boostLaplacian"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The underelaxation factor, 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+, is shown in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:boostLaplacian"
+
+\end_inset
+
+.
+ Unlike in the Euclidean case, 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+ does rise after initialisation.
+ This implies that the maximum of the source term increases before it decreases.
+ However the initial residual monotonically decreasing during these early
+ iterations.
+ This is because the initial residual is a mean over the whole domain whereas
+ 
+\begin_inset Formula $1+\alpha$
+\end_inset
+
+ is set from the maximum of the source term.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Centroidal Voronoi
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optimally transported
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Cell area as a function of geodesic distance to the centre of the refined
+ region in comparison to that implied by the monitor function (
+\begin_inset Formula $c/m$
+\end_inset
+
+) for the X2, X4, X8 and X16 meshes of 2,562 cells 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:areaDxX2X4"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The convergence of the cell area with the monitor function is shown in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:areaDxX2X4"
+
+\end_inset
+
+ as scatter plots of cell area change as a function of distance to the centre
+ of the refined region.
+ As occurred in Euclidean geometry, the geometric Hessian gives accurate
+ equidistribution.
+ 
+\end_layout
+
+\begin_layout Subsection
+Mesh Quality on the Sphere
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:meshQualitySph"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Centroidal Voronoi
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Optimally transported
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distDxEdit.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Cell-centre to cell-centre geodesic distance (
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+ as defined in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:diags"
+
+\end_inset
+
+) as a function of geodesic distance to the centre of the refined region
+ in comparison to that implied by the monitor function (
+\begin_inset Formula $\sqrt{2c\ \tan(\pi/3)/3m}$
+\end_inset
+
+) for the X2, X4, X8 and X16 meshes of 2,562 cells.
+ The blue encircled region for X4 shows where the OT mesh is anisotropic.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:distDxX2X4"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Scatter plots of the cell-centre to cell-centre distance, 
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+, as a function of distance to the centre of the refined region are shown
+ in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:distDxX2X4"
+
+\end_inset
+
+ for the X2-X16 meshes of 2,562 cells on the sphere.
+ This shows that the centroidal Voronoi meshes are close to isotropic whereas
+ the OT meshes have high anisotropy where the second derivative of the monitor
+ function is high.
+ In particular, a region of anisotropy is indicated by a blue ring for the
+ X4 OT mesh in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:distDxX2X4"
+
+\end_inset
+
+: there is a wide range of 
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+ at the same distance to the centre of the refined region, indicating anisotropy.
+ This anisotropy could be reduced by smoothing the monitor function.
+\end_layout
+
+\begin_layout Standard
+Unlike the meshes on the plane, the meshes on the sphere are isotropic in
+ the uniformly coarse region, due to the isotropy of the domain relative
+ to the centre of refinement.
+ This could be an advantage of using r-adaptivity on the sphere over its
+ use in Euclidean geometry with corners.
+ However the meshes on the sphere still have a bulge in 
+\begin_inset Formula $|\mathbf{d}_{f}|$
+\end_inset
+
+ on the edge of the coarse region.
+ This is not ideal for atmospheric simulations since global errors are often
+ proportional to the largest 
+\begin_inset Formula $|\mathbf{d}_{x}|$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RJG+11"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Centroidal Voronoi
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Optimally transported
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rotate="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space \hspace{}
+\length 1cm
+\end_inset
+
+X2
+\begin_inset space \hspace{}
+\length 0.5cm
+\end_inset
+
+(degrees)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rotate="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space \hspace{}
+\length 1cm
+\end_inset
+
+X4
+\begin_inset space \hspace{}
+\length 0.5cm
+\end_inset
+
+(degrees)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rotate="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space \hspace{}
+\length 1cm
+\end_inset
+
+X8
+\begin_inset space \hspace{}
+\length 0.5cm
+\end_inset
+
+(degrees)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rotate="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space \hspace{}
+\length 1cm
+\end_inset
+
+X16
+\begin_inset space \hspace{}
+\length 0.5cm
+\end_inset
+
+(degrees)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Non-orthogonality of the meshes on the sphere (as defined in eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:nonOrthog"
+
+\end_inset
+
+) as a function of geodesic distance to the centre of the refined region
+ for the X2-X16 meshes of 2,562 cells
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:meshOrthogX2X4"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Centroidal Voronoi
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\lang english
+Optimally transported
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/2/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/2/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/4/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/4/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/8/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/8/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+X16
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/RinglerLloyd/5/16/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Face skewness (
+\begin_inset Formula $d_{s}/|\mathbf{d}_{x}|$
+\end_inset
+
+, as defined in eqn.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:skewness"
+
+\end_inset
+
+) as a function of geodesic distance to the centre of the refined region
+ for the X2 and X4 meshes of 2,562 cells
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:meshSkewX2X4"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The orthogonality and skewness of the faces of the OT X2-X16 meshes on the
+ sphere are shown in figs.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:meshOrthogX2X4"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:meshSkewX2X4"
+
+\end_inset
+
+ in comparison to the centroidal Voronoi meshes.
+ Lloyd's algorithm with a non-uniform monitor function generates exactly
+ orthogonal, non-centroidal meshes and so for comparison with the OT meshes,
+ the centroidal Voronoi meshes are made centroidal at the expense of orthogonali
+ty by using the cell centroid as the cell centre rather than using the Voronoi
+ generating point.
+ Even so, they remain very close to orthogonal in comparison to the OT meshes
+ which have high non-orthogonality where the second derivative of the monitor
+ function is high (for this test case).
+ In fact the non-orthogonality reaches over 70 degrees for some cells in
+ the X16 mesh.
+ This is unlikely to be a good mesh for simulation.
+ This problem will be investigated further in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:betterMeshQuality"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The OT meshes have less face skewness, 
+\begin_inset Formula $d_{s}/|\mathbf{d}_{x}|$
+\end_inset
+
+, than the centroidal Voronoi meshes (fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:meshSkewX2X4"
+
+\end_inset
+
+) which could be advantageous for numerical methods whose errors depend
+ on skewness.
+ For example, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "HR95b"
+
+\end_inset
+
+ described how to optimise orthogonal meshes to reduce skewness for low-order
+ finite-volume discritisations.
+\end_layout
+
+\begin_layout Subsection
+Improving Convexity
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:betterMeshQuality"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The OT X16 meshes presented in sections 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:sphMeshes"
+
+\end_inset
+
+-
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:meshQualitySph"
+
+\end_inset
+
+ have some large non-orthogonality at regions where the resolution is changing
+ rapidly (fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:meshOrthogX2X4"
+
+\end_inset
+
+).
+ The reason for this can be seen more clearly in a zoomed regions of the
+ meshes in the second row of fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:X16zoom"
+
+\end_inset
+
+.
+ The double zoomed plot shows that some of the cells are not convex.
+ This implies that the calculation of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ has in fact not yielded a smooth vector field, despite the development
+ of the Goldilocks stencil with the aim of achieving a smooth 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ on the smallest possible stencil.
+ The Goldilocks stencil does give a much smoother 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ than the small stencil (first row of fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:X16zoom"
+
+\end_inset
+
+).
+ If instead we interpolate 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+ from faces onto vertices which entails the use of a larger stencil (secn
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:wideGradv"
+
+\end_inset
+
+), the non-convex cells are not generated (third row of fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:X16zoom"
+
+\end_inset
+
+).
+ Alternatively, a Voronoi tessellation can be created using the cell centres
+ of the Goldilocks stencil mesh as generating points.
+ This also eliminates non-convex cells and the mesh is shown at the bottom
+ of fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:X16zoom"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\downarrow$
+\end_inset
+
+ Geometric Hessian with small stencil for 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1SmallStencil/5/16/0/meshZoom.eps
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1SmallStencil/5/16/0/meshZoomZoom.eps
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\downarrow$
+\end_inset
+
+ Geometric Hessian with Goldilocks stencil for 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/0/meshZoom.eps
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil/5/16/0/meshZoomZoom.eps
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\downarrow$
+\end_inset
+
+ Geometric Hessian with large stencil for 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/0/meshZoom.eps
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/0/meshZoomZoom.eps
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\downarrow$
+\end_inset
+
+ Voronoi version of Geometric Hessian with Goldilocks stencil for 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/0/meshZoom.eps
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/0/meshZoomZoom.eps
+	lyxscale 50
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Zoomed and double zoomed X16 meshes with 2,562 cells using different calculation
+s of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ and Voronoi versions.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:X16zoom"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Initial Residual
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Orthogonality
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/plots/MAresiduals_5_16.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/plots/distOrthogonality_5_16.eps
+	width 49text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Comparisons of convergence of initial residuals and orthogonality for the
+ X16 meshes of 2,562 cells calculated using the geometric Hessian but with
+ different calculations of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:gradp_5_16"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The problem with the large stencil calculation of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ is that convergence is slowed and orthogonality is only reduced a little
+ (fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:gradp_5_16"
+
+\end_inset
+
+).
+ Therefore it is necessary to consider the Voronoi tessellation of the cell
+ centres (final row of fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:X16zoom"
+
+\end_inset
+
+).
+ This modification does not affect the convergence since the Voronoi tessellatio
+n is calculated after convergence of the Monge-Amp
+\lang english
+è
+\lang british
+re solution.
+ This mesh is insensitive to the calculation of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ but is no longer exactly equidistributed because the cell areas change
+ a little (locally) when the Voronoi tesselation is calculated (fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:meshDiags_Voronoi_5_16"
+
+\end_inset
+
+).
+ However these area changes are very small and simply smooth out the curve
+ where the monitor function flattens out into the coarse region.
+ Fig 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:meshDiags_Voronoi_5_16"
+
+\end_inset
+
+ also shows that the Voronoi version is more orthogonal than the large stencil
+ version, the anisotropy is similar and the skewness is increased.
+ However, the connectivity may be changed slightly.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Large stencil for 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Voronoi version
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+rotatebox[origin=l]{90}{Cell area}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/distArea.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+rotatebox[origin=l]{90}{$|
+\backslash
+mathbf{d}_x|$}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/distDx.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+rotatebox[origin=l]{90}{Orthogonality}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/distOrthogonality.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+rotatebox[origin=l]{90}{Skewness, $d_s/|
+\backslash
+mathbf{d}_x|$}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1WideStencil/5/16/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+j
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereV1MedStencil_Voronoi/5/16/distSkew.eps
+	width 45text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Mesh diagnostics as a function of distance from the centre of the refined
+ region for the X16 meshes of 2,562 cells using the large stencil for 
+\begin_inset Formula $\nabla_{p}\phi$
+\end_inset
+
+ on the left and using the Voronoi tesselation on the right.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:meshDiags_Voronoi_5_16"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Optimally Transported Meshes using Precipitation as a Monitor Function
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:ppt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In order to demonstrate the numerical solution of the Monge-Amp
+\lang english
+è
+\lang british
+re type equation using realistic data as a monitor function, meshes are
+ generated based on the daily average precipitation rate from the NOAA-CIRES
+ 20th Century Reanalysis version 2 (
+\begin_inset CommandInset citation
+LatexCommand citealp
+key "CWS11"
+
+\end_inset
+
+, 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV2.html
+\end_layout
+
+\end_inset
+
+) on 9 Oct 2012.
+ The numerical solution of the Monge-Amp
+\lang english
+è
+\lang british
+re equation uses two near uniform hexagonal-icosahedral meshes of 2,562
+ and 10,242 cells.
+ The re-analysis precipitation ranges from zero to 
+\begin_inset Formula $p_{\max}=8.73\times10^{-4}\text{kg}\text{m}^{-2}\text{s}^{-1}$
+\end_inset
+
+.
+ A strictly positive, non-dimensional monitor function, 
+\begin_inset Formula $m$
+\end_inset
+
+, is defined from the precipitation rate, 
+\begin_inset Formula $p$
+\end_inset
+
+ using:
+\begin_inset Formula 
+\begin{equation}
+m=\frac{p+p_{\min}}{p_{\max}+p_{min}}
+\end{equation}
+
+\end_inset
+
+where the minimum allowable values is set to 
+\begin_inset Formula $p_{\min}=10^{-5}\text{kg}\text{m}^{-2}\text{s}^{-1}$
+\end_inset
+
+.
+ The resulting meshes are shown in fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pptMesh"
+
+\end_inset
+
+ (and are highly sensitive to the value of 
+\begin_inset Formula $p_{\min}$
+\end_inset
+
+ used).
+ Precipitation clearly could not be used as a monitor function for a dynamically
+ adapting simulation of the global atmosphere since it is strongly resolution
+ dependent.
+ Instead, monitor functions with less resolution dependency should be developed.
+ Reanalysis precipitation is used here just as a demonstration of the solution
+ when using realistic meteorological data.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/5/8/pptMesh.png
+	lyxscale 50
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/6/8/pptMesh.png
+	lyxscale 50
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/5/legends/pptLegend_monitor.eps
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Meshes of 2,562 and 10,242 cells generated based on the monitor function
+ of precipitation on 9 Oct 2012.
+ The colours show the precipitation rate in 
+\begin_inset Formula $\text{kg}\text{m}^{-2}\text{s}^{-1}$
+\end_inset
+
+.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:pptMesh"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The meshes resolved based on precipitation show excellent refinement along
+ fronts, particularly looking at South America.
+ The Inter-tropical convergence zone is also refined in the latitudinal
+ direction.
+ However, based on the limitations of r-adaptivity, the Inter-tropical convergen
+ce zone cannot be refined everywhere around the equator in the longitudinal
+ direction.
+ If this were a requirement, a mesh starting with more points around the
+ equator should be used.
+ This is the subject of future research.
+\end_layout
+
+\begin_layout Section
+
+\lang english
+Conclusions
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:concs"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+A technique for generating optimally transported (OT) meshes, solving a
+ Monge-Ampère type equation on the surface of the sphere, has been developed
+ in order to generate meshes which are equidistributed with respect to a
+ monitor function.
+ Equations of Monge-Ampère type have not before been solved numerically
+ on the surface of a sphere.
+ We show that a unique solution to the optimal mesh transport problem on
+ the sphere exists and exponential maps are used to create the map from
+ the old to the new mesh.
+ We introduce a geometric interpretation of the Hessian rather than a numerical
+ approximation which is accurate on the surface of the sphere.
+ In order to create a semi-implicit algorithm, a new linearisation of the
+ Monge-Ampère equation is proposed which includes a Laplacian term and the
+ resulting Poisson equation is solved at each fixed-point iteration.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+To validate the novel aspects of the numerical method, we first reproduce
+ some known solutions of the Monge-Ampère equation on a two dimensional
+ plane and find that the geometric interpretation of the Hessian leads to
+ more accurate equidistribution than a finite difference discretisation.
+ We also generate OT meshes of polygons on the sphere to compare with the
+ centroidal Voronoi meshes generated by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RJG+11"
+
+\end_inset
+
+.
+ The geometric Hessian created accurately equidistributed meshes on the
+ surface of the sphere.
+ The algorithm is found to be sensitive to the numerical method used to
+ calculate the gradient of the mesh potential (the map to the new mesh)
+ with a compact stencil leading to non-convexity and a large stencil leading
+ to very slow convergence.
+ The mesh tangling can be eliminated by creating a Voronoi tessellation
+ of the cell centres of the final mesh.
+ The exact solution of the OT problem on the sphere is c-convex which means
+ that the mesh should not tangle.
+ A numerical method which reproduces this property will be the subject of
+ future work.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+The meshes generated have advantages and disadvantages relative to centroidal
+ Voronoi meshes generated using Lloyd's algorithm.
+ In principle, OT meshes should be much faster to generate, although we
+ do not yet have timing comparisons.
+ OT meshes do not change their connectivity with respect to the base, uniform
+ mesh, so these meshes can be used in r-adaptive simulations.
+ In comparison to centroidal Voronoi meshes, the OT meshes are non-orthogonal
+ and less isotropic but have less face skewness.
+ In order to overcome the non-orthogonality of OT meshes, the OT technique
+ can be used to generate Voronoi meshes.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Finally, we generate a mesh using a monitor function based on reanalysis
+ precipitation.
+ This mesh refines smoothly along atmospheric fronts and convergence zones
+ and provides inspiration for using r-adaptivity for global atmospheric
+ modelling.
+ Suitable monitor functions for r-adaptive simulations is also the subject
+ of future work.
+\end_layout
+
+\begin_layout Section*
+
+\lang english
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Weller acknowledges support from NERC grant NE/H015698/1 and Browne from
+ NERC grant NE/J005878/1.
+ Budd acknowledges support the Pacific Institute for the Mathematical Sciences
+ (PIMS) who have funded his sabbaticals.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "numerics,comments/Phil3/bibfile"
+options "abbrvnat"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

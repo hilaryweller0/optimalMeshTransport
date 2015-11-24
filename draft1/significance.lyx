@@ -1,0 +1,154 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass elsarticle
+\begin_preamble
+\usepackage{color}
+\newcommand{\nicefrac}[2]{\ensuremath ^{#1}\!\!/\!_{#2}}
+\usepackage { fancybox}
+
+\renewcommand{\floatpagefraction}{0.95}
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+
+\RequirePackage{tweaklist}
+\renewcommand{\itemhook}
+{
+    \setlength{\topsep}{3pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\itemsep}{0pt}
+    \setlength{\labelwidth}{10pt}
+    \setlength{\leftmargin}{\labelwidth}
+}
+
+\renewcommand{\enumhook}
+{
+    \setlength{\topsep}{3pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\itemsep}{3pt}
+    \setlength{\labelwidth}{10pt}
+    \setlength{\leftmargin}{\labelwidth}
+}
+
+\renewcommand{\descriptionlabel}[1]{\parbox{\leftmargin}{\raggedleft #1.~}}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language british
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics pdftex
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine natbib_authoryear
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 1
+\tocdepth 1
+\paragraph_separation indent
+\paragraph_indentation 0bp
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle empty
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Mesh generation on the sphere using Optimal Transport and the numerical
+ solution of a Monge-Ampère type equation
+\end_layout
+
+\begin_layout Author
+Hilary Weller
+\end_layout
+
+\begin_layout Author
+Philip Browne
+\end_layout
+
+\begin_layout Author
+Chris Budd 
+\end_layout
+
+\begin_layout Author
+Mike Cullen
+\end_layout
+
+\begin_layout Section*
+Significance and Novelty of this Work
+\end_layout
+
+\begin_layout Standard
+R-adaptivity, or moving meshes, means mesh re-distribution in order to vary
+ the local resolution.
+ It is an attractive form of adaptivity for global atmospheric modelling
+ since it does not involve altering the mesh connectivity, does not create
+ load balancing problems on parallel computers, does not require mapping
+ solutions between different meshes, does not lead to sudden changes in
+ resolution and can be retro-fitted into existing models.
+ R-adaptivity requires the numerical solution of equations to move the mesh
+ so that it does not tangle and this can be achieved by using methods based
+ on optimal transport.
+ Whilst these methods have been developed successfully in two and three
+ dimensional Euclidean space, r-adaptivity using optimal transport has not
+ yet been implemented on the surface of a sphere which would be necessary
+ for global atmospheric modelling.
+ Here we show that the optimal transport problem on the surface of a sphere
+ will lead to meshes that do not tangle and we develop a numerical technique
+ to solve an equation of Monge-Ampère type on the surface of the sphere
+ in order to solve the optimal transport problems and generate meshes that
+ are equidistributed with respect to various prescribed monitor functions.
+ This is necessary for creating r-adaptive models of the global atmosphere
+ with locally high resolution, which could enable otherwise impossible simulatio
+ns, with locally high resolution where required within a global model.
+ 
+\end_layout
+
+\end_body
+\end_document

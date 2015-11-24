@@ -1,0 +1,183 @@
+
+**************************
+Associate Editor: All three reviewers recommend minor revisions, and offer numerous comments that aim at improving the presentation. I read the paper closely and can see that it needs a careful proofreading, preferably by all the co-authors. 
+
+Furthermore, the paper is rather long, and trimming digressive passages may improve its readability. References should be accurate, complete and consistently adhere to the Journal style. 
+
+Theorem 1 seems to combine theorems 8 and 9 in McCann 2001; if this is the case (I have no final version of that paper, but only postscript file available on the web), then this should be acknowledged. 
+
+#PAB This is the case.
+
+Figure 2 and the accompanying discussion appear confusing. In particular, (24) is a Gateaux derivative in the direction of d_f. Why is it referred to as a "normal" gradient; normal to what? 
+
+#PAB Normal to cell faces. Does this need to be introduced?
+
+Furthermore, the symbol \hat{S} in (26) and (28) seems undefined.
+
+#PAB I think this is undefined.
+
+Independently, what happens to the solvers in (17) and (20) in the special case when one desires mesh movement that preserves cell volumes? In other words, can the proposed formalism be adopted to the case where r=1 everywhere?
+
+#PAB mesh movement that preserves cell volumes is not allowed under the optimal transport condition. In fact, the optimally transported mesh which maintains cell volumes is simply the initial mesh. In that case, (17) and (20) are satisfied exactly at $\phi^0=0$. Maybe this is the editor thinking that we choose r, whilst actually we choose m and r results.
+
+Reviewer #1:
+Comments:
+- A main assumption that is left unjustified is in section 4.1.2: that equation (5) can be approximated by equation (4).  The finite difference approximation of the Hessian relies on this assumption, and it is not clear how reliable this is.  The geometric approach seems more likely to be consistent.
+
+#PAB It is equation (4) which is actually approximating equation (5). The geometric approach is to say we will only solve this once a discretisation has been made, and we want equidistribution only in relation to such a discretisation. In this respect the geometric approach is exact. I have just re-read what we have actually written here. I would maybe re-word the second sentence (line 269) to be: "Eqn (5) is a disretisation of eqn (4) on a tangent plane to the sphere, ..."
+
+
+- Corollary 1 (p. 7): Mention that the c-convex potential satisfies a Monge-Ampere type equation, since showing this seems to be a main thrust of the proof.
+
+#PAB "potential function that satisfies the Monge-Ampere type equation 
+\begin{equation}
+m\left( \exp_\xi [\nabla \phi(\xi)]\right) |J(\xi)| = const
+\end{equation}
+
+- Section 3 (p. 9): Discusses the 2 challenges of discretization and numerical algorithms.  It should be mentioned that another huge challenge is the need to ensure that the solution is convex, and some discrete version of this condition needs to be enforced by either the discretization or the solution method.
+
+#PAB no comment
+
+- First sentence of p. 10: There has been some work on discretizations of f.  For example, see [Froese, 2012] and [Saumier, Agueh, and Khouider, 2015].
+
+#PAB no comment
+
+- Last sentence of 4.1.1 (p. 12): the problem with controlling the eigenvalues is presumably related to the fact that the discretization and algorithm have no means for enforcing convexity of the solution.
+
+#PAB no, this is due to the (analytic or discrete) solution to the Monge-Ampere equation itself. To control them individually, the monitor function needs to be tensorial, not scalar: hence equidistribution is not sufficient so a monge-ampere equation is not what should be solved.
+
+- In the discussions of discretization, how is the exponential map (from equation 22) calculated/approximated?
+
+#PAB not sure how you have done this Hilary? I think there is some way that you just don't use it, right? Projection?
+
+- Figure 2 (p. 14): The short grey line indicating skewness is nearly invisible.  Perhaps the figure could be larger, or this section could be zoomed.
+
+#PAB or rotated so that the cells are connected by the front cell's "north" face, not its "north-east" face?
+
+- The same paper by McCann is listed twice in the bibliography.
+
+#PAB oops
+
+
+Reviewer #2:
+i) In the title of this paper, it is more approproate to use ``mesh adaptation" instead of ``mesh generation".  Mesh generation usually means a mesh for a domin/region does not exist yet, and it must be created.  Mesh adaptation is applied directly on an existing mesh and make changes on it.
+
+#PAB I would be happy with "adaptation"
+
+ii) For related work, only centroidal Voronoi tessellation is mentioned. 
+However, moving mesh methods are developed extensively in the literatures.  Some of the methods might be needed to be mentioned and cited, please see the followin one and the references therein.
+
+@Article{Huang01-adaption,
+   Title                    = {Variational mesh adaption: Isotropy and 
+equidistribution},
+   Author                   = {Huang, W.},
+   Journal                  = {Journal of Computational Physics},
+   Year                     = {2001},
+   Pages                    = {903--924},
+   Volume                   = {174}
+}
+
+#PAB I would mention that we discuss centroidal Voronoi because it is used already in atmospheric modelling. Maybe a sentence before line 57 saying, "There are other forms of r-adaptative, not just OT (references etc). A powerfull form of adaptivity that is already being used in atmospheric modelling that,..."
+
+iii) Section 4.2, Spatial Discretisation. It is not obvious which spatial grid is used for discrtising Laplacian. It is mentioned that a finite difference and finite volume grid is used. Fig.2 shows just two local cells of the grid. It would be very helpful to show at least one full grid.
+
+#PAB, does this person want a picture of the full icosahedral grid? Maybe we just state this here?
+
+iv) Section 4.2.2.1 Do you use the same grid for discretising Laplacian and Hessian?
+
+#PAB, we do. Maybe some rewording is necessary to get the reviewer into a finite volume frame of mind?
+
+v) Section 4.2.2.2 Is the equation (29) exact, or the ratio of the volumes (right hand side) is just an approxiation of the left hand side?
+
+#PAB, this is exactly what we need in order to satisfy equidistribution on a discretised sense. Hence, the equality holds only once H is also discretised. 
+
+vi) Section 4.2.3 Please add a reference for the Goldilocks gradient.
+
+#PAB, start 4.2.3 with a new sentance saying something like "given the problems with both large and small stencils for calculating the gradient at the vertices, we describe here a new \emph{Goldilocks stencil} that combines the advantages of both large and small"
+
+vii) Section 6.1. Please clarify or show the initial mesh of the Ring mesh and Bell mesh shown in Figure 4.
+
+#PAB, line 468: "The initial mesh for each problem was comprised of a grid of (?x?) squares.
+
+viii) Section 6.2. lines 477-479, the reasons for the stalling of geometric Hessian were too rough. Why it worked after the monitor function was smoothed?
+
+#PAB, hmmm, it seems reasonable to me what you have said here. maybe say this is discussed at length in our next paper?
+
+ix) Section 6.3, what are the initial meshes in this compariosn (in Figure 7)?
+
+#PAB, state at the beginning of 6.3 what the icosahedral mesh is, how many elements etc.
+
+- Page 12, line 265, ... preconditioning with not ...
+
+#PAB with -> will
+
+- Page 17, line 376
+
+#PAB there are no dashed lines in 3. just lines now? remove the word dashed?
+
+
+
+
+Reviewer #3: Review:
+
+Page 4,  line 69: suggest to replace 'uses' to  'using'.
+
+#PAB "using" is better.
+ 
+Page 5, line 114: suggest to re-write this sentence 'Given the solution of the Monge-Ampere equation $\phi$ is convex,  the hessian of $\phi$ is positive…'
+
+#PAB happy to go with the reviewer here.
+
+Page 6, lines 135-136: remove full stop after equation.
+
+#PAB reviewer is correct.
+
+Page 12, lines 276-281: Is this the correct linearization? Could you elaborate further as to why equation 21 will accelerate convergence compared to 22?
+
+#PAB well it is a linearisation about the initial mesh. don't know what to say here really. Also, how do we compare this to (22)? 
+
+Page 13, line 285: replace 'on' with 'of'.
+
+#PAB yes
+
+Page 14, lines 309-110 and Page 15, lines 324-325: Suggest to remove brackets from equations 23 and 25 in the normal gradient to make consistent with notation elsewhere in the text.
+
+#PAB easily done
+
+Page 16, lines 346-347: This statement is not clear, the description of the Goldilocks gradient in lines 371-373 might be better placed here .
+
+#PAB not sure
+
+Page 17, line 376; The dashed lines do not appear on my copy of the paper in figure 3. I am unclear as to what this region is.
+
+#PAB remove word dashed as per other reviewer
+
+Page 17, lines 384-385: This description of this procedure is not very clear. Is this also how eqution (21) is solved?
+
+#PAB replace this sentance with "The fixed point iterations (20,21) are iterated until the initial residual of the implicit Laplacian solver is less than $10^{-8}$"
+
+Page 18, lines 399-400: suggest to replace 'calculated evaluated' with 'which is evaluated', and also 'use' with 'used' and 'applying' with 'apply'.
+
+#PAB I don't know where 'use' is here. The others should be changed accordingly.
+
+Page 19, lines 426-427: Sentence is confusing. Is $\phi$ a vector of initial values and/or the values from the previous iteration?
+
+#PAB maybe superscripts about iteration would be useful here?
+
+Page 19, Line 437: Suggest to replace 'The' with 'These'.
+
+#PAB yes.
+
+Page 25, line 535: 'residual is monot…'
+
+#PAB add the word "is"
+
+Page 36, line 596: suggest to remove 'the minimum allowable values is set to'
+
+#PAB this would make it read better
+
+************************************************************
+
+
+
+
