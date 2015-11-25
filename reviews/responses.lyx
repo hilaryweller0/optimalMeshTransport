@@ -1,0 +1,951 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{color}
+\newcommand{\nicefrac}[2]{\ensuremath ^{#1}\!\!/\!_{#2}}
+\usepackage { fancybox}
+
+\renewcommand{\floatpagefraction}{0.95}
+\renewcommand{\textfraction}{0}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+
+\RequirePackage{tweaklist}
+\renewcommand{\itemhook}
+{
+    \setlength{\topsep}{3pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\itemsep}{0pt}
+    \setlength{\labelwidth}{10pt}
+    \setlength{\leftmargin}{\labelwidth}
+}
+
+\renewcommand{\enumhook}
+{
+    \setlength{\topsep}{3pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\itemsep}{3pt}
+    \setlength{\labelwidth}{10pt}
+    \setlength{\leftmargin}{\labelwidth}
+}
+
+\renewcommand{\descriptionlabel}[1]{\parbox{\leftmargin}{\raggedleft #1.~}}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language british
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman FreeSerif
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine natbib_authoryear
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\paperwidth 15cm
+\paperheight 12cm
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 1
+\tocdepth 1
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Responses to reviewer comments
+\end_layout
+
+\begin_layout Section*
+Associate Editor's comments:
+\end_layout
+
+\begin_layout Enumerate
+All three reviewers recommend minor revisions, and offer numerous comments
+ that aim at improving the presentation.
+ I read the paper closely and can see that it needs a careful proofreading,
+ preferably by all the co-authors.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Furthermore, the paper is rather long, and trimming digressive passages
+ may improve its readability.
+ 
+\end_layout
+
+\begin_layout Enumerate
+References should be accurate, complete and consistently adhere to the Journal
+ style.
+\end_layout
+
+\begin_layout Enumerate
+Theorem 1 seems to combine theorems 8 and 9 in McCann 2001; if this is the
+ case (I have no final version of that paper, but only postscript file available
+ on the web), then this should be acknowledged.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Done.
+ See text at margin note Ed4 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Figure 2 and the accompanying discussion appear confusing.
+ In particular, (24) is a Gateaux derivative in the direction of 
+\begin_inset Formula $\mathbf{d}_{f}$
+\end_inset
+
+.
+ Why is it referred to as a "normal" gradient; normal to what? Furthermore,
+ the symbol 
+\begin_inset Formula $\hat{\mathbf{S}}$
+\end_inset
+
+ in (26) and (28) seems undefined.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+I have made changes marked by margin notes Ed5.
+ In addition I have changed fig 2 to show the computational and deformed
+ meshes and clarified the caption.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Independently, what happens to the solvers in (17) and (20) in the special
+ case when one desires mesh movement that preserves cell volumes? In other
+ words, can the proposed formalism be adopted to the case where 
+\begin_inset Formula $r=1$
+\end_inset
+
+ everywhere? 
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+If you desire mesh movement that preserves cell volumes then you need a
+ different technique than optimal transport.
+ Unless there were some mesh movement defined by the boundary conditions
+ of the mesh potential.
+ I would rather not discuss this in this manuscript as it would add considerable
+ length and is not something that we have considered in detail.
+ The whole point of this work is to equidistribute a monitor function.
+ If the monitor function is already equidistributed because 
+\begin_inset Formula $r=1$
+\end_inset
+
+ everywhere, then do nothing.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Section*
+Reviewer #1:
+\end_layout
+
+\begin_layout Standard
+This paper introduces a new method for solving the Monge-Ampere equation
+ on the surface of a sphere, with the goal of producing equidistributing
+ meshes.
+ 
+\end_layout
+
+\begin_layout Standard
+The numerical resolution of the Monge-Ampere equation has received a great
+ deal of attention recently, but as far as I know, all methods to date have
+ been confined to Euclidean space.
+ Solving the equation on the sphere is a new and exciting problem.
+\end_layout
+
+\begin_layout Standard
+The techniques introduced in this paper are somewhat ad hoc, and certainly
+ lack mathematical rigor and show some drawbacks.
+ However, as a first attempt at solving a very challenging problem, this
+ makes an interesting study that will hopefully lead to stronger results
+ in the future.
+ Additionally, the motivation of this paper is the problem of mesh generation,
+ and for these problems high accuracy is not typically needed as long as
+ the mesh exhibits certain important qualitative properties.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Comments:
+\end_layout
+
+\begin_layout Enumerate
+A main assumption that is left unjustified is in section 4.1.2: that equation
+ (5) can be approximated by equation (4).
+ The finite difference approximation of the Hessian relies on this assumption,
+ and it is not clear how reliable this is.
+ The geometric approach seems more likely to be consistent.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+We always use the geometric approach on the sphere.
+ On the sphere, the term 
+\begin_inset Formula $|I+H(\phi)|$
+\end_inset
+
+ does not approximate the change in volume except for very small maps on
+ which you can approximate the map as being on a tangent plane.
+ This approximation is only used in the linearisation of eqn (5).
+ We do not pretend that this linearisation is always a close approximation
+ to the full eqn (5).
+ We hope that we have clarified the text.
+ 
+\end_layout
+
+\begin_layout Quote
+Changes in the document marked in the margin by Rev1.1
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Corollary 1 (p.
+ 7): Mention that the c-convex potential satisfies a Monge-Ampere type equation,
+ since showing this seems to be a main thrust of the proof.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Done, see margin note Rev1.2
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Section 3 (p.
+ 9): Discusses the 2 challenges of discretization and numerical algorithms.
+ It should be mentioned that another huge challenge is the need to ensure
+ that the solution is convex, and some discrete version of this condition
+ needs to be enforced by either the discretization or the solution method.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+See text at margin notes Rev1.3
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+First sentence of p.
+ 10: There has been some work on discretizations of f.
+ For example, see [Froese, 2012] and [Saumier, Agueh, and Khouider, 2015].
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Many thanks for pointing these out.
+ See text at margin note Rev1.4 in section 3 and section 4.2.3.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Last sentence of 4.1.1 (p.
+ 12): the problem with controlling the eigenvalues is presumably related
+ to the fact that the discretization and algorithm have no means for enforcing
+ convexity of the solution.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+No, this is due to the (analytic or discrete) solution to the Monge-Ampère
+ equation itself.
+ To control them individually, the monitor function needs to be tensorial,
+ not scalar: hence equidistribution is not sufficient so a Monge-Ampère
+ equation is not what should be solved.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+In the discussions of discretization, how is the exponential map (from equation
+ 22) calculated/approximated?
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Good question.
+ This is now answered in the new section 4.2.4 (see margin note Rev1.6.
+ No numerical approximations are needed.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Figure 2 (p.
+ 14): The short grey line indicating skewness is nearly invisible.
+ Perhaps the figure could be larger, or this section could be zoomed.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+I have made this clearer in fig 2b.
+ (In fig 2 I have also made separate plots for the computational and the
+ deformed mesh cells).
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+The same paper by McCann is listed twice in the bibliography.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Thank-you.
+ Fixed
+\end_layout
+
+\end_deeper
+\begin_layout Section*
+Reviewer #2:
+\end_layout
+
+\begin_layout Standard
+Review of the manuscript JCOMP-D-15-00759 titled ``Mesh generation on the
+ sphere using Optimal Transport and the numerical solution of a Monge-Ampere
+ type equation" by Hilary Weller, et al.
+\end_layout
+
+\begin_layout Subsection*
+I) Overview
+\end_layout
+
+\begin_layout Standard
+This paper present a mesh adaptation technique aimed at only moving the
+ vertex positions without changing the connectities of the mesh, the so-called
+ r-adaptivity method.
+ There are a number of interesting points and contributions in this paper:
+\end_layout
+
+\begin_layout Itemize
+The moving mesh problem is first viewed as an equidistribution problem with
+ respect to a monitor function.
+ Then it is formulated as an Optimal transportation (OT) problem, which
+ leads to a Monge-Ampère type equation.
+\end_layout
+
+\begin_layout Itemize
+The existence of OT meshes on the sphere is shown.
+\end_layout
+
+\begin_layout Itemize
+Numerical methods for solving Monge-Ampère equation is reviewed.
+ The methods for solving this equation on the sphere is described in detail.
+\end_layout
+
+\begin_layout Itemize
+Experimental results are presented in planar and sphere cases.
+ Comparsion with another approach based on centroidal Voronoi tessellation
+ is given.
+ 
+\end_layout
+
+\begin_layout Standard
+To my opinion, this paper contains some useful contributions to this topic
+ and is worthy to be published.
+\end_layout
+
+\begin_layout Subsection*
+II) Comments
+\end_layout
+
+\begin_layout Enumerate
+In the title of this paper, it is more approproate to use ``mesh adaptation"
+ instead of ``mesh generation".
+ Mesh generation usually means a mesh for a domin/region does not exist
+ yet, and it must be created.
+ Mesh adaptation is applied directly on an existing mesh and make changes
+ on it.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Good point.
+ Changed
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+For related work, only centroidal Voronoi tessellation is mentioned.
+ However, moving mesh methods are developed extensively in the literatures.
+ Some of the methods might be needed to be mentioned and cited, please see
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Hua01"
+
+\end_inset
+
+ and the references therein.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+We focus on centroidal Voronoi adaptation because it is already used in
+ atmospheric modelling.
+ We also add this reference and mention other forms of r-adaptivity.
+ See text near margin note Rev2.2 in the first paragraph of the introduction.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Section 4.2, Spatial Discretisation.
+ It is not obvious which spatial grid is used for discrtising Laplacian.
+ It is mentioned that a finite difference and finite volume grid is used.
+ Fig.2 shows just two local cells of the grid.
+ It would be very helpful to show at least one full grid.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+The discretistation described is general enough so that it will work on
+ arbitrary orthogonal grids.
+ This is clarified just before section 4.2.1 (see text near margin note Rev2.3).
+ We now define the computational mesh used on the plane in the first paragraph
+ of section 6.1 (a 
+\lang english
+uniform grids of 
+\begin_inset Formula $60\times60$
+\end_inset
+
+ squares).
+ The computational meshes used on the sphere are hexagonal-icosahedral meshes.
+ This is now explained in the second paragraph of section 6.3.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Section 4.2.2.1 Do you use the same grid for discretising Laplacian and Hessian?
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Yes.
+ This is now clarified just before section 4.2.1 (near margin note Rev2.4).
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Section 4.2.2.2 Is the equation (29) exact, or the ratio of the volumes (right
+ hand side) is just an approxiation of the left hand side?
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+This is now equation 30 and it is exact for a given grid.
+ I would prefer not to add additional clarification to the manuscript as
+ 4.2.2.2 already starts by saying: 
+\begin_inset Quotes eld
+\end_inset
+
+A numerical approximation to calculating 
+\begin_inset Formula $H$
+\end_inset
+
+ will introduce truncation errors so instead we can simply use the change
+ in cell volume
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Section 4.2.3 Please add a reference for the Goldilocks gradient.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+The gradient on the Goldilocks stencil was developed as part of this work.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Section 6.1.
+ Please clarify or show the initial mesh of the Ring mesh and Bell mesh
+ shown in Figure 4.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Done.
+ See new text at margin not Rev2.7
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Section 6.2.
+ lines 477-479, the reasons for the stalling of geometric Hessian were too
+ rough.
+ Why it worked after the monitor function was smoothed?
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+I have now added the following text at margin note Rev2.8: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\lang english
+since smoothing removes the very abrupt changes in the monitor function
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Section 6.3, what are the initial meshes in this comparison (in Figure 7)?
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+This is now defined in the second paragraph of 6.3 near margin note Rev2.9
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Some typos
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Page 12, line 265, ...
+ preconditioning with not ...
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Fixed (margin note Rev2.10a)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 17, line 376
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Fixed (margin note Rev2.10b)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Section*
+Reviewer #3:
+\end_layout
+
+\begin_layout Standard
+This paper considers the numerical solution of the Monge-Ampere equation
+ on the surface of the sphere in order to generate meshes for the purpose
+ of numerical weather simulations.
+ It uses the generalised version of Brenier's theorem as set out by McCann
+ that the optimal transport problem on the surface of the sphere admits
+ a unique solution (which is an exponential map of a potential function)
+ to make the case that it is suitable for r-adaptive mesh generation.
+ The authors present a strong case as to why this form of mesh adaptivity
+ could potentially be attractive from the point of view of global atmospheric
+ modelling, whilst also citing its possible limitations.
+ The advantages and disadvantages of this approach compared to centroidal
+ Voronoi meshes which uses Lloyd's algorithm are also considered.
+\end_layout
+
+\begin_layout Standard
+The resultant Monge-Ampere equation is then solved using a fixed point iteration
+ scheme.
+\end_layout
+
+\begin_layout Standard
+This is a similar approach to that taken previously by a few of the co-authors
+ for mesh generation on the plane.
+ Although, it is not apparent to me why this approach should accelerate
+ convergence as the author states, since both methods rely on a somewhat
+ arbitrary parameter for convergence.
+ The authors also claim that this approach is based on a linearization of
+ the Monge-ampere equation, although it does not appear that they have used
+ the correct linearized form of the equation.
+ 
+\end_layout
+
+\begin_layout Standard
+Numerical results are presented for two analytic monitor functions and precipita
+tion data.
+ Various discretisation schemes are compared with respect to their convergence
+ properties and various mesh quality measures are considered.
+ The meshes generated are compared with centroidal Voronoi meshes and are
+ found to be non-orthogonal and less isotropic, but have less face skewness
+ (although these comparisons are only made using one type of monitor function).
+\end_layout
+
+\begin_layout Standard
+In summary this paper presents for the first time a numerical solution of
+ a monge-ampere type equation on the surface of the sphere, and the numerical
+ results presented demonstrate it's potential for global atmospheric modelling.
+ I would therefore recommend this paper for publication subject to the following
+:
+\end_layout
+
+\begin_layout Enumerate
+Page 4, line 69: suggest to replace 'uses' to 'using'.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Done (near margin note Rev3.1)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 5, line 114: suggest to re-write this sentence 'Given the solution
+ of the Monge-Ampere equation 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is convex, the Hessian of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is positive…'
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+We have re-written this as: 
+\begin_inset Quotes eld
+\end_inset
+
+Given that the solution of the Monge-Amp
+\lang english
+ère equation, 
+\begin_inset Formula $\phi$
+\end_inset
+
+, is convex, the determinant of the Hessian of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is positive and hence
+\lang british
+ the Jacobian determinant of the map is positive and thus is invertible
+ and the mesh will not tangle
+\begin_inset Quotes erd
+\end_inset
+
+ near margin note Rev3.2
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 6, lines 135-136: remove full stop after equation.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Thanks, done (margin note Rev3.3)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 12, lines 276-281: Is this the correct linearization? Could you elaborate
+ further as to why equation 21 will accelerate convergence compared to 22?
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+We claim that the fixed-point iterations presented might accelerate convergence
+ in comparison to the numerical solution of the parabolic Monge-Ampère (PMA)
+ equation as proposed by, eg 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BW09"
+
+\end_inset
+
+.
+ However this paper offers no proof of this improved convergence nor numerical
+ experiments.
+ This is the subject of ongoing work.
+ Our hope is that the fixed-point iterations should improve convergence
+ in comparison to the solution of PMA because we are solving a linearised
+ version of the Monge-Ampère equation rather than adding some artificial
+ time-stepping and smoothing terms to the Monge-Ampère equation that act
+ independently of the monitor function.
+ In contrast, the fixed-point iterations presented will generate a re-distribute
+d mesh even if the Hessian were not calculated at all.
+ We are solving the Monge-Ampère equation as a non-linear correction on
+ Winslow's method.
+ We have deleted the paragraph at the end of section 4.1.2 that says that
+ the fixed-point iterations are preferred to PMA as this is conjecture (margin
+ note Rev 3.4).
+ 
+\end_layout
+
+\begin_layout Quote
+
+\lang english
+We agree that the form of linearisation that we have used is not ideal.
+ We linearise about 
+\begin_inset Formula $\phi=0$
+\end_inset
+
+ rather than linearising about the previous iteration of 
+\begin_inset Formula $\phi$
+\end_inset
+
+.
+ And on the surface of a sphere we assume that the map is on a tangent plane.
+ The option to linearise about the previous iteration was pointed out to
+ us recently by Jan van Lent (University of West of England) and we are
+ currently investigation this with some excellent preliminary results.
+ We have now added 
+\begin_inset Quotes eld
+\end_inset
+
+(linearising about 
+\begin_inset Formula $\phi=0$
+\end_inset
+
+)
+\begin_inset Quotes erd
+\end_inset
+
+ at the beginning of 4.1.1 (near margin note Rev3.4).
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 13, line 285: replace 'on' with 'of'.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Thanks.
+ Done.
+ See margin note Rev3.5
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 14, lines 309-110 and Page 15, lines 324-325: Suggest to remove brackets
+ from equations 23 and 25 in the normal gradient to make consistent with
+ notation elsewhere in the text.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Thanks.
+ Done.
+ See margin notes Rev3.6
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 16, lines 346-347: This statement is not clear, the description of
+ the Goldilocks gradient in lines 371-373 might be better placed here .
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+This paragraph (section 4.2.3) is the introductory paragraph to the description
+ of the 3 types of gradient, finishing with the Goldilocks gradient.
+ It would not make sense to put the description of the Goldilocks gradient
+ before the description of the gradients which use small and large stencils.
+ We have clarified the text which motivates the need for the Goldilocks
+ gradient (near margin note Rev3.7).
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 17, line 376; The dashed lines do not appear on my copy of the paper
+ in figure 3.
+ I am unclear as to what this region is.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+There are no dashed lines in fig 3.
+ The text now reads 
+\begin_inset Quotes eld
+\end_inset
+
+the set of faces shown in fig 3
+\begin_inset Quotes erd
+\end_inset
+
+.
+ (near margin note Rev3.8).
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 17, lines 384-385: This description of this procedure is not very clear.
+ Is this also how equation (21) is solved?
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Section 4.2.5 is now completely re-written, including the definition of the
+ matrix residual.
+ (text near margin note Rev3.9).
+ This means that we do not need to define the matrix residual in section
+ 5 so section 5 has also been modified (see text near margin note Rev3.9).
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 18, lines 399-400: suggest to replace 'calculated evaluated' with 'which
+ is evaluated', and also 'use' with 'used' and 'applying' with 'apply'.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Thank-you.
+ Done.
+ Edits at margin notes Rev3.10 in section 4.2.7
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 19, lines 426-427: Sentence is confusing.
+ Is 
+\begin_inset Formula $\phi$
+\end_inset
+
+ a vector of initial values and/or the values from the previous iteration?
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+We have moved this definition to section 4.2.5 (margin note Rev3.9).
+ 
+\begin_inset Formula $\bm{\phi}$
+\end_inset
+
+ is both a set of initial guesses for the solution of the matrix equation
+ and the values from the previous iteration.
+ This is now clarified in section 4.2.5 (margin note Rev3.11) which says: 
+\begin_inset Quotes eld
+\end_inset
+
+For each fixed-point iteration, the values of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ from the previous iteration are used as an initial guess for the solution
+ of the matrix equation, so the initial residual should converge to the
+ final residual as the fixed-point iterations converge.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 19, Line 437: Suggest to replace 'The' with 'These'.
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Thanks done (margin note Rev3.12)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 25, line 535: 'residual is monot…'
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Thanks.
+ (margin note Rev3.13)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Page 36, line 596: suggest to remove 'the minimum allowable values is set
+ to' 
+\end_layout
+
+\begin_deeper
+\begin_layout Quote
+Done.
+ Margin note Rev3.14
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "numerics"
+options "plainnat"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

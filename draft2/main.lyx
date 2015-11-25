@@ -9,7 +9,7 @@
 \newcommand{\half}{\nicefrac{1}{2}}
 %\usepackage { fancybox}
 
-%\journal{Journal of Computational Physics}
+\journal{Journal of Computational Physics}
 
 %\usepackage{babel}
 
@@ -135,6 +135,15 @@ filename "frontMatter.tex"
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 
 \lang english
@@ -180,10 +189,33 @@ key "LTZ01"
 
 , does not lead to sudden changes in resolution and can be retro-fitted
  into existing models.
- The solution of the Monge-Ampère equation to generate an optimally transported
- (OT) mesh based on a monitor function is a useful form of r-adaptive mesh
- generation because it generates a mesh equidistributed with respect to
- a monitor function and does not lead to mesh tangling 
+ Variational methods exist which attempt to control resolution in different
+ directions for r-adaptive 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev2.2
+\end_layout
+
+\end_inset
+
+meshes 
+\begin_inset CommandInset citation
+LatexCommand citet
+before "eg"
+key "Hua01,KSD12"
+
+\end_inset
+
+.
+ Alternatively, the solution of the Monge-Ampère equation to generate an
+ optimally transported (OT) mesh based on a scalar valued monitor function
+ is a useful form of r-adaptive mesh generation because it generates a mesh
+ equidistributed with respect to a monitor function and does not lead to
+ mesh tangling 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "BHR09"
@@ -299,9 +331,18 @@ key "DFG99"
 \end_inset
 
 .
- Conversely, generating optimally transported meshes uses a semi-implicit
- technique, has convergence independent of the mesh size and the overall
- cost is proportional to 
+ Conversely, generating optimally transported meshes 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.1
+\end_layout
+
+\end_inset
+
+using a semi-implicit technique, has convergence independent of the mesh
+ size and the overall cost is proportional to 
 \begin_inset Formula $N\log N$
 \end_inset
 
@@ -614,19 +655,29 @@ The presence of the identity tensor in this Monge-Ampère equation will be
 Mesh tangling is caused by a local loss of invertibility of the Jacobian
  of the map from the original to the tranported mesh.
  
-\begin_inset Formula $\phi$
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.2
+\end_layout
+
 \end_inset
 
- is convex since it is the solution of a Monge-Amp
+Given that the solution of the Monge-Amp
 \lang english
-è
-\lang british
-re equation, so the Hessian of 
+ère equation, 
 \begin_inset Formula $\phi$
 \end_inset
 
- is positive definite and hence the Jacobian is invertible and the mesh
- will not tangle 
+, is convex, the determinant of the Hessian of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is positive and hence
+\lang british
+ the Jacobian determinant of the map is positive and thus is invertible
+ and the mesh will not tangle 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "BHR09"
@@ -899,8 +950,20 @@ On the surface of the sphere, we would still like to define an optimally
 
 \begin_inset Formula 
 \begin{equation}
-r\left(\phi\right)m\left(\bm{x}\right)=c.\label{eq:MAsph}
+r\left(\phi\right)m\left(\bm{x}\right)=c\label{eq:MAsph}
 \end{equation}
+
+\end_inset
+
+
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev3.3
+\end_layout
 
 \end_inset
 
@@ -1049,14 +1112,25 @@ name "mccannthm"
 
 \end_inset
 
- [
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed4
+\end_layout
+
+\end_inset
+
+
 \begin_inset CommandInset citation
-LatexCommand citealt
+LatexCommand citep
+before "A combination of theorems 8 and 9 of"
 key "McC01"
 
 \end_inset
 
-] Let 
+ Let 
 \begin_inset Formula $M$
 \end_inset
 
@@ -1189,7 +1263,28 @@ begin{corollary}
 \begin_inset Formula $c$
 \end_inset
 
--convex scalar potential function.
+-convex scalar potential function that 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev1.2
+\end_layout
+
+\end_inset
+
+ satisfies the
+\lang english
+ Monge-Ampère
+\lang british
+ type equation
+\begin_inset Formula 
+\begin{equation}
+m\left(\exp_{\xi}[\nabla\phi(\bm{\xi})]\right)|J(\bm{\xi})|=c.
+\end{equation}
+
+\end_inset
+
  
 \begin_inset ERT
 status collapsed
@@ -1748,6 +1843,20 @@ spatial discretisation methods both for the Hessian,
  The spatial discretisation leads to a set of non-linear algebraic equations.
  Secondly, the algebraic equations require a numerical algorithm to find
  solutions.
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev1.3
+\end_layout
+
+\end_inset
+
+The discretisation should ensure that the solutions is convex based on a
+ discrete definition of convexity.
  We will start by considering the spatial discretisation of the Hessian,
  
 \begin_inset Formula $H$
@@ -1775,6 +1884,18 @@ key "BBPC14"
 \end_inset
 
 .
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev1.3
+\end_layout
+
+\end_inset
+
+Convexity was ensured by smoothing the monitor function and smoothing the
+ non-converged solution.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -1825,22 +1946,48 @@ key "DG06,DG06b"
 \end_layout
 
 \begin_layout Standard
+\begin_inset Marginal
+status open
 
-\lang english
-There has been less discussion of the discretisation methods needed to calculate
+\begin_layout Plain Layout
+Rev1.4
+\end_layout
+
+\end_inset
+
+When solving the Monge-Ampère equation for mesh adaptation, the RHS of eqn
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA1"
+
+\end_inset
+
+) depends on 
+\begin_inset Formula $\nabla\phi$
+\end_inset
+
+.
  
-\begin_inset Formula $f$
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FroeseThesis2012"
+
 \end_inset
 
-, which is not trivial since 
-\begin_inset Formula $f$
+ pointed out that standard centred differences are not monotone for discretising
+ this term and so used wide stencil finite differences.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "SAK1x"
+
 \end_inset
 
- can be a function of 
-\begin_inset Formula $\phi$
-\end_inset
-
- or, in our case, of 
+ experimented with second and fourth order centred finite differences and
+ a spectral method for discretisting
+\lang english
+ 
 \begin_inset Formula $\nabla\phi$
 \end_inset
 
@@ -2040,7 +2187,23 @@ reference "eq:MA"
 \begin_inset Formula $\nabla^{2}$
 \end_inset
 
- is the Laplacian operator.
+ is the Laplacian operator 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev3.4
+\end_layout
+
+\end_inset
+
+(linearising about 
+\begin_inset Formula $\phi=0$
+\end_inset
+
+).
  Eqn.
  (
 \begin_inset CommandInset ref
@@ -2217,8 +2380,19 @@ reference "sub:underRelax"
 
 .
  If one of the eigenvalues gets large and the other small, the Laplacian
- preconditioning with not lead to convergent iterations without the under-relaxa
-tion.
+ preconditioning will
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev2.10a
+\end_layout
+
+\end_inset
+
+ not lead to convergent iterations without the under-relaxation.
  
 \end_layout
 
@@ -2231,8 +2405,33 @@ On the Surface of the Sphere
 \begin_layout Standard
 
 \lang english
-In order to define convergent fixed-point iterations, we need to find a
- linearisation of eqn.
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev1.1
+\end_layout
+
+\end_inset
+
+In order to solve the optimal transport problem on the sphere, we solve
+ eqn (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MAsph"
+
+\end_inset
+
+) directly rather than eqn (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:MA"
+
+\end_inset
+
+).
+ However, in order to define convergent fixed-point iterations, we need
+ to find a linearisation of eqn.
  (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2241,7 +2440,20 @@ reference "eq:MAsph"
 \end_inset
 
 ).
- Assuming that eqn.
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev1.1
+\end_layout
+
+\end_inset
+
+For small maps, we assume that maps lie on a tangent to the sphere and so
+ eqn.
  (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2257,8 +2469,8 @@ reference "eq:MA"
 
 \end_inset
 
-) on a tangent plane to the sphere, we use the same linearisation as in
- section 
+).
+ We then use the same linearisation as in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:linearPlane"
@@ -2300,6 +2512,19 @@ No further approximation is needed for
 \begin_layout Standard
 
 \lang english
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev3.4
+\end_layout
+
+\end_inset
+
+ 
+\strikeout on
 The fixed-point iteration sequences defined in eqns.
  (
 \begin_inset CommandInset ref
@@ -2338,7 +2563,17 @@ key "BCW13,BBPC14"
 \end_layout
 
 \begin_layout Subsection
-Spatial Discretisation 
+Spatial Discretisation on the Computational Mesh
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed5
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2355,7 +2590,17 @@ key "FO11"
 \end_inset
 
  use a Newton solver and a wide-stencil finite-difference scheme.
- In Euclidean geometry we are solving a different version on the Monge-Amp
+ In Euclidean geometry we are solving a different version 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.5
+\end_layout
+
+\end_inset
+
+of the Monge-Amp
 \lang english
 è
 \lang british
@@ -2435,20 +2680,18 @@ reference "eq:PMA_SIsph"
 \begin_layout Enumerate
 The spatial discretisation should be at least second-order accurate and
  the errors should be smooth.
- If we have rough truncation errors or truncation errors which are proportional
- to the mesh size, 
-\begin_inset Formula $|\mathbf{d}_{f}|$
+ If we have rough truncation errors or first-order accurate truncation errors
+ then truncation errors could lead to mesh tangling.
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed5
+\end_layout
+
 \end_inset
 
-, and we are deforming mesh cells of size 
-\begin_inset Formula $|\mathbf{d}_{f}|$
-\end_inset
 
- to size, say 
-\begin_inset Formula $0.1|\mathbf{d}_{f}|$
-\end_inset
-
-, then truncation errors will lead to mesh tangling.
 \end_layout
 
 \begin_layout Enumerate
@@ -2510,8 +2753,30 @@ key "TRSK09"
 \begin_layout Standard
 We are considering a finite-volume discretisation on initially orthogonal
  nearly uniform polygonal prisms.
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev2.3
+\end_layout
+
+\end_inset
+
+The discretisation that we describe is defined for arbitrary two-dimensional
+ orthogonal meshes consisting of shapes with any number of sides.
  This and the above requirements suggests the following spatial discretisation
- on the computational mesh:
+ on a fixed
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev2.4
+\end_layout
+
+\end_inset
+
+ computational mesh:
 \end_layout
 
 \begin_layout Subsubsection
@@ -2540,9 +2805,19 @@ For cell
 
 , the simplest, most compact discretisation of the Laplacian, suitable for
  an orthogonal grid, using Gauss's divergence theorem, is:
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.6
+\end_layout
+
+\end_inset
+
+
 \begin_inset Formula 
 \begin{equation}
-\nabla_{i}^{2}\phi\approx\frac{1}{V_{i}}\sum_{f\in i}\nabla_{nf}\left(\phi\right)|\mathbf{S}_{f}|
+\nabla_{i}^{2}\phi\approx\frac{1}{V_{i}}\sum_{f\in i}\nabla_{nf}\phi|\mathbf{S}_{f}|
 \end{equation}
 
 \end_inset
@@ -2571,7 +2846,17 @@ where cell
 \begin_inset Formula $|\mathbf{S}_{f}|$
 \end_inset
 
- is the face area and the normal gradient at each face is:
+ is the face area and gradient normal to
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed5
+\end_layout
+
+\end_inset
+
+ each face is:
 \begin_inset Formula 
 \begin{equation}
 \nabla_{nf}\phi=\frac{\phi_{i_{f}}-\phi_{i}}{|\mathbf{d}_{f}|}\label{eq:snGrad}
@@ -2589,6 +2874,16 @@ where
 
  and 
 \begin_inset Formula $i_{f}$
+\end_inset
+
+ in the computational domain
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed5
+\end_layout
+
 \end_inset
 
 .
@@ -2653,7 +2948,7 @@ reference "fig:cell"
 
 \end_inset
 
-.
+(a).
  
 \end_layout
 
@@ -2665,9 +2960,81 @@ status open
 
 \begin_layout Plain Layout
 \align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="49line%">
+<column alignment="center" valignment="top" width="49line%">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 \begin_inset External
 	template XFig
-	filename figures/figs/cell.fig
+	filename figures/figs/cell2D.fig
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset External
+	template XFig
+	filename figures/figs/cell2Ddef.fig
+	scale 180
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(a) The computational mesh with cell centre locations, 
+\begin_inset Formula $\bm{\xi}_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\bm{\xi}_{i_{f}}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(b) The deformed mesh with cell centre locations, 
+\begin_inset Formula $\mathbf{x}_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathbf{x}_{i_{f}}$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
 
 \end_inset
 
@@ -2678,20 +3045,16 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Cell centre locations, 
-\begin_inset Formula $\bm{\xi}_{i}$
-\end_inset
-
- and 
-\begin_inset Formula $\bm{\xi}_{i_{f}}$
-\end_inset
-
- of cells 
+Cells 
 \begin_inset Formula $i$
 \end_inset
 
  and 
 \begin_inset Formula $i_{f}$
+\end_inset
+
+ of the computational and deformed meshes either side of face 
+\begin_inset Formula $f$
 \end_inset
 
 , face area vector 
@@ -2703,16 +3066,15 @@ Cell centre locations,
 \end_inset
 
 .
- 
-\begin_inset Formula $\bm{\xi}_{i}$
+ The skewness of face 
+\begin_inset Formula $f$
 \end_inset
 
- and 
-\begin_inset Formula $\bm{\xi}_{i_{f}}$
+ of the deformed mesh is shown by a short grey line of length 
+\begin_inset Formula $d_{s}$
 \end_inset
 
- have been placed in order to accentuate the orthogonality and skewness
- (section 
+ in the plane of the face (see section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:diags"
@@ -2720,15 +3082,6 @@ reference "sec:diags"
 \end_inset
 
 ).
- The skewness of face 
-\begin_inset Formula $f$
-\end_inset
-
- is shown by a short grey line of length 
-\begin_inset Formula $d_{s}$
-\end_inset
-
- in the plane of the face.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -2770,7 +3123,17 @@ re equation for mesh generation, we are approximating the change in cell
 
 .
  This is the geometric approach.
- 
+ The geometric approach is always used on the surface of the sphere.
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev1.1
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -2780,9 +3143,19 @@ Finite Difference Discretisation of the Hessian
 \begin_layout Standard
 For a discretisation of the Hessian consistent with the discretisation of
  the Laplacian, we use Gauss's theorem:
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.6
+\end_layout
+
+\end_inset
+
+
 \begin_inset Formula 
 \begin{equation}
-H\left(\phi\right)_{i}=\nabla\nabla_{i}\phi=\frac{1}{V_{i}}\sum_{f\in i}\nabla_{f}\left(\phi\right)\mathbf{S}_{f}\label{eq:FDhess}
+H\left(\phi\right)_{i}=\nabla\nabla_{i}\phi=\frac{1}{V_{i}}\sum_{f\in i}\nabla_{f}\phi\mathbf{S}_{f}\label{eq:FDhess}
 \end{equation}
 
 \end_inset
@@ -2826,8 +3199,23 @@ where
 
 \end_inset
 
-Next, a temporary value of the vector valued gradient at each face is calculated
-:
+
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed5
+\end_layout
+
+\end_inset
+
+where 
+\begin_inset Formula $\hat{\mathbf{S}}_{f}=\mathbf{S}_{f}/|\mathbf{S}_{f}|$
+\end_inset
+
+.
+ Next, a temporary value of the vector valued gradient at each face is calculate
+d:
 \begin_inset Formula 
 \begin{equation}
 \nabla_{f}^{\prime}\phi=\lambda_{f}\nabla_{i}\phi+\left(1-\lambda_{f}\right)\nabla_{i_{f}}\phi
@@ -2920,9 +3308,38 @@ In order to calculate the mesh map and consequently to calculate
 \end_inset
 
 .
- Ideally, this operation should not produce any non-convex cells and it
- turns out to be particularly sensitive to the numerical approximation and
- its stencil.
+ This is in contrast to 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev1.4
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FroeseThesis2012,SAK1x"
+
+\end_inset
+
+ who discretise the gradient of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ at the same locations where 
+\begin_inset Formula $\phi$
+\end_inset
+
+ is stored.
+ Ideally, the calculation of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ should not produce any non-convex cells and it turns out to be particularly
+ sensitive to the numerical approximation and its stencil.
  If the stencil is too large, grid-scale oscillations in 
 \begin_inset Formula $\phi$
 \end_inset
@@ -2932,11 +3349,23 @@ In order to calculate the mesh map and consequently to calculate
 \end_inset
 
  and convergence is slow.
- If the stencil is too small, on a hexagonal mesh, grid-scale oscillations
- of the approximation of the gradient at vertices can grow since the calculation
- of the gradient does not lead to a gradient with bounded variation.
- This does not slow down convergence but the resulting meshes are locally
- distorted.
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.7
+\end_layout
+
+\end_inset
+
+If the stencil is too small, on a hexagonal mesh, grid-scale oscillations
+ of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ can grow since the calculation of the gradient does not lead to a gradient
+ with bounded variation which leads to locally distorted meshes.
  So the approximation and the stencil need to be just right - we need the
  Goldilocks gradient.
  
@@ -3167,7 +3596,7 @@ The Goldilocks stencil should be large enough to calculate a smooth gradient
 \begin_inset Formula $v$
 \end_inset
 
- and the face neighbours of those faces (fig.
+ and the face neighbours attached by a vertex to those faces (fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3179,16 +3608,44 @@ reference "fig:goldilocksStencil"
  The vertex gradient is then reconstructed using a least squares fit:
 \begin_inset Formula 
 \begin{equation}
-\nabla_{v}\phi=\left(\sum_{f\in v\in f\in v}\mathbf{d}_{f}\mathbf{d}_{f}^{T}\right)^{-1}\sum_{f\in v\in f\in v}\left(\mathbf{d}_{f}\nabla_{nf}\phi\right)\label{eq:golilocksGradv}
+\nabla_{v}\phi=\left(\sum_{f\in v^{\prime}\in f^{\prime}\in v}\mathbf{d}_{f}\mathbf{d}_{f}^{T}\right)^{-1}\sum_{f\in v^{\prime}\in f^{\prime}\in v}\left(\mathbf{d}_{f}\nabla_{nf}\phi\right)\label{eq:golilocksGradv}
 \end{equation}
 
 \end_inset
 
-where 
-\begin_inset Formula $f\in v\in f\in v$
+
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev2.10b
+\end_layout
+
 \end_inset
 
- is the set of faces shown by dashed lines in fig.
+where 
+\begin_inset Formula $f\in v^{\prime}\in f^{\prime}\in v$
+\end_inset
+
+ is the set of faces shown
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev3.8
+\end_layout
+
+\end_inset
+
+ 
+\strikeout on
+by dashed lines
+\strikeout default
+ in fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3285,11 +3742,64 @@ name "fig:goldilocksStencil"
 \end_layout
 
 \begin_layout Subsubsection
+Calculation of Exponential Maps
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev1.6
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Exponential maps are used to move vertices on the surface of the sphere.
+ The direction of the map is given by the direction of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+ at vertex 
+\begin_inset Formula $v$
+\end_inset
+
+ (ie the direction is along the great circle in the plane of 
+\begin_inset Formula $\nabla_{v}\phi$
+\end_inset
+
+) The distance moved is the geodesic distance 
+\begin_inset Formula $|\nabla_{v}\phi|$
+\end_inset
+
+ so that the vertex is rotated around the sphere by an angle 
+\begin_inset Formula $|\nabla_{v}\phi|/a$
+\end_inset
+
+ where 
+\begin_inset Formula $a$
+\end_inset
+
+ is the radius of the sphere.
+ 
+\end_layout
+
+\begin_layout Subsubsection
 Linear equation solver and fixed point iterations
 \end_layout
 
 \begin_layout Standard
-The Laplacian is solved implicitly in eqns (
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.9
+\end_layout
+
+\end_inset
+
+Spatial discretisation of eqns (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:PMA_SI"
@@ -3303,7 +3813,22 @@ reference "eq:PMA_SIsph"
 
 \end_inset
 
-) using the OpenFOAM GAMG solver (geometric algebraic multi-grid, 
+) leads to a set of linear algebraic equations, which can be written as
+ a matrix equation, 
+\begin_inset Formula $A\bm{\phi}=\mathbf{b}$
+\end_inset
+
+, where 
+\begin_inset Formula $\bm{\phi}$
+\end_inset
+
+ is the vector of all of the values of the unknown, 
+\begin_inset Formula $\phi$
+\end_inset
+
+.
+ This matrix equation is solved using the OpenFOAM GAMG solver (geometric
+ algebraic multi-grid, 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "OpenFOAM"
@@ -3312,6 +3837,41 @@ key "OpenFOAM"
 
 ) using diagonal incomplete Cholesky smoothing with 50 cells in the coarsest
  level.
+ The residual for the solver tolerance is defined as:
+\begin_inset Formula 
+\begin{equation}
+\frac{\sum|\mathbf{b}-A\bm{\phi}|}{\sum\left(|\mathbf{b}|+|A\mathbf{\bm{\phi}}|\right)}\label{eq:initResid}
+\end{equation}
+
+\end_inset
+
+where the sum is over all cells of the mesh (ie over all elements of the
+ vectors 
+\begin_inset Formula $\mathbf{b}$
+\end_inset
+
+ and 
+\begin_inset Formula $A\bm{\phi}$
+\end_inset
+
+).
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.11
+\end_layout
+
+\end_inset
+
+For each fixed-point iteration, the values of 
+\begin_inset Formula $\phi$
+\end_inset
+
+ from the previous iteration are used as an initial guess for the solution
+ of the matrix equation, so the initial residual should converge to the
+ final residual as the fixed-point iterations converge.
  At each fixed point iteration (ie each value of 
 \begin_inset Formula $n$
 \end_inset
@@ -3324,22 +3884,19 @@ reference "eq:PMA_SI"
 
 \end_inset
 
-)) the Laplacian is solved once with a relative tolerance of 0.001, so that
- the final residual is 0.001 times the initial residual.
- Then the right hand side of eqn.
- (
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "eq:PMA_SI"
-
+)) the matrix equation is solved with a tolerance equal to the maximum of
+ 0.001 times the initial residual and 
+\begin_inset Formula $10^{-8}$
 \end_inset
 
-) is updated, incrementing 
-\begin_inset Formula $n$
+.
+ The matrix equation is not solved all the way to 
+\begin_inset Formula $10^{-8}$
 \end_inset
 
- and the Laplacian is solved again until the initial residual is less than
- 
+ at every fixed-point iteration to save computational cost but, when the
+ fixed-point iterations have converged, the initial residual will be less
+ than 
 \begin_inset Formula $10^{-8}$
 \end_inset
 
@@ -3404,11 +3961,39 @@ reference "sec:results"
 
 \end_inset
 
-, we first present results using an analytic monitor function, calculated
- evaluated at the transported mesh cell centres.
- We then used observed meteorological data to calculate a monitor function
- by mapping the data to the computational grid and then applying Laplacian
- smoothing, as described in section 
+, we first present results using an analytic monitor function, 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.10
+\end_layout
+
+\end_inset
+
+which is evaluated at the transported mesh cell centres.
+ We then 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.10
+\end_layout
+
+\end_inset
+
+use observed meteorological data to calculate a monitor function by mapping
+ the data to the computational grid and then 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+3.10
+\end_layout
+
+\end_inset
+
+apply Laplacian smoothing, as described in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:smoothingm"
@@ -3580,56 +4165,28 @@ name "sec:diags"
 \end_layout
 
 \begin_layout Standard
-Firstly, convergence is measured by plotting the initial residual of the
- implicit solution of the Laplacian at every fixed point iteration as a
- function of iteration number.
- If the Poisson equation, (
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.9
+\end_layout
+
+\end_inset
+
+Convergence is measured in two ways.
+ Firstly, convergence is measured by plotting the initial residual (eqn
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "eq:PMA_SIsph"
+reference "eq:initResid"
 
 \end_inset
 
-), is discretised and represented as a matrix equation, 
-\begin_inset Formula $A\bm{\phi}=\mathbf{b}$
-\end_inset
-
-, then the initial residual is given by
-\begin_inset Formula 
-\begin{equation}
-\frac{\sum|\mathbf{b}-A\bm{\phi}|}{\sum\left(|\mathbf{b}|+|A\mathbf{\bm{\phi}}|\right)}
-\end{equation}
-
-\end_inset
-
-where 
-\begin_inset Formula $\bm{\phi}$
-\end_inset
-
- is the vector of all of the values of 
-\begin_inset Formula $\phi$
-\end_inset
-
- and we are considering the initial guess for 
-\begin_inset Formula $\bm{\phi}$
-\end_inset
-
-, before the solution of the Poisson equation, from the previous fixed point
- iteration, 
-\begin_inset Formula $n$
-\end_inset
-
-.
- The sum is over all cells of the mesh (ie over all elements of the vectors
- 
-\begin_inset Formula $\mathbf{b}$
-\end_inset
-
- and 
-\begin_inset Formula $A\bm{\phi}$
-\end_inset
-
-).
+) of the matrix equation at every fixed point iteration as a function of
+ iteration number.
+ This gives an indication of how much the solution is changing for each
+ fixed-point iteration.
 \end_layout
 
 \begin_layout Standard
@@ -3676,7 +4233,17 @@ re equation, it tells us how well
 The diagnostics of mesh quality consider cell centres, defined as cell centroids
  or centres of mass of the moved cells, and face centres, defined in the
  same way.
- The will also use the face area vector, 
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.12
+\end_layout
+
+\end_inset
+
+These will also use the face area vector, 
 \begin_inset Formula $\mathbf{S}_{x}$
 \end_inset
 
@@ -3944,6 +4511,35 @@ key "BRW15"
 
 .
  
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev2.3
+\end_layout
+
+\end_inset
+
+ The computational meshes on which the optimal transport problems are solved
+ are uniform grids of 
+\begin_inset Formula $60\times60$
+\end_inset
+
+ squares.
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev2.7
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4321,7 +4917,19 @@ reference "fig:planeMeshConvergence"
  Firstly, the Laplacian is no longer a good linearisation of the geometric
  Hessian and secondly, a solution at this resolution may not exist.
  Smoothing the monitor function removes the stall in convergence and speeds
- convergence of all solutions (not shown).
+ convergence of all solutions (not shown) 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev2.8
+\end_layout
+
+\end_inset
+
+since smoothing removes the very abrupt changes in the monitor function.
  However this is not the topic of this paper.
  
 \end_layout
@@ -4718,7 +5326,41 @@ key "RJG+11"
 \begin_layout Standard
 
 \lang english
-The X1 meshes are not shown but the X1 centroidal Voronoi meshes and the
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev2.3
+\end_layout
+
+\end_inset
+
+ The computational meshes are hexagonal icosahedra which consist of 12 pentagons
+ and 
+\begin_inset Formula $10(2^{2n}-1)$
+\end_inset
+
+ hexagons for 
+\begin_inset Formula $n=3,4,5,6$
+\end_inset
+
+.
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev2.9
+\end_layout
+
+\end_inset
+
+These quasi-uniform meshes (not shown) can be referred to as the X1 meshes.
+ The X1 meshes are not shown but the X1 centroidal Voronoi meshes and the
  OT meshes are slightly different.
  The X1 centroidal Voronoi meshes are generated using Lloyd's algorithm
  which guarantees that the X1 meshes are nearly centroidal (the Voronoi
@@ -4733,7 +5375,11 @@ key "HR95b"
 \end_inset
 
  version of the hexagonal icosahedron, optimised to reduce face skewness.
- The X2, X4, X8 and X16 meshes are shown in figure 
+ The X2, X4, X8 and X16 meshes of 
+\lang english
+2,562 cells
+\lang british
+ are shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:X24meshes"
@@ -5573,8 +6219,19 @@ reference "fig:boostLaplacian"
 
  does rise after initialisation.
  This implies that the maximum of the source term increases before it decreases.
- However the initial residual monotonically decreasing during these early
- iterations.
+ However the initial residual 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+Rev3.13
+\end_layout
+
+\end_inset
+
+is monotonically decreasing during these early iterations.
  This is because the initial residual is a mean over the whole domain whereas
  
 \begin_inset Formula $1+\alpha$
@@ -7760,7 +8417,21 @@ m=\frac{p+p_{\min}}{p_{\max}+p_{min}}
 
 \end_inset
 
-where the minimum allowable values is set to 
+where 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Rev3.14
+\end_layout
+
+\end_inset
+
+
+\strikeout on
+the minimum allowable values is set to
+\strikeout default
+ 
 \begin_inset Formula $p_{\min}=10^{-5}\text{kg}\text{m}^{-2}\text{s}^{-1}$
 \end_inset
 
@@ -7976,7 +8647,7 @@ Weller acknowledges support from NERC grant NE/H015698/1 and Browne from
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "numerics,comments/Phil3/bibfile"
+bibfiles "numerics,bibfile"
 options "abbrvnat"
 
 \end_inset
