@@ -106,7 +106,7 @@ Responses to reviewer comments
 \end_layout
 
 \begin_layout Section*
-Associate Editor's comments:
+Editor's comments:
 \end_layout
 
 \begin_layout Enumerate
@@ -117,12 +117,26 @@ All three reviewers recommend minor revisions, and offer numerous comments
  
 \end_layout
 
+\begin_deeper
+\begin_layout Quote
+text near margin notes Ed1 has been edited
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 Furthermore, the paper is rather long, and trimming digressive passages
  may improve its readability.
  
 \end_layout
 
+\begin_deeper
+\begin_layout Quote
+We have removed the final paragraph of section 4.1.2 and the first two sentences
+ of section 4.2.
+ (see crossed out text near margin notes Ed2).
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 References should be accurate, complete and consistently adhere to the Journal
  style.
@@ -490,7 +504,8 @@ Section 4.2.2.2 Is the equation (29) exact, or the ratio of the volumes (right
 
 \begin_deeper
 \begin_layout Quote
-This is now equation 30 and it is exact for a given grid.
+This is now equation 30 and it is exactly what we need in order to satisfy
+ equidistribution in a discrete sense.
  I would prefer not to add additional clarification to the manuscript as
  4.2.2.2 already starts by saying: 
 \begin_inset Quotes eld
@@ -516,6 +531,7 @@ Section 4.2.3 Please add a reference for the Goldilocks gradient.
 \begin_deeper
 \begin_layout Quote
 The gradient on the Goldilocks stencil was developed as part of this work.
+ This is now clarified (margin notes Rev2.6)
 \end_layout
 
 \end_deeper
@@ -780,9 +796,8 @@ Page 13, line 285: replace 'on' with 'of'.
 
 \begin_deeper
 \begin_layout Quote
-Thanks.
- Done.
- See margin note Rev3.5
+These sentences have now been removed following the editor's suggestion
+ to shorten the manuscript
 \end_layout
 
 \end_deeper

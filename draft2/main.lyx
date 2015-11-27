@@ -19,8 +19,8 @@
 
 % Phil's packagages
 \usepackage{amsthm}
-\usepackage{caption}
-\usepackage{subcaption}
+%\usepackage{caption}
+%\usepackage{subcaption}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
@@ -38,12 +38,12 @@
 
 \usepackage{lineno}
 \end_preamble
-\options review,square,comma,sort&compress,12pt,times,authoryear
+\options review
 \use_default_options true
 \maintain_unincluded_children false
 \language british
-\language_package default
-\inputencoding auto
+\language_package none
+\inputencoding default
 \fontencoding global
 \font_roman times
 \font_sans default
@@ -56,13 +56,13 @@
 \font_tt_scale 100
 
 \graphics default
-\default_output_format pdf5
+\default_output_format pdf2
 \output_sync 0
 \bibtex_command default
 \index_command default
 \paperfontsize 12
 \spacing single
-\use_hyperref true
+\use_hyperref false
 \pdf_title "\@title"
 \pdf_author "\@author"
 \pdf_bookmarks true
@@ -76,12 +76,12 @@
 \pdf_pdfusetitle true
 \pdf_quoted_options "citecolor=black,linkcolor=black"
 \papersize default
-\use_geometry true
+\use_geometry false
 \use_amsmath 2
 \use_esint 1
 \use_mhchem 0
 \use_mathdots 0
-\cite_engine natbib_authoryear
+\cite_engine natbib_numerical
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -135,24 +135,11 @@ filename "frontMatter.tex"
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset CommandInset toc
-LatexCommand tableofcontents
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Section
-
-\lang english
 Introduction
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The need to represent scale interactions in weather and climate prediction
  models has, for many decades, motivated research into the use of adaptive
  meshes 
@@ -195,8 +182,6 @@ key "LTZ01"
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev2.2
 \end_layout
 
@@ -204,18 +189,30 @@ Rev2.2
 
 meshes 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citep
 before "eg"
 key "Hua01,KSD12"
 
 \end_inset
 
 .
- Alternatively, the solution of the Monge-Ampère equation to generate an
- optimally transported (OT) mesh based on a scalar valued monitor function
- is a useful form of r-adaptive mesh generation because it generates a mesh
- equidistributed with respect to a monitor function and does not lead to
- mesh tangling 
+ Alternatively, the solution of the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation to generate an optimally transported (OT) mesh based on a scalar
+ valued monitor function is a useful form of r-adaptive mesh generation
+ because it generates a mesh equidistributed with respect to a monitor function
+ and does not lead to mesh tangling 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "BHR09"
@@ -224,14 +221,25 @@ key "BHR09"
 
 .
  We will see that the optimal transport problem on the sphere leads to a
- slightly different equation of Monge-Ampère type, which has not before
- been solved numerically on the surface of a sphere, which would be necessary
- for weather and climate prediction using r-adaptivity.
+ slightly different equation of Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re type, which has not before been solved numerically on the surface of
+ a sphere, which would be necessary for weather and climate prediction using
+ r-adaptivity.
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 At first glance, r-adaptivity does not look ideal for adaptive meshing of
  the global atmosphere; 
 \begin_inset CommandInset citation
@@ -258,8 +266,6 @@ key "FT93"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 Models of the global atmosphere are being developed with accurate treatment
  of non-orthogonality and which allow arbitrary grid structures 
 \begin_inset CommandInset citation
@@ -367,9 +373,35 @@ reference "sec:OT"
 \end_inset
 
  we describe mesh generation by optimal transport in Euclidean space leading
- to a Monge-Ampère equation.
+ to a Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation.
  We then show how these concepts can extend to mesh generation on the sphere,
- leading to an equation of Monge-Ampère type.
+ leading to an equation of Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re type.
  Existing numerical solution techniques in Euclidean geometry are reviewed
  in section 
 \begin_inset CommandInset ref
@@ -387,9 +419,18 @@ reference "sec:method"
 \end_inset
 
  we describe the new numerical methods for solving the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re type equations, both on a Euclidean plane and on the sphere.
  In order to address issues of mesh distortion, a range of diagnostics of
  mesh quality are presented.
@@ -460,26 +501,18 @@ name "sec:OT"
 \end_layout
 
 \begin_layout Subsection
-
-\lang english
 Optimally Transported Meshes in Euclidean Space
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 A mesh is equidistributed with respect to a monitor function when the product
  of the cell volumes and the monitor function in the cell is constant across
  all mesh cells.
- 
-\lang british
-The equidistribution principle alone does not lead to a well-defined problem
+ The equidistribution principle alone does not lead to a well-defined problem
  for mesh generation.
  Indeed this problem is ill-posed in more than 1 dimension and so requires
  the imposition of an extra constraint.
  
-\lang english
-
 \begin_inset CommandInset citation
 LatexCommand citet
 key "BW06"
@@ -516,10 +549,8 @@ key "BBPC14"
 optimal transport 
 \shape default
 constraint says that the new mesh should be as close as possible to the
- original mesh 
-\lang british
-- we seek to minimise the distance between the two meshes in a certain measure
- which we shall discuss.
+ original mesh - we seek to minimise the distance between the two meshes
+ in a certain measure which we shall discuss.
  We write this minimization problem:
 \begin_inset Formula 
 \begin{equation}
@@ -566,9 +597,7 @@ key "brenier1991"
 \begin_inset Formula $\phi$
 \end_inset
 
-,
-\lang english
- so that the new mesh locations are given by: 
+, so that the new mesh locations are given by: 
 \begin_inset Formula 
 \begin{equation}
 {\bf x}=\bm{\xi}+\nabla\phi.\label{eq:meshMap}
@@ -578,8 +607,6 @@ key "brenier1991"
 
 The change in cell volume under the coordinate transform is given by the
  determinant of the Jacobian of the map, 
-\lang british
-
 \begin_inset Formula $|J(\xi)|=|\mathbf{\nabla\mathbf{x}}(\bm{\xi})|$
 \end_inset
 
@@ -632,13 +659,24 @@ reference "eq:meshMap"
 
  is the Hessian.
  Consequently, for the mesh to be optimally transported and equidistributed,
- the mesh potential,
-\lang english
- 
+ the mesh potential, 
 \begin_inset Formula $\phi$
 \end_inset
 
-, must satisfy a Monge-Ampère equation: 
+, must satisfy a Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation: 
 \begin_inset Formula 
 \begin{equation}
 |I+H\left(\phi\right)|m({\bf x})=c.\label{eq:MA}
@@ -646,8 +684,21 @@ reference "eq:meshMap"
 
 \end_inset
 
-The presence of the identity tensor in this Monge-Ampère equation will be
- exploited in the linearisation to create a novel numerical algorithm.
+The presence of the identity tensor in this Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation will be exploited in the linearisation to create a novel numerical
+ algorithm.
  
 \end_layout
 
@@ -665,8 +716,19 @@ Rev3.2
 \end_inset
 
 Given that the solution of the Monge-Amp
-\lang english
-ère equation, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation, 
 \begin_inset Formula $\phi$
 \end_inset
 
@@ -674,10 +736,8 @@ Given that the solution of the Monge-Amp
 \begin_inset Formula $\phi$
 \end_inset
 
- is positive and hence
-\lang british
- the Jacobian determinant of the map is positive and thus is invertible
- and the mesh will not tangle 
+ is positive and hence the Jacobian determinant of the map is positive and
+ thus is invertible and the mesh will not tangle 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "BHR09"
@@ -688,16 +748,10 @@ key "BHR09"
 \end_layout
 
 \begin_layout Subsection
-
-\lang english
-Optimally Transported Meshes 
-\lang british
-on the Sphere
+Optimally Transported Meshes on the Sphere
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 A naive approach to r-adaptivity on the sphere, 
 \begin_inset Formula $\mathbb{S}^{2}$
 \end_inset
@@ -724,8 +778,6 @@ reference "commutative_diagram"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset Float figure
 wide false
 sideways false
@@ -733,8 +785,6 @@ status open
 
 \begin_layout Plain Layout
 \align center
-
-\lang english
 \begin_inset ERT
 status open
 
@@ -823,8 +873,6 @@ end{tikzpicture}
 \end_layout
 
 \begin_layout Plain Layout
-
-\lang english
 \begin_inset Caption
 
 \begin_layout Plain Layout
@@ -840,8 +888,6 @@ Commutative diagram showing an naive approach to meshing on the sphere by
 \end_layout
 
 \begin_layout Plain Layout
-
-\lang english
 \begin_inset CommandInset label
 LatexCommand label
 name "commutative_diagram"
@@ -857,8 +903,6 @@ name "commutative_diagram"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 A map 
 \begin_inset Formula $g:\mathbb{S}^{2}\to\mathbb{R}^{2}$
 \end_inset
@@ -898,8 +942,6 @@ A map
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The Hairy Ball Theorem tells us that there must be at least one fixed point
  of the map 
 \begin_inset Formula $T:\mathbb{S}^{2}\to\mathbb{S}^{2}$
@@ -946,8 +988,6 @@ a priori
 \begin_layout Standard
 On the surface of the sphere, we would still like to define an optimally
  transported mesh satisfying equidistribution:
-\lang english
-
 \begin_inset Formula 
 \begin{equation}
 r\left(\phi\right)m\left(\bm{x}\right)=c\label{eq:MAsph}
@@ -960,8 +1000,6 @@ r\left(\phi\right)m\left(\bm{x}\right)=c\label{eq:MAsph}
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev3.3
 \end_layout
 
@@ -996,9 +1034,7 @@ reference "eq:MAsph"
 \end_inset
 
 ) exist which minimise the distance between the original and resulting meshes.
- 
-\lang british
-On the sphere 
+ On the sphere 
 \begin_inset Formula $\mathbb{S}^{2}$
 \end_inset
 
@@ -1009,7 +1045,7 @@ On the sphere
  by 
 \begin_inset CommandInset citation
 LatexCommand citet
-key "McCann2001"
+key "McC01"
 
 \end_inset
 
@@ -1108,7 +1144,7 @@ begin{theorem}
 
 \begin_inset CommandInset label
 LatexCommand label
-name "mccannthm"
+name "thm:mccannthm"
 
 \end_inset
 
@@ -1122,15 +1158,14 @@ Ed4
 
 \end_inset
 
-
+(A combination of theorems 8 and 9 of
 \begin_inset CommandInset citation
 LatexCommand citep
-before "A combination of theorems 8 and 9 of"
 key "McC01"
 
 \end_inset
 
- Let 
+) Let 
 \begin_inset Formula $M$
 \end_inset
 
@@ -1182,9 +1217,7 @@ key "McC01"
 \begin_inset Formula $\nu$
 \end_inset
 
- admits a unique optimal transported map
-\lang english
- 
+ admits a unique optimal transported map 
 \begin_inset Formula $T$
 \end_inset
 
@@ -1217,8 +1250,6 @@ such that
 
 \end_inset
 
-
-\lang british
 for some 
 \begin_inset Formula $d^{2}/2$
 \end_inset
@@ -1230,7 +1261,7 @@ for some
 .
  
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -1273,11 +1304,20 @@ Rev1.2
 
 \end_inset
 
- satisfies the
-\lang english
- Monge-Ampère
-\lang british
- type equation
+ satisfies the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re type equation
 \begin_inset Formula 
 \begin{equation}
 m\left(\exp_{\xi}[\nabla\phi(\bm{\xi})]\right)|J(\bm{\xi})|=c.
@@ -1322,38 +1362,10 @@ begin{proof}
 \begin_inset Formula $M$
 \end_inset
 
- in 
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-autoref
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\end_inset
-
-mccannthm
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-}
-\end_layout
+ in Theorem 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:mccannthm"
 
 \end_inset
 
@@ -1363,8 +1375,6 @@ status collapsed
 \end_inset
 
 , we define to be the scaled Lebesgue measure such that:
-\lang english
-
 \begin_inset Formula 
 \begin{equation}
 \mathrm{d}\mu=\frac{\mathrm{d}x}{\int_{\mathbb{S}^{2}}\mathrm{d}x}.
@@ -1372,16 +1382,12 @@ status collapsed
 
 \end_inset
 
-
-\lang british
 The target probability measure, 
 \begin_inset Formula $\mu$
 \end_inset
 
 , is the Lebesgue measure appropriately scaled by the monitor function to
  be equidistribed, such that:
-\lang english
-
 \begin_inset Formula 
 \begin{equation}
 \mathrm{d}\nu=\frac{m(\mathbf{x})\mathrm{d}x}{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}.
@@ -1389,8 +1395,6 @@ The target probability measure,
 
 \end_inset
 
-
-\lang british
 As 
 \begin_inset Formula $M=\mathbb{S}^{2}$
 \end_inset
@@ -1401,38 +1405,10 @@ As
 \end_inset
 
  is absolutely continuous.
- Hence by 
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-autoref
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\end_inset
-
-mccannthm
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-}
-\end_layout
+ Hence by Theorem 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:mccannthm"
 
 \end_inset
 
@@ -1562,7 +1538,20 @@ reference "eq:cov"
 \begin_inset Formula $A_{\xi}\in\Omega_{C}$
 \end_inset
 
-, the following equation of Monge-Ampère type on the sphere results:
+, the following equation of Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re type on the sphere results:
 \begin_inset Formula 
 \begin{equation}
 m\left(\exp_{\xi}[\nabla\phi(\bm{\xi})]\right)|J(\bm{\xi})|=\frac{\int_{\mathbb{S}^{2}}m(\mathbf{x})\ \mathrm{d}x}{\int_{\mathbb{S}^{2}}\mathrm{d}x}=c.
@@ -1587,8 +1576,6 @@ end{proof}
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset ERT
 status collapsed
 
@@ -1634,38 +1621,10 @@ begin{proof}
 \end_inset
 
  to be the squared geodesic distance is crucial to the proof of uniqueness
- in 
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-autoref
-\end_layout
-
-\end_inset
-
-
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\end_inset
-
-mccannthm
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-}
-\end_layout
+ in Theorem 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "thm:mccannthm"
 
 \end_inset
 
@@ -1703,8 +1662,6 @@ reference "eq:t1"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The injectivity of this map ensures that 
 \begin_inset CommandInset ref
 LatexCommand eqref
@@ -1741,9 +1698,18 @@ end{proof}
 
 \begin_layout Section
 A Review of Numerical Methods for solving the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re Equation
 \begin_inset CommandInset label
 LatexCommand label
@@ -1756,9 +1722,18 @@ name "sec:review"
 
 \begin_layout Standard
 The fully non-linear, second-order, elliptic Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation is:
 \begin_inset Formula 
 \begin{equation}
@@ -1813,17 +1788,24 @@ key "FO11"
 
 \begin_layout Standard
 There are two challenging parts to solving the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation.
- Firstly we need 
-\lang english
-spatial discretisation methods both for the Hessian, 
+ Firstly we need spatial discretisation methods both for the Hessian, 
 \begin_inset Formula $H$
 \end_inset
 
- and for the source term, 
+, and for the source term, 
 \begin_inset Formula $f$
 \end_inset
 
@@ -1848,8 +1830,6 @@ spatial discretisation methods both for the Hessian,
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev1.3
 \end_layout
 
@@ -1867,8 +1847,6 @@ The discretisation should ensure that the solutions is convex based on a
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset CommandInset citation
 LatexCommand citet
 key "BHR09"
@@ -1932,8 +1910,21 @@ key "FN09"
 
 \end_inset
 
- approximate the Monge-Ampère equation by a fourth-order quasi-linear equation
- in order to use mixed finite elements for the spatial discretisation.
+ approximate the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation by a fourth-order quasi-linear equation in order to use mixed
+ finite elements for the spatial discretisation.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -1955,8 +1946,20 @@ Rev1.4
 
 \end_inset
 
-When solving the Monge-Ampère equation for mesh adaptation, the RHS of eqn
- (
+When solving the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation for mesh adaptation, the RHS of eqn (
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:MA1"
@@ -1985,9 +1988,7 @@ key "SAK1x"
 \end_inset
 
  experimented with second and fourth order centred finite differences and
- a spectral method for discretisting
-\lang english
- 
+ a spectral method for discretisting 
 \begin_inset Formula $\nabla\phi$
 \end_inset
 
@@ -1995,11 +1996,22 @@ key "SAK1x"
 \end_layout
 
 \begin_layout Standard
+Once the Monge-Amp
+\begin_inset ERT
+status open
 
-\lang english
-Once the Monge-Ampère equation is discretised in space, it is necessary
- to solve the resulting non-linear algebraic equations, the part of the
- method that we describe as the 
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation is discretised in space, it is necessary to solve the resulting
+ non-linear algebraic equations, the part of the method that we describe
+ as the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2015,9 +2027,21 @@ key "BW06,BHR09"
 
 \end_inset
 
- introduced a parabolic version of the Monge-Ampère equation which is solved
- by time-stepping, including an implicit relaxation term to smooth the transient
- solution and to speed up convergence:
+ introduced a parabolic version of the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation which is solved by time-stepping, including an implicit relaxation
+ term to smooth the transient solution and to speed up convergence:
 \begin_inset Formula 
 \begin{equation}
 \left(I-\gamma\nabla^{2}\right)\frac{\partial\phi}{\partial t}=\left(m\left(\nabla\phi\right)|I+H\left(\phi\right)|\right)^{\frac{1}{d}}\label{eq:PMA}
@@ -2087,14 +2111,32 @@ n proposed may also be beneficial for calculating the first guess for a
 
 \begin_layout Standard
 Equations of Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re type have not before been solved numerically on the sphere.
  The description of the optimally transported mesh problem using the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation relies on properties of Euclidean geometry 
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -2115,8 +2157,6 @@ reference "sec:method"
 \end_layout
 
 \begin_layout Section
-
-\lang english
 Numerical Method for Calculating OT Meshes
 \begin_inset CommandInset label
 LatexCommand label
@@ -2128,10 +2168,20 @@ name "sec:method"
 \end_layout
 
 \begin_layout Standard
+There are two aspects to solving equations of Monge-Amp
+\begin_inset ERT
+status open
 
-\lang english
-There are two aspects to solving equations of Monge-Ampère type in order
- to calculate optimally transported (OT) meshes.
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re type in order to calculate optimally transported (OT) meshes.
  The spatial discretisation describes how to calculate the gradient and
  the Hessian of the mesh potential, 
 \begin_inset Formula $\phi$
@@ -2148,8 +2198,6 @@ The Numerical Algorithm
 \end_layout
 
 \begin_layout Subsubsection
-
-\lang english
 In Euclidian Space
 \begin_inset CommandInset label
 LatexCommand label
@@ -2161,8 +2209,6 @@ name "sub:linearPlane"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 A fixed-point iteration sequence to solve eqn.
  (
 \begin_inset CommandInset ref
@@ -2171,15 +2217,11 @@ reference "eq:MA"
 
 \end_inset
 
-)
-\lang british
- can be found by observing that the linear terms of 
+) can be found by observing that the linear terms of 
 \begin_inset Formula $|I+H\left(\phi\right)|$
 \end_inset
 
- are in fact
-\lang english
- 
+ are in fact 
 \begin_inset Formula $1+\nabla^{2}\phi$
 \end_inset
 
@@ -2192,8 +2234,6 @@ reference "eq:MA"
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev3.4
 \end_layout
 
@@ -2239,10 +2279,35 @@ key "FN09,BFO10"
 
 \end_inset
 
- because of the presence of the identity tensor in our Monge-Ampère equation
- which simplifies the linearisation.
+ because of the presence of the identity tensor in our Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation which simplifies the linearisation.
  These fixed-point iterations are similar to the solution of the parabolic
- Monge-Ampère equation by 
+ Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation by 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "BBPC14"
@@ -2262,13 +2327,7 @@ key "BBPC14"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
-Given suitable spatial discretisations, eqn
-\lang british
-.
-
-\lang english
+Given suitable spatial discretisations, eqn.
  (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2313,9 +2372,19 @@ where
 \end_layout
 
 \begin_layout Standard
+Without a monotone spatial discretisation, numerical solutions of the Monge-Amp
+\begin_inset ERT
+status open
 
-\lang english
-Without a monotone spatial discretisation, numerical solutions of the Monge-Ampè
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation can become non-convex leading to artificial oscillations in
  the numerical solution and non-convergence 
 \begin_inset CommandInset citation
@@ -2370,7 +2439,20 @@ reference "sub:underRelax"
 \end_inset
 
 .
- A solution of the Monge-Ampère equation only controls 
+ A solution of the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation only controls 
 \begin_inset Formula $|I+H\left(\phi\right)|$
 \end_inset
 
@@ -2385,8 +2467,6 @@ reference "sub:underRelax"
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev2.10a
 \end_layout
 
@@ -2397,23 +2477,10 @@ Rev2.10a
 \end_layout
 
 \begin_layout Subsubsection
-
-\lang english
 On the Surface of the Sphere
 \end_layout
 
 \begin_layout Standard
-
-\lang english
-\begin_inset Marginal
-status open
-
-\begin_layout Plain Layout
-Rev1.1
-\end_layout
-
-\end_inset
-
 In order to solve the optimal transport problem on the sphere, we solve
  eqn (
 \begin_inset CommandInset ref
@@ -2430,8 +2497,8 @@ reference "eq:MA"
 \end_inset
 
 ).
- However, in order to define convergent fixed-point iterations, we need
- to find a linearisation of eqn.
+ However, in order to define fixed-point iterations, we need to find a linearisa
+tion of eqn.
  (
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -2445,8 +2512,6 @@ reference "eq:MAsph"
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev1.1
 \end_layout
 
@@ -2510,15 +2575,11 @@ No further approximation is needed for
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset Marginal
 status open
 
 \begin_layout Plain Layout
-
-\lang english
-Rev3.4
+Rev3.4 Ed2
 \end_layout
 
 \end_inset
@@ -2540,8 +2601,20 @@ reference "eq:PMA_SIsph"
 
 \end_inset
 
-) are preferred to the solution of the parabolic Monge-Ampère equation as
- used by 
+) are preferred to the solution of the parabolic Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation as used by 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "BCW13,BBPC14"
@@ -2577,10 +2650,30 @@ Ed5
 \end_layout
 
 \begin_layout Standard
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed2
+\end_layout
+
+\end_inset
+
+ 
+\strikeout on
 For the solution of the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation in Euclidian geometry to be convex and converge monotonically,
  
 \begin_inset CommandInset citation
@@ -2590,20 +2683,19 @@ key "FO11"
 \end_inset
 
  use a Newton solver and a wide-stencil finite-difference scheme.
- In Euclidean geometry we are solving a different version 
-\begin_inset Marginal
+ In Euclidean geometry we are solving a different version of the Monge-Amp
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-Rev3.5
+
+
+\backslash
+`e
 \end_layout
 
 \end_inset
 
-of the Monge-Amp
-\lang english
-è
-\lang british
 re eqn.
  (
 \begin_inset CommandInset ref
@@ -2620,8 +2712,18 @@ reference "eq:PMA_SIsph"
 \end_inset
 
 ), no previous solution technique exists.
- We use fixed-point iterations and have found, by trial and error, some
- desirable properties of the spatial discretisation in order to achieve
+ We use fixed-point iterations and
+\strikeout default
+ We have found by experience, trial and error and by analogy with numerical
+ solution techniques for the rotating shallow-water equations 
+\begin_inset CommandInset citation
+LatexCommand citep
+before "eg "
+key "TRSK09"
+
+\end_inset
+
+, some desirable properties of the spatial discretisation in order to achieve
  convergence.
  Further work to improve the spatial discretisation and prove convergence
  is needed.
@@ -2637,11 +2739,8 @@ The discretisation of
 \begin_inset Formula $1+\nabla^{2}\phi$
 \end_inset
 
- otherwise the linearisation will not be 
-\lang english
-close
-\lang british
- and the iterative solution will not converge quickly.
+ otherwise the linearisation will not be close and the iterative solution
+ will not converge quickly.
  In this context, consistent means that the trace of the discretised 
 \begin_inset Formula $H\left(\phi\right)$
 \end_inset
@@ -2709,7 +2808,7 @@ To avoid grid-scale oscillations in the solution of
 \end_inset
 
  and 
-\begin_inset Formula $m\left(\bm{x}\right)$
+\begin_inset Formula $m\left(\mathbf{x}\right)$
 \end_inset
 
 .
@@ -2799,10 +2898,6 @@ For cell
 \begin_inset Formula $f\in i$
 \end_inset
 
- and neighbour cells 
-\begin_inset Formula $i_{f}$
-\end_inset
-
 , the simplest, most compact discretisation of the Laplacian, suitable for
  an orthogonal grid, using Gauss's divergence theorem, is:
 \begin_inset Marginal
@@ -2864,7 +2959,19 @@ Ed5
 
 \end_inset
 
-where 
+where cell 
+\begin_inset Formula $i_{f}$
+\end_inset
+
+ is the cell on the other side of face 
+\begin_inset Formula $f$
+\end_inset
+
+ from cell 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
 \begin_inset Formula $|\mathbf{d}_{f}|$
 \end_inset
 
@@ -2960,81 +3067,8 @@ status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="2">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top" width="49line%">
-<column alignment="center" valignment="top" width="49line%">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset External
-	template XFig
-	filename figures/figs/cell2D.fig
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset External
-	template XFig
-	filename figures/figs/cell2Ddef.fig
-	scale 180
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-(a) The computational mesh with cell centre locations, 
-\begin_inset Formula $\bm{\xi}_{i}$
-\end_inset
-
- and 
-\begin_inset Formula $\bm{\xi}_{i_{f}}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-(b) The deformed mesh with cell centre locations, 
-\begin_inset Formula $\mathbf{x}_{i}$
-\end_inset
-
- and 
-\begin_inset Formula $\mathbf{x}_{i_{f}}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
+\begin_inset Graphics
+	filename figure2.pdf
 
 \end_inset
 
@@ -3070,7 +3104,7 @@ Cells
 \begin_inset Formula $f$
 \end_inset
 
- of the deformed mesh is shown by a short grey line of length 
+ of the deformed mesh (b) is shown by a short grey line of length 
 \begin_inset Formula $d_{s}$
 \end_inset
 
@@ -3111,9 +3145,18 @@ Two approaches are taken to calculate the Hessian.
  The first we define a finite-difference approach (which uses both finite
  volume and finite difference approximations).
  The second uses the fact that, in solving the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation for mesh generation, we are approximating the change in cell
  volume by the determinant of the Hessian.
  Therefore, rather than calculating a discretised Hessian, we can simply
@@ -3257,7 +3300,7 @@ Geometric approach to calculating the Hessian
 \end_layout
 
 \begin_layout Standard
-A numerical approximation to calculating 
+A numerical approximation for calculating 
 \begin_inset Formula $H$
 \end_inset
 
@@ -3308,7 +3351,7 @@ In order to calculate the mesh map and consequently to calculate
 \end_inset
 
 .
- This is in contrast to 
+ (This is in contrast to 
 \begin_inset Marginal
 status open
 
@@ -3320,7 +3363,7 @@ Rev1.4
 
 
 \begin_inset CommandInset citation
-LatexCommand citet
+LatexCommand citealp
 key "FroeseThesis2012,SAK1x"
 
 \end_inset
@@ -3333,14 +3376,21 @@ key "FroeseThesis2012,SAK1x"
 \begin_inset Formula $\phi$
 \end_inset
 
- is stored.
- Ideally, the calculation of 
+ is stored.) Ideally, the calculation of 
 \begin_inset Formula $\nabla_{v}\phi$
 \end_inset
 
  should not produce any non-convex cells and it turns out to be particularly
  sensitive to the numerical approximation and its stencil.
- If the stencil is too large, grid-scale oscillations in 
+ In section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:wideGradv"
+
+\end_inset
+
+ we will describe a large stencil gradient, for which grid-scale oscillations
+ in 
 \begin_inset Formula $\phi$
 \end_inset
 
@@ -3359,62 +3409,41 @@ Rev3.7
 
 \end_inset
 
-If the stencil is too small, on a hexagonal mesh, grid-scale oscillations
- of 
+In section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:smallGradv"
+
+\end_inset
+
+ we will describe a small stencil gradient which can lead to grid-scale
+ oscillations of 
 \begin_inset Formula $\nabla_{v}\phi$
 \end_inset
 
- can grow since the calculation of the gradient does not lead to a gradient
- with bounded variation which leads to locally distorted meshes.
- So the approximation and the stencil need to be just right - we need the
- Goldilocks gradient.
+ on a hexagonal mesh since the calculation of the gradient does not lead
+ to a gradient with bounded variation.
+ This leads to locally distorted meshes.
  
-\begin_inset Note Comment
+\begin_inset Marginal
 status open
 
 \begin_layout Plain Layout
-If 
-\begin_inset Formula $\phi$
-\end_inset
-
- is convex, then it should have bounded variation - it should not oscillate
- too fast.
- On a mesh, the variation of 
-\begin_inset Formula $\phi$
-\end_inset
-
- will depend on the numerical approximation of the gradient.
- We would like to find a numerical gradient that implies that 
-\begin_inset Formula $\phi$
-\end_inset
-
- has bounded variation.
- If 
-\begin_inset Formula $\phi$
-\end_inset
-
- has bounded variation, then the transported mesh will be convex.
- 
+Rev2.6
 \end_layout
 
 \end_inset
 
-Here, we propose three techniques for calculating the gradient at vertices,
- none of which are guaranteed to lead to convex cells in the transformed
- mesh.
- 
-\begin_inset Note Comment
-status open
-
-\begin_layout Plain Layout
-, none of which guarantee bounded variation for convex functions.
- 
-\end_layout
+Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:goldilocksGradv"
 
 \end_inset
 
- Future work will include the search for a numerical approximation with
- this property.
+ describes a compromise; a new Goldilocks stencil that combines the advantages
+ of both large and small.
+ 
 \end_layout
 
 \begin_layout Paragraph
@@ -3491,8 +3520,6 @@ reference "eq:gradf"
 \end_layout
 
 \begin_layout Paragraph
-
-\lang english
 Vertex Gradient using a Small Stencil
 \begin_inset CommandInset label
 LatexCommand label
@@ -3504,17 +3531,11 @@ name "par:smallGradv"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The vector gradient at each vertex, 
-\lang british
-
 \begin_inset Formula $\nabla_{v}\phi$
 \end_inset
 
-,
-\lang english
- can be reconstructed directly from the normal component of the gradient
+, can be reconstructed directly from the normal component of the gradient
  at the surrounding faces using a least squares fit
 \begin_inset Formula 
 \begin{equation}
@@ -3563,8 +3584,6 @@ reference "par:wideGradv"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 On a mesh of squares, 
 \begin_inset Formula $\phi$
 \end_inset
@@ -3577,16 +3596,19 @@ On a mesh of squares,
 \end_layout
 
 \begin_layout Paragraph
-
-\lang english
 Vertex Gradient using the Goldilocks Stencil
+\begin_inset CommandInset label
+LatexCommand label
+name "par:goldilocksGradv"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The Goldilocks stencil should be large enough to calculate a smooth gradient
- (with bounded variation) but without including averaging and thus hiding
+ (with bounded variation) but without including averaging which can hide
  grid-scale oscillations in 
 \begin_inset Formula $\phi$
 \end_inset
@@ -3618,8 +3640,6 @@ reference "fig:goldilocksStencil"
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev2.10b
 \end_layout
 
@@ -3634,8 +3654,6 @@ where
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev3.8
 \end_layout
 
@@ -3675,8 +3693,6 @@ key "WWF09"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset Float figure
 wide false
 sideways false
@@ -3684,11 +3700,8 @@ status open
 
 \begin_layout Plain Layout
 \align center
-
-\lang english
-\begin_inset External
-	template XFig
-	filename figures/figs/goldilocksStencil.fig
+\begin_inset Graphics
+	filename figure3.pdf
 
 \end_inset
 
@@ -3696,8 +3709,6 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-
-\lang english
 \begin_inset Caption
 
 \begin_layout Plain Layout
@@ -3806,7 +3817,7 @@ reference "eq:PMA_SI"
 
 \end_inset
 
-,
+),(
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:PMA_SIsph"
@@ -3815,15 +3826,15 @@ reference "eq:PMA_SIsph"
 
 ) leads to a set of linear algebraic equations, which can be written as
  a matrix equation, 
-\begin_inset Formula $A\bm{\phi}=\mathbf{b}$
+\begin_inset Formula $A\bm{\phi}^{(n+1)}=\mathbf{b}^{(n)}$
 \end_inset
 
 , where 
-\begin_inset Formula $\bm{\phi}$
+\begin_inset Formula $\bm{\phi}^{(n+1)}$
 \end_inset
 
  is the vector of all of the values of the unknown, 
-\begin_inset Formula $\phi$
+\begin_inset Formula $\phi^{(n+1)}$
 \end_inset
 
 .
@@ -3988,7 +3999,7 @@ use observed meteorological data to calculate a monitor function by mapping
 status open
 
 \begin_layout Plain Layout
-3.10
+Rev3.10
 \end_layout
 
 \end_inset
@@ -4024,7 +4035,21 @@ Here we describe how
 \end_inset
 
  is calculated.
- We start by defining the source terms of these equations to be 
+ We start by defining the source terms of the eqns (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SI"
+
+\end_inset
+
+),(
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:PMA_SIsph"
+
+\end_inset
+
+) to be 
 \begin_inset Formula $s^{n}=|I+H\left(\phi^{n}\right)|-c/m({\bf x}^{n})$
 \end_inset
 
@@ -4098,9 +4123,18 @@ reference "sec:diags"
 ).
  However the purpose of this work is to describe a robust solution of the
  Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation on the sphere for any monitor function.
  So smoothing of the monitor function will not be considered for the analyticall
 y defined monitor functions.
@@ -4138,7 +4172,7 @@ reference "eq:PMA_SI"
 
 \end_inset
 
-,
+),(
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:PMA_SIsph"
@@ -4146,7 +4180,7 @@ reference "eq:PMA_SIsph"
 \end_inset
 
 ).
- The diffusion coefficient used is the mesh spacing, 
+ The diffusion coefficient used is the square of the mesh spacing, 
 \begin_inset Formula $|\mathbf{d}_{f}|$
 \end_inset
 
@@ -4215,9 +4249,18 @@ Secondly, the convergence of the final solution is assessed by plotting
 
  (ie using the finite difference Hessian rather than the geometric Hessian)
  in the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation, it tells us how well 
 \begin_inset Formula $|I+H\left(\phi^{n}\right)|$
 \end_inset
@@ -4252,15 +4295,15 @@ These will also use the face area vector,
 \begin_inset Formula $\mathbf{d}_{x}$
 \end_inset
 
-, the vector between cell centres either side of a face of the moved mesh
- (see fig 
+, the vector between cell centres either side of a face of the deformed
+ mesh (see fig 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:cell"
 
 \end_inset
 
-).
+(b)).
 \end_layout
 
 \begin_layout Standard
@@ -4350,7 +4393,7 @@ reference "fig:cell"
 
 \end_inset
 
-.
+(b).
  This definition of skewness is a feature of the non-linearities of the
  map generating the mesh and is different quantitatively and qualitatively
  from that of 
@@ -4376,8 +4419,6 @@ key "BRW15"
 \end_layout
 
 \begin_layout Section
-
-\lang english
 Results
 \begin_inset CommandInset label
 LatexCommand label
@@ -4389,11 +4430,22 @@ name "sec:results"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 Optimally transported meshes are generated in two-dimensional planar geometry
  to compare with those generated by numerical solution of the parabolic
- Monge-Ampère equation by 
+ Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation by 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "BRW15"
@@ -4419,8 +4471,6 @@ Optimally Transported Meshes in Euclidean Geometry
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 Meshes are generated on a finite plane, 
 \begin_inset Formula $[-1,1]^{2}$
 \end_inset
@@ -4515,8 +4565,6 @@ key "BRW15"
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev2.3
 \end_layout
 
@@ -4532,8 +4580,6 @@ Rev2.3
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev2.7
 \end_layout
 
@@ -4543,8 +4589,6 @@ Rev2.7
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The ring and bell meshes generated using both the finite difference and
  the geometric Hessian on the plane are shown in figure 
 \begin_inset CommandInset ref
@@ -4573,8 +4617,6 @@ key "BRW15"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset Float figure
 wide false
 sideways false
@@ -4734,8 +4776,6 @@ rotatebox[origin=l]{90}{Bell mesh}
 \end_layout
 
 \begin_layout Plain Layout
-
-\lang english
 \begin_inset Caption
 
 \begin_layout Plain Layout
@@ -4774,25 +4814,30 @@ reference "fig:planeMeshes"
 
  calculated using both Hessian techniques are similar to each other and
  they are also similar to the meshes generated by 
-\lang english
-
 \begin_inset CommandInset citation
 LatexCommand citet
 key "BRW15"
 
 \end_inset
 
-
-\lang british
 .
  
 \end_layout
 
 \begin_layout Subsection
 Convergence of the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re Solution in Euclidean Geometry
 \begin_inset CommandInset label
 LatexCommand label
@@ -4804,8 +4849,6 @@ name "sub:convPlane"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset Float figure
 wide false
 sideways false
@@ -4857,8 +4900,6 @@ status open
 \end_layout
 
 \begin_layout Plain Layout
-
-\lang english
 \begin_inset Caption
 
 \begin_layout Plain Layout
@@ -4900,8 +4941,6 @@ name "fig:planeMeshConvergence"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -4922,8 +4961,6 @@ reference "fig:planeMeshConvergence"
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev2.8
 \end_layout
 
@@ -4935,8 +4972,6 @@ since smoothing removes the very abrupt changes in the monitor function.
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The underelaxation factor, 
 \begin_inset Formula $1+\alpha$
 \end_inset
@@ -4969,8 +5004,6 @@ reference "fig:planeMeshConvergence"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset Float figure
 wide false
 sideways false
@@ -5118,8 +5151,6 @@ Geometric Hessian
 \end_layout
 
 \begin_layout Plain Layout
-
-\lang english
 \begin_inset Caption
 
 \begin_layout Plain Layout
@@ -5138,7 +5169,7 @@ reference "eq:planeMonitor"
 
 \end_inset
 
-)..
+).
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -5212,8 +5243,6 @@ name "sub:sphMeshes"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 Meshes are generated using the geometric Hessian in order to compare with
  the locally refined centroidal Voronoi meshes generated using Lloyd's algorithm
  by 
@@ -5324,14 +5353,10 @@ key "RJG+11"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset Marginal
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev2.3
 \end_layout
 
@@ -5339,7 +5364,31 @@ Rev2.3
 
  The computational meshes are hexagonal icosahedra which consist of 12 pentagons
  and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+
 \begin_inset Formula $10(2^{2n}-1)$
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
 \end_inset
 
  hexagons for 
@@ -5352,22 +5401,18 @@ Rev2.3
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev2.9
 \end_layout
 
 \end_inset
 
-These quasi-uniform meshes (not shown) can be referred to as the X1 meshes.
+These quasi-uniform meshes can be referred to as the X1 meshes.
  The X1 meshes are not shown but the X1 centroidal Voronoi meshes and the
  OT meshes are slightly different.
  The X1 centroidal Voronoi meshes are generated using Lloyd's algorithm
  which guarantees that the X1 meshes are nearly centroidal (the Voronoi
  generating point is co-located with the cell centre) whereas the X1 OT
- meshes are 
-\lang british
-the 
+ meshes are the 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "HR95b"
@@ -5375,11 +5420,7 @@ key "HR95b"
 \end_inset
 
  version of the hexagonal icosahedron, optimised to reduce face skewness.
- The X2, X4, X8 and X16 meshes of 
-\lang english
-2,562 cells
-\lang british
- are shown in figure 
+ The X2, X4, X8 and X16 meshes of 2,562 cells are shown in figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:X24meshes"
@@ -5391,8 +5432,6 @@ reference "fig:X24meshes"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 \begin_inset Float figure
 wide false
 sideways false
@@ -5754,8 +5793,6 @@ X16
 \end_layout
 
 \begin_layout Plain Layout
-
-\lang english
 \begin_inset Caption
 
 \begin_layout Plain Layout
@@ -5763,6 +5800,15 @@ X16
 \lang english
 X2, X4, X8 and X16 meshes of the sphere of 2,562 cells and the cell volumes
  relative to the average cell volume in colour.
+ The surface of the entire sphere is displayed using a Hammer equal-area
+ projection 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "WSS+13"
+
+\end_inset
+
+.
  
 \begin_inset CommandInset label
 LatexCommand label
@@ -5810,9 +5856,7 @@ reference "sub:betterMeshQuality"
 \end_layout
 
 \begin_layout Standard
-All of the
-\lang english
- OT meshes in fig.
+All of the OT meshes in fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -5851,9 +5895,18 @@ reference "sub:convSph"
 
 \begin_layout Subsection
 Convergence of the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re Solution on the Sphere
 \begin_inset CommandInset label
 LatexCommand label
@@ -6030,7 +6083,7 @@ reference "fig:convergence"
  iterations, once the non-linearities have grown and the Laplacian is no
  longer a good approximation for the Hessian and once the exact solutions
  becomes difficult to achieve at finite resolution.
- It is clear from fig.
+ It appears from fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -6038,7 +6091,7 @@ reference "fig:convergence"
 
 \end_inset
 
- that the number of iterations is independent of the mesh size.
+ that the number of iterations reduces as mesh size increases.
 \end_layout
 
 \begin_layout Standard
@@ -6198,8 +6251,6 @@ name "fig:boostLaplacian"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The underelaxation factor, 
 \begin_inset Formula $1+\alpha$
 \end_inset
@@ -6224,8 +6275,6 @@ reference "fig:boostLaplacian"
 status open
 
 \begin_layout Plain Layout
-
-\lang english
 Rev3.13
 \end_layout
 
@@ -6537,19 +6586,6 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
-\lang english
 Centroidal Voronoi
 \end_layout
 
@@ -6559,19 +6595,6 @@ Centroidal Voronoi
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
-\lang english
 Optimally transported
 \end_layout
 
@@ -6879,19 +6902,6 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
-\lang english
 Centroidal Voronoi
 \end_layout
 
@@ -6901,19 +6911,6 @@ Centroidal Voronoi
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
-\lang english
 Optimally transported
 \end_layout
 
@@ -7187,19 +7184,6 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
-\lang english
 Centroidal Voronoi
 \end_layout
 
@@ -7209,19 +7193,6 @@ Centroidal Voronoi
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\family roman
-\series medium
-\shape up
-\size normal
-\emph off
-\bar no
-\strikeout off
-\uuline off
-\uwave off
-\noun off
-\color none
-\lang english
 Optimally transported
 \end_layout
 
@@ -7456,8 +7427,8 @@ reference "fig:meshSkewX2X4"
  in comparison to the centroidal Voronoi meshes.
  Lloyd's algorithm with a non-uniform monitor function generates exactly
  orthogonal, non-centroidal meshes and so for comparison with the OT meshes,
- the centroidal Voronoi meshes are made centroidal at the expense of orthogonali
-ty by using the cell centroid as the cell centre rather than using the Voronoi
+ the Voronoi meshes are made exactly centroidal at the expense of orthogonality
+ by using the cell centroid as the cell centre rather than using the Voronoi
  generating point.
  Even so, they remain very close to orthogonal in comparison to the OT meshes
  which have high non-orthogonality where the second derivative of the monitor
@@ -7572,7 +7543,7 @@ reference "fig:X16zoom"
 \begin_inset Formula $\nabla\phi$
 \end_inset
 
- from faces onto vertices which entails the use of a larger stencil (secn
+ from faces onto vertices which entails the use of the larger stencil (secn
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -7589,9 +7560,7 @@ reference "fig:X16zoom"
 
 ).
  Alternatively, a Voronoi tessellation can be created using the cell centres
- of the Goldilocks stencil mesh as generating points.
- This also eliminates non-convex cells and the mesh is shown at the bottom
- of fig.
+ of the Goldilocks stencil mesh as generating points (bottom row of fig.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -7599,8 +7568,19 @@ reference "fig:X16zoom"
 
 \end_inset
 
-.
+).
+ This also eliminates non-convex cells.
  
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed1
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7611,10 +7591,30 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
-<lyxtabular version="3" rows="8" columns="2">
+<lyxtabular version="3" rows="9" columns="2">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Zoomed mesh
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Double zoomed
+\end_layout
+
+\end_inset
+</cell>
+</row>
 <row>
 <cell multicolumn="1" alignment="center" valignment="top" usebox="none">
 \begin_inset Text
@@ -8022,9 +8022,18 @@ reference "fig:X16zoom"
 ).
  This modification does not affect the convergence since the Voronoi tessellatio
 n is calculated after convergence of the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re solution.
  This mesh is insensitive to the calculation of 
 \begin_inset Formula $\nabla_{v}\phi$
@@ -8329,7 +8338,7 @@ j
 \begin_layout Plain Layout
 Mesh diagnostics as a function of distance from the centre of the refined
  region for the X16 meshes of 2,562 cells using the large stencil for 
-\begin_inset Formula $\nabla_{p}\phi$
+\begin_inset Formula $\nabla_{v}\phi$
 \end_inset
 
  on the left and using the Voronoi tesselation on the right.
@@ -8366,9 +8375,18 @@ name "sub:ppt"
 
 \begin_layout Standard
 In order to demonstrate the numerical solution of the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re type equation using realistic data as a monitor function, meshes are
  generated based on the daily average precipitation rate from the NOAA-CIRES
  20th Century Reanalysis version 2 (
@@ -8391,9 +8409,18 @@ http://www.esrl.noaa.gov/psd/data/gridded/data.20thC_ReanV2.html
 
 ) on 9 Oct 2012.
  The numerical solution of the Monge-Amp
-\lang english
-è
-\lang british
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
 re equation uses two near uniform hexagonal-icosahedral meshes of 2,562
  and 10,242 cells.
  The re-analysis precipitation ranges from zero to 
@@ -8465,8 +8492,8 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/5/8/pptMesh.png
-	lyxscale 50
+	filename figures/graphics/meshes_sphereMeshes_MongeAmpereFromPpt_5_8_pptMesh.jpg
+	lyxscale 25
 	width 100text%
 
 \end_inset
@@ -8476,8 +8503,8 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename /home/hilary/OpenFOAM/hilary-2.3.0/run/meshes/sphereMeshes/MongeAmpereFromPpt/6/8/pptMesh.png
-	lyxscale 50
+	filename figures/graphics/meshes_sphereMeshes_MongeAmpereFromPpt_6_8_pptMesh.jpg
+	lyxscale 25
 	width 100text%
 
 \end_inset
@@ -8503,6 +8530,15 @@ Meshes of 2,562 and 10,242 cells generated based on the monitor function
  of precipitation on 9 Oct 2012.
  The colours show the precipitation rate in 
 \begin_inset Formula $\text{kg}\text{m}^{-2}\text{s}^{-1}$
+\end_inset
+
+.
+ The surface of the entire sphere is displayed using a Hammer equal-area
+ projection 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "WSS+13"
+
 \end_inset
 
 .
@@ -8540,8 +8576,6 @@ ce zone cannot be refined everywhere around the equator in the longitudinal
 \end_layout
 
 \begin_layout Section
-
-\lang english
 Conclusions
 \begin_inset CommandInset label
 LatexCommand label
@@ -8553,31 +8587,78 @@ name "sec:concs"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 A technique for generating optimally transported (OT) meshes, solving a
- Monge-Ampère type equation on the surface of the sphere, has been developed
- in order to generate meshes which are equidistributed with respect to a
- monitor function.
- Equations of Monge-Ampère type have not before been solved numerically
- on the surface of a sphere.
+ Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re type equation on the surface of the sphere, has been developed in order
+ to generate meshes which are equidistributed with respect to a monitor
+ function.
+ Equations of Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re type have not before been solved numerically on the surface of a sphere.
  We show that a unique solution to the optimal mesh transport problem on
  the sphere exists and exponential maps are used to create the map from
  the old to the new mesh.
  We introduce a geometric interpretation of the Hessian rather than a numerical
  approximation which is accurate on the surface of the sphere.
  In order to create a semi-implicit algorithm, a new linearisation of the
- Monge-Ampère equation is proposed which includes a Laplacian term and the
- resulting Poisson equation is solved at each fixed-point iteration.
+ Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation is proposed which includes a Laplacian term and the resulting
+ Poisson equation is solved at each fixed-point iteration.
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 To validate the novel aspects of the numerical method, we first reproduce
- some known solutions of the Monge-Ampère equation on a two dimensional
- plane and find that the geometric interpretation of the Hessian leads to
- more accurate equidistribution than a finite difference discretisation.
+ some known solutions of the Monge-Amp
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+`e
+\end_layout
+
+\end_inset
+
+re equation on a two dimensional plane and find that the geometric interpretatio
+n of the Hessian leads to more accurate equidistribution than a finite differenc
+e discretisation.
  We also generate OT meshes of polygons on the sphere to compare with the
  centroidal Voronoi meshes generated by 
 \begin_inset CommandInset citation
@@ -8587,8 +8668,21 @@ key "RJG+11"
 \end_inset
 
 .
- The geometric Hessian created accurately equidistributed meshes on the
- surface of the sphere.
+ The geometric Hessian 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Ed1
+\end_layout
+
+\end_inset
+
+ 
+\strikeout on
+created
+\strikeout default
+ accurately equidistributed meshes on the surface of the sphere.
  The algorithm is found to be sensitive to the numerical method used to
  calculate the gradient of the mesh potential (the map to the new mesh)
  with a compact stencil leading to non-convexity and a large stencil leading
@@ -8603,8 +8697,6 @@ key "RJG+11"
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 The meshes generated have advantages and disadvantages relative to centroidal
  Voronoi meshes generated using Lloyd's algorithm.
  In principle, OT meshes should be much faster to generate, although we
@@ -8618,8 +8710,6 @@ The meshes generated have advantages and disadvantages relative to centroidal
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 Finally, we generate a mesh using a monitor function based on reanalysis
  precipitation.
  This mesh refines smoothly along atmospheric fronts and convergence zones
@@ -8630,14 +8720,10 @@ Finally, we generate a mesh using a monitor function based on reanalysis
 \end_layout
 
 \begin_layout Section*
-
-\lang english
 Acknowledgements
 \end_layout
 
 \begin_layout Standard
-
-\lang english
 Weller acknowledges support from NERC grant NE/H015698/1 and Browne from
  NERC grant NE/J005878/1.
  Budd acknowledges support the Pacific Institute for the Mathematical Sciences

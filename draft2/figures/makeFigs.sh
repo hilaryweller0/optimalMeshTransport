@@ -5,31 +5,24 @@
 if [ "$#" -eq 0 ]
 then
     figs=(
-        planeMeshes
-        planeMeshConvergence
-        planeMeshDiags
-        X2meshes
-        X4meshes
-        X8meshes
-        X16meshes
-        meshSizes
-        meshSizesVolume
-        meshStats
-        convergence
+        cells
+        goldilocksStencil
     )
+    i=2
 else
-    figs=($1 $2 $3 $4 $5 $6 $7 $8 $9)
+    figs=($1)
+    i=$2
 fi
 
 for fig in ${figs[*]}; do
     echo $fig
     cd $fig
-    latex fig
-    dvips fig
-    makebb fig.ps
-    mv fig.ps ../../$fig.eps
-    gv ../../$fig.eps &
+    pdflatex fig
+    pdfCrop fig.pdf
+    mv fig.pdf ../../figure$i.pdf
+    gv ../../figure$i.pdf &
     cd ..
+    let i=$i+1
 done
 
 
